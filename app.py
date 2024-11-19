@@ -29,19 +29,19 @@ with app.app_context():
             Testimonial(
                 client_name="John D.",
                 rating=5,
-                content="Exceptional craftsmanship! The custom dining table they made exceeded our expectations.",
+                content="Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
                 is_featured=True
             ),
             Testimonial(
                 client_name="Sarah M.",
                 rating=4,
-                content="Beautiful work on our kitchen cabinets. The attention to detail is remarkable.",
+                content="Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
                 is_featured=True
             ),
             Testimonial(
                 client_name="Michael R.",
                 rating=5,
-                content="The handcrafted bookshelf is a piece of art. Fantastic quality and service!",
+                content="The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
                 is_featured=True
             )
         ]
@@ -54,40 +54,40 @@ with app.app_context():
     if not GalleryProject.query.first():
         sample_projects = [
             GalleryProject(
-                title="Custom Dining Room Set",
-                description="A complete dining room set including a table for 8, chairs, and a matching sideboard. Made from solid oak with a natural finish.",
+                title="Custom Export Crate Solution",
+                description="ISPM 15 certified export crates designed for sensitive medical equipment shipping to Europe. Features custom foam cushioning and moisture barriers.",
                 image_url="/static/images/workshop.svg",
                 completion_date=date(2024, 1, 15),
-                client="Smith Family",
-                category="Furniture Sets",
+                client="MedTech Solutions",
+                category="ISPM 15 Certified Export Crates",
                 is_featured=True
             ),
             GalleryProject(
-                title="Modern Kitchen Cabinets",
-                description="Full kitchen renovation with custom maple cabinets featuring soft-close drawers and built-in organizers.",
+                title="Heavy Machinery Skids",
+                description="Cushioned skids with integrated ramp system for 20-ton industrial equipment. Custom-engineered for repeated use and easy forklift access.",
                 image_url="/static/images/workshop.svg",
                 completion_date=date(2024, 2, 20),
-                client="Johnson Residence",
-                category="Kitchen",
+                client="Industrial Dynamics",
+                category="Cushion Skids with Ramp",
                 is_featured=True
             ),
             GalleryProject(
-                title="Built-in Library Shelving",
-                description="Floor-to-ceiling library shelving with a rolling ladder, crafted from walnut with adjustable shelves.",
+                title="Oversized Crating Solution",
+                description="Custom oversized crates for wind turbine components with specialized bracing and moisture control systems.",
                 image_url="/static/images/workshop.svg",
                 completion_date=date(2024, 3, 10),
-                client="City Library",
-                category="Storage Solutions",
+                client="Green Energy Corp",
+                category="Oversize Crates",
                 is_featured=True
             ),
             GalleryProject(
-                title="Outdoor Deck Furniture",
-                description="Weather-resistant teak furniture set including loungers, dining set, and storage boxes.",
+                title="Reusable Shipping System",
+                description="Developed a reusable crating system with Skidmates for regular international shipments, reducing packaging waste by 85%.",
                 image_url="/static/images/workshop.svg",
                 completion_date=date(2024, 4, 5),
-                client="Beach House Resort",
-                category="Outdoor",
-                is_featured=False
+                client="Global Electronics Ltd",
+                category="Export with Skidmates",
+                is_featured=True
             )
         ]
         for project in sample_projects:
