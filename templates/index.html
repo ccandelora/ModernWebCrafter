@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section text-center">
+    <div class="container">
+        <h1>Handcrafted Wood Products</h1>
+        <p class="lead">Discover our collection of premium wooden furniture and accessories</p>
+        <a href="/products" class="btn btn-wood btn-lg">View Collection</a>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card product-card">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description[:100] }}...</p>
+                    <p class="card-text"><strong>${{ "%.2f"|format(product.price) }}</strong></p>
+                    <a href="/products" class="btn btn-wood">Learn More</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <h2>Why Choose Us?</h2>
+            <ul class="list-unstyled">
+                <li><i class="fas fa-check"></i> Premium Quality Materials</li>
+                <li><i class="fas fa-check"></i> Expert Craftsmanship</li>
+                <li><i class="fas fa-check"></i> Custom Design Options</li>
+                <li><i class="fas fa-check"></i> Sustainable Practices</li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            <img src="/static/images/workshop.jpg" class="img-fluid rounded" alt="Workshop">
+        </div>
+    </div>
+</div>
+{% endblock %}

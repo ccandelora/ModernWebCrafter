@@ -1,0 +1,66 @@
+:root {
+    --wood-brown: #8B4513;
+    --wood-light: #DEB887;
+    --wood-dark: #3E2723;
+    --wood-accent: #D7CCC8;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: var(--wood-dark);
+}
+
+.navbar {
+    background-color: var(--wood-dark);
+}
+
+.navbar-brand {
+    color: var(--wood-light) !important;
+}
+
+.hero-section {
+    background: linear-gradient(rgba(62, 39, 35, 0.8), rgba(62, 39, 35, 0.8)),
+                url('/static/images/wood-texture.jpg');
+    background-size: cover;
+    color: white;
+    padding: 100px 0;
+}
+
+.product-card {
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.btn-wood {
+    background-color: var(--wood-brown);
+    color: white;
+    border: none;
+}
+
+.btn-wood:hover {
+    background-color: var(--wood-dark);
+    color: var(--wood-light);
+}
+
+.footer {
+    background-color: var(--wood-dark);
+    color: var(--wood-light);
+    padding: 40px 0;
+}
+
+.product-gallery img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.contact-form {
+    background-color: var(--wood-accent);
+    padding: 30px;
+    border-radius: 10px;
+}
