@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+@layer base {
+  body {
+    @apply font-['Roboto'];
+  }
+}
+
+@layer components {
+  .btn-wood {
+    @apply bg-wood-brown text-white hover:bg-wood-dark hover:text-wood-light transition-colors duration-300;
+  }
+}
