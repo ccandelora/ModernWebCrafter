@@ -1,11 +1,12 @@
 from flask import render_template, request, flash, redirect, url_for
 from app import app, db
-from models import Product, Inquiry
+from models import Product, Inquiry, Testimonial
 
 @app.route('/')
 def index():
     featured_products = Product.query.limit(3).all()
-    return render_template('index.html', products=featured_products)
+    testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
+    return render_template('index.html', products=featured_products, testimonials=testimonials)
 
 @app.route('/products')
 def products():
@@ -33,6 +34,23 @@ def contact():
         flash('Your inquiry has been sent successfully!', 'success')
         return redirect(url_for('contact'))
     return render_template('contact.html')
+
+@app.route('/admin/testimonials', methods=['GET', 'POST'])
+def manage_testimonials():
+    if request.method == 'POST':
+        testimonial = Testimonial(
+            client_name=request.form['client_name'],
+            rating=int(request.form['rating']),
+            content=request.form['content'],
+            is_featured=bool(request.form.get('is_featured', False))
+        )
+        db.session.add(testimonial)
+        db.session.commit()
+        flash('Testimonial added successfully!', 'success')
+        return redirect(url_for('manage_testimonials'))
+    
+    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return render_template('admin/testimonials.html', testimonials=testimonials)
 
 @app.context_processor
 def utility_processor():

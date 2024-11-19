@@ -50,53 +50,22 @@
     <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">What Our Clients Say</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Testimonial 1 -->
+            {% for testimonial in testimonials %}
             <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">
                 <div class="flex items-center mb-4">
                     <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4">
                     <div>
-                        <h4 class="font-semibold text-wood-dark">John Anderson</h4>
+                        <h4 class="font-semibold text-wood-dark">{{ testimonial.client_name }}</h4>
                         <div class="flex">
-                            {% for _ in range(5) %}
+                            {% for _ in range(testimonial.rating) %}
                             <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
                             {% endfor %}
                         </div>
                     </div>
                 </div>
-                <p class="text-gray-600">"The custom dining table they crafted for our home is absolutely stunning. The attention to detail and the quality of the wood is exceptional. It's become the centerpiece of our dining room!"</p>
+                <p class="text-gray-600">{{ testimonial.content }}</p>
             </div>
-
-            <!-- Testimonial 2 -->
-            <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">
-                <div class="flex items-center mb-4">
-                    <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4">
-                    <div>
-                        <h4 class="font-semibold text-wood-dark">Sarah Mitchell</h4>
-                        <div class="flex">
-                            {% for _ in range(5) %}
-                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <p class="text-gray-600">"I ordered a custom bookshelf, and the result exceeded my expectations. The craftsmanship is impeccable, and they perfectly matched the wood grain to my existing furniture. Truly professional work!"</p>
-            </div>
-
-            <!-- Testimonial 3 -->
-            <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">
-                <div class="flex items-center mb-4">
-                    <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4">
-                    <div>
-                        <h4 class="font-semibold text-wood-dark">Michael Thompson</h4>
-                        <div class="flex">
-                            {% for _ in range(5) %}
-                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <p class="text-gray-600">"The handcrafted office desk they made is not just furniture, it's a piece of art. The sustainable wood choice and the natural finish show their commitment to both quality and environmental responsibility."</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>
