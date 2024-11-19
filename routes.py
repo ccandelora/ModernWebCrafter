@@ -20,6 +20,65 @@ def products():
     categories = db.session.query(Product.category).distinct()
     return render_template('products.html', products=products, categories=categories)
 
+@app.route('/quote', methods=['GET', 'POST'])
+def quote_calculator():
+    if request.method == 'POST':
+        # Get form data
+        package_type = request.form.get('package_type')
+        length = float(request.form.get('length'))
+        width = float(request.form.get('width'))
+        height = float(request.form.get('height'))
+        weight = float(request.form.get('weight'))
+        requirements = request.form.getlist('requirements[]')
+        shipping_type = request.form.get('shipping_type')
+
+        # Calculate cubic feet
+        cubic_feet = (length * width * height) / 1728  # Convert cubic inches to cubic feet
+
+        # Base rates per cubic foot for different package types
+        base_rates = {
+            'export_crate': 12.0,
+            'cushioned_crate': 15.0,
+            'skidmate': 10.0,
+            'cushion_skid': 14.0,
+            'oversize': 18.0
+        }
+
+        # Calculate base cost
+        base_cost = cubic_feet * base_rates.get(package_type, 12.0)
+
+        # Add weight factor
+        weight_factor = max(1.0, weight / 1000)  # Increase cost for heavy items
+        base_cost *= weight_factor
+
+        # Add costs for special requirements
+        requirement_costs = {
+            'moisture_barrier': 200,
+            'shock_absorption': 300,
+            'custom_foam': 400,
+            'ramp_system': 500
+        }
+
+        for req in requirements:
+            base_cost += requirement_costs.get(req, 0)
+
+        # International shipping markup
+        if shipping_type == 'international':
+            base_cost *= 1.3  # 30% markup for international
+
+        # Add range for estimate
+        min_cost = round(base_cost * 0.9, 2)
+        max_cost = round(base_cost * 1.1, 2)
+
+        estimated_quote = {
+            'min': min_cost,
+            'max': max_cost
+        }
+
+        return render_template('quote.html', estimated_quote=estimated_quote)
+
+    return render_template('quote.html')
+
 @app.route('/gallery')
 def gallery():
     category = request.args.get('category')
