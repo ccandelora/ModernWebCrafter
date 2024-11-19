@@ -1,6 +1,7 @@
 from flask import render_template, request, flash, redirect, url_for
 from app import app, db
-from models import Product, Inquiry, Testimonial
+from models import Product, Inquiry, Testimonial, GalleryProject
+from datetime import date
 
 @app.route('/')
 def index():
@@ -17,6 +18,16 @@ def products():
         products = Product.query.all()
     categories = db.session.query(Product.category).distinct()
     return render_template('products.html', products=products, categories=categories)
+
+@app.route('/gallery')
+def gallery():
+    category = request.args.get('category')
+    if category:
+        projects = GalleryProject.query.filter_by(category=category).order_by(GalleryProject.completion_date.desc()).all()
+    else:
+        projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
+    categories = db.session.query(GalleryProject.category).distinct()
+    return render_template('gallery.html', projects=projects, categories=categories, selected_category=category)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():

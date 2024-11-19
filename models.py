@@ -25,3 +25,14 @@ class Testimonial(db.Model):
     content = db.Column(db.Text, nullable=False)
     is_featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class GalleryProject(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    image_url = db.Column(db.String(200), nullable=False)
+    completion_date = db.Column(db.Date, nullable=False)
+    client = db.Column(db.String(100))
+    category = db.Column(db.String(50), nullable=False)
+    is_featured = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
