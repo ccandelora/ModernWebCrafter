@@ -4,14 +4,14 @@
 <div class="relative bg-wood-dark text-white py-24">
     <div class="absolute inset-0 bg-opacity-80" style="background-image: url('/static/images/wood-texture.svg'); background-size: cover;"></div>
     <div class="container mx-auto px-4 text-center relative z-10">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Handcrafted Wood Products</h1>
-        <p class="text-xl mb-8">Discover our collection of premium wooden furniture and accessories</p>
-        <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">View Collection</a>
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Industrial Wood Packaging Solutions</h1>
+        <p class="text-xl mb-8">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
+        <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">View Solutions</a>
     </div>
 </div>
 
 <div class="container mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold text-center mb-12">Featured Products</h2>
+    <h2 class="text-3xl font-bold text-center mb-12">Industrial Packaging Solutions</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% for product in products %}
         <div class="transform hover:-translate-y-1 transition duration-300">
@@ -20,8 +20,8 @@
                 <div class="p-6">
                     <h5 class="text-xl font-semibold mb-2">{{ product.name }}</h5>
                     <p class="text-gray-600 mb-4">{{ product.description[:100] }}...</p>
-                    <p class="text-wood-brown font-bold text-lg mb-4">${{ "%.2f"|format(product.price) }}</p>
-                    <a href="/products" class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Learn More</a>
+                    <p class="text-wood-brown font-bold text-lg mb-4">Contact for Quote</p>
+                    <a href="/contact" class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Request Quote</a>
                 </div>
             </div>
         </div>
@@ -34,21 +34,21 @@
         <div>
             <h2 class="text-3xl font-bold mb-8">Why Choose Us?</h2>
             <ul class="space-y-4">
-                <li class="flex items-center"><i class="fas fa-check text-wood-brown mr-2"></i> Premium Quality Materials</li>
-                <li class="flex items-center"><i class="fas fa-check text-wood-brown mr-2"></i> Expert Craftsmanship</li>
-                <li class="flex items-center"><i class="fas fa-check text-wood-brown mr-2"></i> Custom Design Options</li>
-                <li class="flex items-center"><i class="fas fa-check text-wood-brown mr-2"></i> Sustainable Practices</li>
+                <li class="flex items-center"><i class="fas fa-certificate text-wood-brown mr-2"></i> NELMA Certified Manufacturing</li>
+                <li class="flex items-center"><i class="fas fa-check-circle text-wood-brown mr-2"></i> ISPM 15 Compliance for Global Shipping</li>
+                <li class="flex items-center"><i class="fas fa-globe text-wood-brown mr-2"></i> Global Shipping Expertise</li>
+                <li class="flex items-center"><i class="fas fa-history text-wood-brown mr-2"></i> 40+ Years Industry Experience</li>
             </ul>
         </div>
         <div>
-            <img src="/static/images/workshop.svg" class="rounded-lg shadow-lg" alt="Workshop">
+            <img src="/static/images/workshop.svg" class="rounded-lg shadow-lg" alt="Industrial Workshop">
         </div>
     </div>
 </div>
 
 <div class="bg-wood-accent bg-opacity-10 py-16">
     <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">What Our Clients Say</h2>
+        <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">Client Testimonials</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {% for testimonial in testimonials %}
             <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">

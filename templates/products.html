@@ -1,48 +1,53 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-3">
-            <h4>Categories</h4>
-            <div class="list-group">
-                <a href="/products" class="list-group-item list-group-item-action">All Products</a>
+<div class="container mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold text-center mb-8">Industrial Packaging Solutions</h1>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="md:col-span-1">
+            <h4 class="text-xl font-semibold mb-4">Categories</h4>
+            <div class="space-y-2">
+                <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                    All Products
+                </a>
                 {% for category in categories %}
                 <a href="/products?category={{ category[0] }}" 
-                   class="list-group-item list-group-item-action category-filter"
-                   data-category="{{ category[0] }}">
+                   class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                     {{ category[0] }}
                 </a>
                 {% endfor %}
             </div>
+
+            <div class="mt-8">
+                <h4 class="text-xl font-semibold mb-4">Certifications</h4>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <h5 class="font-semibold mb-2">NELMA Certified</h5>
+                        <p class="text-sm text-gray-600">Northeastern Lumber Manufacturers Association certified manufacturing processes.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <h5 class="font-semibold mb-2">ISPM 15 Compliant</h5>
+                        <p class="text-sm text-gray-600">International shipping standards for wood packaging materials.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div class="col-md-9">
-            <div class="row product-gallery">
+        <div class="md:col-span-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {% for product in products %}
-                <div class="col-md-4 mb-4">
-                    <div class="card product-card">
-                        <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">{{ product.description }}</p>
-                            <p class="card-text"><strong>${{ "%.2f"|format(product.price) }}</strong></p>
-                            <a href="/contact?product_id={{ product.id }}" class="btn btn-wood">Request Quote</a>
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                    <img src="{{ product.image_url }}" class="w-full h-64 object-cover" alt="{{ product.name }}">
+                    <div class="p-6">
+                        <h5 class="text-xl font-semibold mb-2">{{ product.name }}</h5>
+                        <p class="text-gray-600 mb-4">{{ product.description }}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-wood-brown font-bold">Custom Quote</span>
+                            <a href="/contact?product={{ product.id }}" class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Request Quote</a>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Image Modal -->
-<div class="modal fade" id="imageModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-body">
-                <img id="modalImage" src="" class="img-fluid">
             </div>
         </div>
     </div>
