@@ -32,7 +32,13 @@ class GalleryProject(db.Model):
     description = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
     completion_date = db.Column(db.Date, nullable=False)
+    completion_time = db.Column(db.Integer)  # In days
     client = db.Column(db.String(100))
     category = db.Column(db.String(50), nullable=False)
+    industry_served = db.Column(db.String(50))
+    size_category = db.Column(db.String(50))  # Small, Medium, Large, Oversize
+    weight_capacity = db.Column(db.String(50))  # Weight capacity specification
+    ispm_compliant = db.Column(db.Boolean, default=False)  # International shipping compliance
+    special_features = db.Column(db.Text)  # JSON string of special features
     is_featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

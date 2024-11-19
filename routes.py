@@ -2,6 +2,7 @@ from flask import render_template, request, flash, redirect, url_for
 from app import app, db
 from models import Product, Inquiry, Testimonial, GalleryProject
 from datetime import date
+import json
 
 @app.route('/')
 def index():
@@ -22,12 +23,32 @@ def products():
 @app.route('/gallery')
 def gallery():
     category = request.args.get('category')
+    industry = request.args.get('industry')
+    size = request.args.get('size')
+    
+    query = GalleryProject.query
+    
     if category:
-        projects = GalleryProject.query.filter_by(category=category).order_by(GalleryProject.completion_date.desc()).all()
-    else:
-        projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
+        query = query.filter_by(category=category)
+    if industry:
+        query = query.filter_by(industry_served=industry)
+    if size:
+        query = query.filter_by(size_category=size)
+        
+    projects = query.order_by(GalleryProject.completion_date.desc()).all()
+    
     categories = db.session.query(GalleryProject.category).distinct()
-    return render_template('gallery.html', projects=projects, categories=categories, selected_category=category)
+    industries = db.session.query(GalleryProject.industry_served).distinct()
+    sizes = db.session.query(GalleryProject.size_category).distinct()
+    
+    return render_template('gallery.html', 
+                         projects=projects,
+                         categories=categories,
+                         industries=industries,
+                         sizes=sizes,
+                         selected_category=category,
+                         selected_industry=industry,
+                         selected_size=size)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -62,6 +83,13 @@ def manage_testimonials():
     
     testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
     return render_template('admin/testimonials.html', testimonials=testimonials)
+
+@app.template_filter('parse_json')
+def parse_json_filter(value):
+    try:
+        return json.loads(value)
+    except:
+        return {}
 
 @app.context_processor
 def utility_processor():

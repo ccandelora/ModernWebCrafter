@@ -3,6 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from datetime import date
+import json
 
 class Base(DeclarativeBase):
     pass
@@ -91,51 +92,94 @@ with app.app_context():
         for testimonial in sample_testimonials:
             db.session.add(testimonial)
 
-    # Add sample gallery projects if none exist
+    # Clear and add updated gallery projects
     from models import GalleryProject
-    if not GalleryProject.query.first():
-        sample_projects = [
-            GalleryProject(
-                title="Custom Export Crate Solution",
-                description="ISPM 15 certified export crates designed for sensitive medical equipment shipping to Europe. Features custom foam cushioning and moisture barriers.",
-                image_url="/static/images/workshop.svg",
-                completion_date=date(2024, 1, 15),
-                client="MedTech Solutions",
-                category="ISPM 15 Certified Export Crates",
-                is_featured=True
-            ),
-            GalleryProject(
-                title="Heavy Machinery Skids",
-                description="Cushioned skids with integrated ramp system for 20-ton industrial equipment. Custom-engineered for repeated use and easy forklift access.",
-                image_url="/static/images/workshop.svg",
-                completion_date=date(2024, 2, 20),
-                client="Industrial Dynamics",
-                category="Cushion Skids with Ramp",
-                is_featured=True
-            ),
-            GalleryProject(
-                title="Oversized Crating Solution",
-                description="Custom oversized crates for wind turbine components with specialized bracing and moisture control systems.",
-                image_url="/static/images/workshop.svg",
-                completion_date=date(2024, 3, 10),
-                client="Green Energy Corp",
-                category="Oversize Crates",
-                is_featured=True
-            ),
-            GalleryProject(
-                title="Reusable Shipping System",
-                description="Developed a reusable crating system with Skidmates for regular international shipments, reducing packaging waste by 85%.",
-                image_url="/static/images/workshop.svg",
-                completion_date=date(2024, 4, 5),
-                client="Global Electronics Ltd",
-                category="Export with Skidmates",
-                is_featured=True
-            )
-        ]
-        for project in sample_projects:
-            db.session.add(project)
+    GalleryProject.query.delete()
+    
+    sample_projects = [
+        GalleryProject(
+            title="Medical Equipment Export Package",
+            description="ISPM 15 certified export crates designed for sensitive medical equipment shipping to Europe. Features custom foam cushioning and moisture barriers.",
+            image_url="/static/images/workshop.svg",
+            completion_date=date(2024, 1, 15),
+            completion_time=14,
+            client="MedTech Solutions",
+            category="ISPM 15 Certified Export Crates",
+            industry_served="Medical Equipment",
+            size_category="Large",
+            weight_capacity="Up to 2,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "moisture_control": "Vapor barrier system",
+                "cushioning": "Custom foam inserts",
+                "monitoring": "Shock indicators installed"
+            }),
+            is_featured=True
+        ),
+        GalleryProject(
+            title="Industrial Press Shipping Solution",
+            description="Cushioned skids with integrated ramp system for 20-ton industrial equipment. Custom-engineered for repeated use and easy forklift access.",
+            image_url="/static/images/workshop.svg",
+            completion_date=date(2024, 2, 20),
+            completion_time=21,
+            client="Industrial Dynamics",
+            category="Cushion Skids with Ramp",
+            industry_served="Manufacturing",
+            size_category="Oversize",
+            weight_capacity="Up to 20,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "ramp_system": "Integrated hydraulic ramp",
+                "cushioning": "Heavy-duty shock absorption",
+                "reusability": "Designed for 10+ uses"
+            }),
+            is_featured=True
+        ),
+        GalleryProject(
+            title="Wind Turbine Component Package",
+            description="Custom oversized crates for wind turbine components with specialized bracing and moisture control systems.",
+            image_url="/static/images/workshop.svg",
+            completion_date=date(2024, 3, 10),
+            completion_time=30,
+            client="Green Energy Corp",
+            category="Specialty/Oversize Solutions",
+            industry_served="Renewable Energy",
+            size_category="Oversize",
+            weight_capacity="Up to 15,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "bracing": "Custom steel reinforcement",
+                "moisture_control": "Active dehumidification",
+                "monitoring": "GPS tracking system"
+            }),
+            is_featured=True
+        ),
+        GalleryProject(
+            title="Electronics Reusable Export System",
+            description="Developed a reusable crating system with Skidmates for regular international shipments, reducing packaging waste by 85%.",
+            image_url="/static/images/workshop.svg",
+            completion_date=date(2024, 4, 5),
+            completion_time=25,
+            client="Global Electronics Ltd",
+            category="Export with Skidmates",
+            industry_served="Electronics",
+            size_category="Medium",
+            weight_capacity="Up to 5,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "reusability": "100+ use cycle",
+                "cushioning": "Modular foam system",
+                "security": "Tamper-evident seals"
+            }),
+            is_featured=True
+        )
+    ]
 
-    # Add the new sample products
+    # Add the sample projects
+    for project in sample_projects:
+        db.session.add(project)
+
+    # Add the sample products
     for product in sample_products:
         db.session.add(product)
         
