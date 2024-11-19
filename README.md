@@ -55,6 +55,196 @@ npx tailwindcss -i ./static/css/src/input.css -o ./static/css/tailwind.css
 FLASK_SECRET_KEY=your_secret_key
 ```
 
+## Local Development Setup
+
+### Database Setup
+
+1. SQLite Database Initialization:
+```bash
+# The database will be automatically created in instance/woodproducts.db
+# Ensure the instance directory exists
+mkdir instance
+```
+
+2. Schema Creation:
+```bash
+# Start Python shell
+python
+>>> from app import app, db
+>>> with app.app_context():
+...     db.create_all()
+```
+
+3. Sample Data Population:
+```bash
+# The sample data will be automatically populated when running the application
+# This includes:
+# - Product catalog entries
+# - Sample testimonials
+# - Gallery projects
+# You can modify the sample data in app.py
+```
+
+### Local Server Configuration
+
+1. Environment Variables Setup:
+```bash
+# Create a .env file in the project root
+FLASK_APP=main.py
+FLASK_ENV=development
+FLASK_SECRET_KEY=your_secret_key
+FLASK_DEBUG=1
+
+# Optional environment variables
+DATABASE_URL=sqlite:///instance/woodproducts.db
+PORT=5000
+```
+
+2. Port Configuration:
+- Default port is 5000
+- Can be modified in main.py or through environment variables
+- To use a different port:
+```python
+# In main.py
+app.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+```
+
+3. Debug Mode Settings:
+```bash
+# Enable debug mode for development
+export FLASK_DEBUG=1
+
+# Or in Python code (main.py)
+app.config['DEBUG'] = True
+```
+
+### Running the Application
+
+1. Database Initialization:
+```bash
+# The database will be automatically initialized when starting the application
+# You can manually initialize it using:
+python
+>>> from app import app, db
+>>> with app.app_context():
+...     db.create_all()
+```
+
+2. Tailwind CSS Compilation:
+```bash
+# One-time build
+npx tailwindcss -i ./static/css/src/input.css -o ./static/css/tailwind.css
+
+# Watch mode for development
+npx tailwindcss -i ./static/css/src/input.css -o ./static/css/tailwind.css --watch
+```
+
+3. Flask Server Startup:
+```bash
+# Start the Flask development server
+python main.py
+```
+
+4. Accessing the Local Site:
+- Open your browser and navigate to: http://localhost:5000
+- The site will be available at http://0.0.0.0:5000 for external access
+
+### Troubleshooting
+
+#### Database Connection Issues
+
+1. Database File Permission Problems:
+```bash
+# Check instance directory permissions
+chmod 755 instance
+chmod 644 instance/woodproducts.db
+```
+
+2. SQLite Database Lock Errors:
+- Ensure only one application instance is running
+- Check for hanging database connections
+- Verify write permissions in the instance directory
+
+3. Schema Mismatch:
+```bash
+# Reset the database
+rm instance/woodproducts.db
+python
+>>> from app import app, db
+>>> with app.app_context():
+...     db.create_all()
+```
+
+#### CSS Compilation Problems
+
+1. Tailwind Build Failures:
+```bash
+# Clear the CSS cache
+rm static/css/tailwind.css
+
+# Reinstall node modules
+rm -rf node_modules
+npm install
+
+# Rebuild Tailwind CSS
+npx tailwindcss -i ./static/css/src/input.css -o ./static/css/tailwind.css
+```
+
+2. Missing CSS Dependencies:
+```bash
+# Verify package.json configuration
+npm install tailwindcss postcss autoprefixer
+
+# Update Tailwind configuration
+npx tailwindcss init -p
+```
+
+#### Port Conflicts
+
+1. Address Already in Use:
+```bash
+# Find process using port 5000
+lsof -i :5000
+
+# Kill the process
+kill -9 <PID>
+
+# Or use a different port
+export PORT=5001
+```
+
+2. Permission Issues:
+- Use ports > 1024 for development
+- Run the application without sudo
+- Configure proper user permissions
+
+#### Dependencies Issues
+
+1. Python Package Conflicts:
+```bash
+# Clear Python cache
+find . -type d -name "__pycache__" -exec rm -r {} +
+
+# Reinstall dependencies
+pip uninstall -r requirements.txt -y
+pip install -r requirements.txt
+```
+
+2. Node.js Version Conflicts:
+```bash
+# Use recommended Node.js version
+nvm install 16
+nvm use 16
+
+# Clear npm cache
+npm cache clean --force
+```
+
+3. Missing System Dependencies:
+- Verify Python version compatibility
+- Check Node.js and npm versions
+- Install required system packages
+
 ## Project Structure
 
 ```
