@@ -1,59 +1,136 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Contact Us</h2>
-            <p>Have questions about our products? Fill out the form below and we'll get back to you as soon as possible.</p>
+<div class="container mx-auto px-4 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Contact Form Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">Contact Us</h2>
+            <p class="text-gray-600 mb-6">Get in touch with our industrial packaging experts for custom solutions that meet your specific requirements.</p>
             
             <form class="contact-form needs-validation" method="POST" novalidate>
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="invalid-feedback">
-                        Please provide your name.
-                    </div>
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-medium text-gray-600">Name</label>
+                    <input type="text" class="mt-1 w-full rounded-md border-gray-300" id="name" name="name" required>
                 </div>
                 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                    <div class="invalid-feedback">
-                        Please provide a valid email address.
-                    </div>
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                    <input type="email" class="mt-1 w-full rounded-md border-gray-300" id="email" name="email" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="company" class="block text-sm font-medium text-gray-600">Company Name</label>
+                    <input type="text" class="mt-1 w-full rounded-md border-gray-300" id="company" name="company">
+                </div>
+
+                <div class="mb-4">
+                    <label for="industry" class="block text-sm font-medium text-gray-600">Industry</label>
+                    <select class="mt-1 w-full rounded-md border-gray-300" id="industry" name="industry">
+                        <option value="">Select Industry</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="medical">Medical Equipment</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="aerospace">Aerospace</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label for="package_type" class="block text-sm font-medium text-gray-600">Packaging Type Interested In</label>
+                    <select class="mt-1 w-full rounded-md border-gray-300" id="package_type" name="package_type">
+                        <option value="">Select Package Type</option>
+                        <option value="export_crate">ISPM 15 Export Crates</option>
+                        <option value="cushioned_crate">Cushioned Crates</option>
+                        <option value="skidmate">Export Skidmates</option>
+                        <option value="cushion_skid">Cushion Skids with Ramp</option>
+                        <option value="oversize">Oversize Crates</option>
+                        <option value="custom">Custom Solution</option>
+                    </select>
                 </div>
 
                 {% if request.args.get('product_id') %}
                 <input type="hidden" name="product_id" value="{{ request.args.get('product_id') }}">
                 {% endif %}
                 
-                <div class="mb-3">
-                    <label for="message" class="form-label">Message</label>
-                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                    <div class="invalid-feedback">
-                        Please provide a message.
-                    </div>
+                <div class="mb-4">
+                    <label for="message" class="block text-sm font-medium text-gray-600">Message</label>
+                    <textarea class="mt-1 w-full rounded-md border-gray-300" id="message" name="message" rows="4" required></textarea>
                 </div>
                 
-                <button type="submit" class="btn btn-wood">Send Message</button>
+                <button type="submit" class="w-full btn-wood py-2 px-4 rounded-md">Send Message</button>
             </form>
         </div>
         
-        <div class="col-md-6">
-            <h2>Our Location</h2>
-            <div class="ratio ratio-4x3">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d..." 
-                        allowfullscreen="" loading="lazy"></iframe>
+        <!-- Company Information Section -->
+        <div class="space-y-8">
+            <!-- About Us -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Why Choose Us?</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <i class="fas fa-certificate text-wood-brown mt-1 mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold">NELMA Certified Manufacturing</h3>
+                            <p class="text-gray-600">Our processes meet the highest industry standards for wood packaging.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-globe text-wood-brown mt-1 mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold">ISPM 15 Compliance</h3>
+                            <p class="text-gray-600">Certified for international shipping standards, ensuring smooth customs clearance.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-tools text-wood-brown mt-1 mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold">Custom Engineering</h3>
+                            <p class="text-gray-600">Tailored solutions for your specific packaging requirements.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i class="fas fa-history text-wood-brown mt-1 mr-3"></i>
+                        <div>
+                            <h3 class="font-semibold">40+ Years Experience</h3>
+                            <p class="text-gray-600">Decades of expertise in industrial packaging solutions.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="mt-4">
-                <h4>Business Hours</h4>
-                <ul class="list-unstyled">
-                    <li>Monday - Friday: 9:00 AM - 6:00 PM</li>
-                    <li>Saturday: 10:00 AM - 4:00 PM</li>
-                    <li>Sunday: Closed</li>
-                </ul>
+
+            <!-- Location and Hours -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-2xl font-bold mb-4">Visit Our Facility</h2>
+                <div class="mb-6">
+                    <h3 class="font-semibold mb-2">Manufacturing Facility & Office</h3>
+                    <p class="text-gray-600">
+                        123 Industrial Way<br>
+                        Lawrence, Massachusetts 01843<br>
+                        Phone: (978) 687-7449<br>
+                        Email: info@woodproductsunlimited.com
+                    </p>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="font-semibold mb-2">Business Hours</h3>
+                    <ul class="text-gray-600 space-y-1">
+                        <li>Monday - Friday: 7:00 AM - 5:00 PM</li>
+                        <li>Saturday: By Appointment</li>
+                        <li>Sunday: Closed</li>
+                    </ul>
+                </div>
+
+                <div class="ratio ratio-4x3">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2946.234662920539!2d-71.1234567!3d42.4567890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDI3JzI0LjQiTiA3McKwMDcnMjQuNCJX!5e0!3m2!1sen!2sus!4v1234567890!5m2!1sen!2sus"
+                        class="w-full rounded-lg"
+                        style="border:0; min-height:300px;"
+                        allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
             </div>
         </div>
     </div>

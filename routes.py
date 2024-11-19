@@ -112,9 +112,13 @@ def gallery():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
+        # Create new inquiry with additional fields
         inquiry = Inquiry(
             name=request.form['name'],
             email=request.form['email'],
+            company=request.form.get('company', ''),
+            industry=request.form.get('industry', ''),
+            package_type=request.form.get('package_type', ''),
             message=request.form['message']
         )
         if 'product_id' in request.form:
@@ -122,7 +126,7 @@ def contact():
         
         db.session.add(inquiry)
         db.session.commit()
-        flash('Your inquiry has been sent successfully!', 'success')
+        flash('Thank you for your inquiry! Our team will contact you within 1 business day.', 'success')
         return redirect(url_for('contact'))
     return render_template('contact.html')
 
