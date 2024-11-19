@@ -10,6 +10,10 @@ def index():
     testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
     return render_template('index.html', products=featured_products, testimonials=testimonials)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/products')
 def products():
     category = request.args.get('category')

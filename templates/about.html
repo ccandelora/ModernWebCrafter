@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="relative bg-wood-dark text-white py-16">
+    <div class="absolute inset-0 bg-opacity-80" style="background-image: url('/static/images/wood-texture.svg'); background-size: cover;"></div>
+    <div class="container mx-auto px-4 relative z-10">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-center">About Wood Products Unlimited</h1>
+        <p class="text-xl text-center">Four Decades of Excellence in Industrial Wood Packaging</p>
+    </div>
+</div>
+
+<div class="container mx-auto px-4 py-16">
+    <!-- Company History -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-8">Our Story</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+                <p class="text-gray-600 mb-4">Founded in 1984, Wood Products Unlimited has been at the forefront of industrial packaging solutions for over four decades. What started as a small wood crating operation has grown into a leading manufacturer of custom industrial packaging solutions, serving clients across the globe.</p>
+                <p class="text-gray-600">Our journey has been marked by continuous innovation, unwavering commitment to quality, and dedication to meeting the evolving needs of our clients in various industries.</p>
+            </div>
+            <div class="relative">
+                <img src="/static/images/workshop.svg" alt="Our Workshop" class="rounded-lg shadow-lg">
+            </div>
+        </div>
+    </div>
+
+    <!-- Mission and Values -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-8">Mission & Values</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-wood-brown mb-4">
+                    <i class="fas fa-bullseye text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Our Mission</h3>
+                <p class="text-gray-600">To provide innovative, reliable, and sustainable wood packaging solutions that protect our clients' valuable products throughout their journey.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-wood-brown mb-4">
+                    <i class="fas fa-eye text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Our Vision</h3>
+                <p class="text-gray-600">To be the global leader in sustainable industrial packaging solutions, setting industry standards for quality and innovation.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <div class="text-wood-brown mb-4">
+                    <i class="fas fa-heart text-3xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Core Values</h3>
+                <p class="text-gray-600">Quality, Innovation, Sustainability, Customer Focus, and Excellence in everything we do.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Expertise & Certifications -->
+    <div class="mb-16">
+        <h2 class="text-3xl font-bold mb-8">Our Expertise</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="space-y-6">
+                <div class="flex items-start">
+                    <div class="bg-wood-brown rounded-full p-2 mr-4">
+                        <i class="fas fa-certificate text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">NELMA Certified Manufacturing</h3>
+                        <p class="text-gray-600">Our manufacturing processes meet the highest standards set by the Northeastern Lumber Manufacturers Association, ensuring consistent quality in every product.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="bg-wood-brown rounded-full p-2 mr-4">
+                        <i class="fas fa-globe text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">ISPM 15 Compliance</h3>
+                        <p class="text-gray-600">All our export packaging solutions comply with international shipping standards, facilitating smooth global trade operations.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <div class="flex items-start">
+                    <div class="bg-wood-brown rounded-full p-2 mr-4">
+                        <i class="fas fa-tools text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Custom Engineering</h3>
+                        <p class="text-gray-600">Our team of experts designs and engineers packaging solutions tailored to your specific requirements, ensuring maximum protection for your products.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="bg-wood-brown rounded-full p-2 mr-4">
+                        <i class="fas fa-recycle text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-2">Sustainable Practices</h3>
+                        <p class="text-gray-600">We are committed to environmental responsibility, using sustainable materials and implementing eco-friendly practices throughout our operations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Team -->
+    <div>
+        <h2 class="text-3xl font-bold mb-8">Our Leadership Team</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img src="/static/images/avatar-placeholder.svg" alt="Team Member" class="w-32 h-32 mx-auto mb-4 rounded-full">
+                <h3 class="text-xl font-semibold mb-2">John Smith</h3>
+                <p class="text-wood-brown font-medium mb-2">CEO & Founder</p>
+                <p class="text-gray-600">30+ years of experience in industrial packaging solutions.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img src="/static/images/avatar-placeholder.svg" alt="Team Member" class="w-32 h-32 mx-auto mb-4 rounded-full">
+                <h3 class="text-xl font-semibold mb-2">Sarah Johnson</h3>
+                <p class="text-wood-brown font-medium mb-2">Operations Director</p>
+                <p class="text-gray-600">25+ years of manufacturing and operations expertise.</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
+                <img src="/static/images/avatar-placeholder.svg" alt="Team Member" class="w-32 h-32 mx-auto mb-4 rounded-full">
+                <h3 class="text-xl font-semibold mb-2">Michael Brown</h3>
+                <p class="text-wood-brown font-medium mb-2">Engineering Manager</p>
+                <p class="text-gray-600">20+ years of custom packaging design experience.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
