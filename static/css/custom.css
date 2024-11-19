@@ -65,13 +65,12 @@ body {
 }
 
 .product-gallery img {
-    w-full;
-    h-48;
-    object-cover;
+    object-fit: cover;
+    height: 12rem;
+    width: 100%;
 }
 
 .contact-form {
-    bg-wood-accent;
-    p-6;
-    rounded-md;
+    padding: 1.5rem;
+    border-radius: 0.375rem;
 }
