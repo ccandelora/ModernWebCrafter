@@ -22,6 +22,49 @@ with app.app_context():
     import routes
     db.create_all()
     
+    # Clear existing products
+    from models import Product
+    Product.query.delete()
+    
+    # Add sample products
+    sample_products = [
+        Product(
+            name="ISPM 15 Certified Export Crates",
+            description="International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
+            category="Export Crates",
+            image_url="/static/images/workshop.svg",
+            price=0.0  # Quote based
+        ),
+        Product(
+            name="Cushioned Crates",
+            description="Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
+            category="Protective Packaging",
+            image_url="/static/images/workshop.svg",
+            price=0.0
+        ),
+        Product(
+            name="Export Skidmates",
+            description="Specialized skid systems designed for international shipping with integrated protection.",
+            category="Export Solutions",
+            image_url="/static/images/workshop.svg",
+            price=0.0
+        ),
+        Product(
+            name="Cushion Skids with Ramp",
+            description="Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
+            category="Industrial Skids",
+            image_url="/static/images/workshop.svg",
+            price=0.0
+        ),
+        Product(
+            name="Oversize Crates",
+            description="Custom-built oversized crating solutions for large industrial equipment and machinery.",
+            category="Specialty Solutions",
+            image_url="/static/images/workshop.svg",
+            price=0.0
+        )
+    ]
+    
     # Add sample testimonials if none exist
     from models import Testimonial
     if not Testimonial.query.first():
@@ -47,7 +90,6 @@ with app.app_context():
         ]
         for testimonial in sample_testimonials:
             db.session.add(testimonial)
-        db.session.commit()
 
     # Add sample gallery projects if none exist
     from models import GalleryProject
@@ -92,4 +134,9 @@ with app.app_context():
         ]
         for project in sample_projects:
             db.session.add(project)
-        db.session.commit()
+
+    # Add the new sample products
+    for product in sample_products:
+        db.session.add(product)
+        
+    db.session.commit()
