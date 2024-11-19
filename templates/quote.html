@@ -9,21 +9,21 @@
         <div class="mb-8">
             <div class="flex justify-between">
                 <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto bg-wood-brown text-white rounded-full flex items-center justify-center mb-2">1</div>
+                    <div id="step1-indicator" class="w-8 h-8 mx-auto bg-wood-brown text-white rounded-full flex items-center justify-center mb-2">1</div>
                     <span class="text-sm font-medium">Package Details</span>
                 </div>
                 <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2">2</div>
+                    <div id="step2-indicator" class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2">2</div>
                     <span class="text-sm font-medium">Specifications</span>
                 </div>
                 <div class="w-1/3 text-center">
-                    <div class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2">3</div>
+                    <div id="step3-indicator" class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2">3</div>
                     <span class="text-sm font-medium">Requirements</span>
                 </div>
             </div>
             <div class="relative mt-2">
                 <div class="absolute top-1/2 transform -translate-y-1/2 h-1 bg-wood-accent w-full"></div>
-                <div class="absolute top-1/2 transform -translate-y-1/2 h-1 bg-wood-brown" style="width: 33%"></div>
+                <div id="progress-bar" class="absolute top-1/2 transform -translate-y-1/2 h-1 bg-wood-brown transition-all duration-300" style="width: 33%"></div>
             </div>
         </div>
         
@@ -51,155 +51,176 @@
             </div>
 
             <form id="quoteForm" class="space-y-6" method="POST">
-                <!-- Package Type -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-2">
-                        Package Type
-                        <span class="text-wood-brown ml-1" title="Choose the type of packaging that best suits your needs">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </label>
-                    <select name="package_type" class="w-full rounded-md border-gray-300" required
-                            data-helper="Select the most appropriate package type for your shipping needs">
-                        <option value="">Select Package Type</option>
-                        <option value="export_crate" data-description="Heat-treated and certified for international shipping">ISPM 15 Export Crate</option>
-                        <option value="cushioned_crate" data-description="Added protection for sensitive equipment">Cushioned Crate</option>
-                        <option value="skidmate" data-description="Specialized skid system for export">Export Skidmate</option>
-                        <option value="cushion_skid" data-description="Includes built-in ramp system">Cushion Skid with Ramp</option>
-                        <option value="oversize" data-description="For large industrial equipment">Oversize Crate</option>
-                    </select>
-                    <p class="mt-1 text-sm text-gray-500 package-description"></p>
-                </div>
-
-                <!-- Dimensions -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-2">
-                        Dimensions
-                        <span class="text-wood-brown ml-1" title="Enter the exact measurements of your item">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </label>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Step 1: Package Details -->
+                <div id="step1" class="quote-step">
+                    <div class="space-y-6">
+                        <!-- Package Type -->
                         <div>
-                            <label class="block text-sm text-gray-500 mb-1">Length (inches)</label>
-                            <div class="relative">
-                                <input type="number" name="length" min="1" step="0.1" 
-                                       class="w-full rounded-md border-gray-300" required
-                                       placeholder="e.g., 48">
-                                <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
-                            </div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                Package Type
+                                <span class="text-wood-brown ml-1" title="Choose the type of packaging that best suits your needs">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </label>
+                            <select name="package_type" class="w-full rounded-md border-gray-300" required
+                                    data-helper="Select the most appropriate package type for your shipping needs">
+                                <option value="">Select Package Type</option>
+                                <option value="export_crate" data-description="Heat-treated and certified for international shipping">ISPM 15 Export Crate</option>
+                                <option value="cushioned_crate" data-description="Added protection for sensitive equipment">Cushioned Crate</option>
+                                <option value="skidmate" data-description="Specialized skid system for export">Export Skidmate</option>
+                                <option value="cushion_skid" data-description="Includes built-in ramp system">Cushion Skid with Ramp</option>
+                                <option value="oversize" data-description="For large industrial equipment">Oversize Crate</option>
+                            </select>
+                            <p class="mt-1 text-sm text-gray-500 package-description"></p>
                         </div>
-                        <div>
-                            <label class="block text-sm text-gray-500 mb-1">Width (inches)</label>
-                            <div class="relative">
-                                <input type="number" name="width" min="1" step="0.1" 
-                                       class="w-full rounded-md border-gray-300" required
-                                       placeholder="e.g., 24">
-                                <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-500 mb-1">Height (inches)</label>
-                            <div class="relative">
-                                <input type="number" name="height" min="1" step="0.1" 
-                                       class="w-full rounded-md border-gray-300" required
-                                       placeholder="e.g., 36">
-                                <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
-                            </div>
-                        </div>
-                    </div>
-                    <p class="mt-1 text-sm text-gray-500">Standard crates range from 12" to 144" per dimension</p>
-                </div>
 
-                <!-- Weight -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-2">
-                        Approximate Weight
-                        <span class="text-wood-brown ml-1" title="Enter the total weight including contents">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </label>
-                    <div class="relative">
-                        <input type="number" name="weight" min="1" class="w-full rounded-md border-gray-300" required
-                               placeholder="e.g., 1000">
-                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">lbs</div>
-                    </div>
-                    <p class="mt-1 text-sm text-gray-500">Standard weight limit is 50,000 lbs</p>
-                </div>
-
-                <!-- Special Requirements -->
-                <div class="space-y-4">
-                    <label class="block text-sm font-medium text-gray-600">
-                        Special Requirements
-                        <span class="text-wood-brown ml-1" title="Select any additional protection needed">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </label>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
-                            <label class="flex items-start cursor-pointer">
-                                <input type="checkbox" name="requirements[]" value="moisture_barrier" 
-                                       class="rounded border-gray-300 text-wood-brown mt-1">
-                                <div class="ml-2">
-                                    <span class="font-medium">Moisture Barrier</span>
-                                    <p class="text-sm text-gray-500">Protection against humidity and water damage</p>
-                                </div>
+                        <!-- Dimensions -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                Dimensions
+                                <span class="text-wood-brown ml-1" title="Enter the exact measurements of your item">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
                             </label>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
-                            <label class="flex items-start cursor-pointer">
-                                <input type="checkbox" name="requirements[]" value="shock_absorption" 
-                                       class="rounded border-gray-300 text-wood-brown mt-1">
-                                <div class="ml-2">
-                                    <span class="font-medium">Shock Absorption</span>
-                                    <p class="text-sm text-gray-500">Added protection against impacts and vibrations</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm text-gray-500 mb-1">Length (inches)</label>
+                                    <div class="relative">
+                                        <input type="number" name="length" min="1" step="0.1" 
+                                               class="w-full rounded-md border-gray-300" required
+                                               placeholder="e.g., 48">
+                                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
+                                    </div>
                                 </div>
-                            </label>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
-                            <label class="flex items-start cursor-pointer">
-                                <input type="checkbox" name="requirements[]" value="custom_foam" 
-                                       class="rounded border-gray-300 text-wood-brown mt-1">
-                                <div class="ml-2">
-                                    <span class="font-medium">Custom Foam Inserts</span>
-                                    <p class="text-sm text-gray-500">Custom-cut foam for precise fit and protection</p>
+                                <div>
+                                    <label class="block text-sm text-gray-500 mb-1">Width (inches)</label>
+                                    <div class="relative">
+                                        <input type="number" name="width" min="1" step="0.1" 
+                                               class="w-full rounded-md border-gray-300" required
+                                               placeholder="e.g., 24">
+                                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
+                                    </div>
                                 </div>
-                            </label>
-                        </div>
-                        <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
-                            <label class="flex items-start cursor-pointer">
-                                <input type="checkbox" name="requirements[]" value="ramp_system" 
-                                       class="rounded border-gray-300 text-wood-brown mt-1">
-                                <div class="ml-2">
-                                    <span class="font-medium">Ramp System</span>
-                                    <p class="text-sm text-gray-500">Built-in ramp for easy loading/unloading</p>
+                                <div>
+                                    <label class="block text-sm text-gray-500 mb-1">Height (inches)</label>
+                                    <div class="relative">
+                                        <input type="number" name="height" min="1" step="0.1" 
+                                               class="w-full rounded-md border-gray-300" required
+                                               placeholder="e.g., 36">
+                                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">in</div>
+                                    </div>
                                 </div>
-                            </label>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Standard crates range from 12" to 144" per dimension</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Shipping Details -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-600 mb-2">
-                        Shipping Destination
-                        <span class="text-wood-brown ml-1" title="Select your shipping destination type">
-                            <i class="fas fa-question-circle"></i>
-                        </span>
-                    </label>
-                    <select name="shipping_type" class="w-full rounded-md border-gray-300" required>
-                        <option value="domestic">Domestic (United States)</option>
-                        <option value="international">International (ISPM 15 Certified)</option>
-                    </select>
-                    <p class="mt-1 text-sm text-gray-500">International shipping requires ISPM 15 certification</p>
+                <!-- Step 2: Specifications -->
+                <div id="step2" class="quote-step hidden">
+                    <!-- Weight -->
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                Approximate Weight
+                                <span class="text-wood-brown ml-1" title="Enter the total weight including contents">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </label>
+                            <div class="relative">
+                                <input type="number" name="weight" min="1" class="w-full rounded-md border-gray-300" required
+                                       placeholder="e.g., 1000">
+                                <div class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">lbs</div>
+                            </div>
+                            <p class="mt-1 text-sm text-gray-500">Standard weight limit is 50,000 lbs</p>
+                        </div>
+                    </div>
                 </div>
 
-                <button type="submit" id="calculateButton" class="w-full btn-wood py-3 px-4 rounded-md flex items-center justify-center">
-                    <span class="loading-spinner hidden mr-2">
-                        <i class="fas fa-spinner fa-spin"></i>
-                    </span>
-                    Calculate Quote
-                </button>
+                <!-- Step 3: Requirements -->
+                <div id="step3" class="quote-step hidden">
+                    <div class="space-y-6">
+                        <!-- Special Requirements -->
+                        <div class="space-y-4">
+                            <label class="block text-sm font-medium text-gray-600">
+                                Special Requirements
+                                <span class="text-wood-brown ml-1" title="Select any additional protection needed">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="checkbox" name="requirements[]" value="moisture_barrier" 
+                                               class="rounded border-gray-300 text-wood-brown mt-1">
+                                        <div class="ml-2">
+                                            <span class="font-medium">Moisture Barrier</span>
+                                            <p class="text-sm text-gray-500">Protection against humidity and water damage</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="checkbox" name="requirements[]" value="shock_absorption" 
+                                               class="rounded border-gray-300 text-wood-brown mt-1">
+                                        <div class="ml-2">
+                                            <span class="font-medium">Shock Absorption</span>
+                                            <p class="text-sm text-gray-500">Added protection against impacts and vibrations</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="checkbox" name="requirements[]" value="custom_foam" 
+                                               class="rounded border-gray-300 text-wood-brown mt-1">
+                                        <div class="ml-2">
+                                            <span class="font-medium">Custom Foam Inserts</span>
+                                            <p class="text-sm text-gray-500">Custom-cut foam for precise fit and protection</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors">
+                                    <label class="flex items-start cursor-pointer">
+                                        <input type="checkbox" name="requirements[]" value="ramp_system" 
+                                               class="rounded border-gray-300 text-wood-brown mt-1">
+                                        <div class="ml-2">
+                                            <span class="font-medium">Ramp System</span>
+                                            <p class="text-sm text-gray-500">Built-in ramp for easy loading/unloading</p>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Details -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                                Shipping Destination
+                                <span class="text-wood-brown ml-1" title="Select your shipping destination type">
+                                    <i class="fas fa-question-circle"></i>
+                                </span>
+                            </label>
+                            <select name="shipping_type" class="w-full rounded-md border-gray-300" required>
+                                <option value="domestic">Domestic (United States)</option>
+                                <option value="international">International (ISPM 15 Certified)</option>
+                            </select>
+                            <p class="mt-1 text-sm text-gray-500">International shipping requires ISPM 15 certification</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between mt-8">
+                    <button type="button" id="prevBtn" class="btn-wood py-2 px-6 rounded-md opacity-50 cursor-not-allowed hidden">
+                        Previous
+                    </button>
+                    <button type="button" id="nextBtn" class="btn-wood py-2 px-6 rounded-md">
+                        Next
+                    </button>
+                    <button type="submit" id="submitBtn" class="btn-wood py-2 px-6 rounded-md hidden">
+                        Calculate Quote
+                    </button>
+                </div>
             </form>
 
             <!-- Quote Result -->
@@ -236,87 +257,133 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('quoteForm');
+    const steps = document.querySelectorAll('.quote-step');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressBar = document.getElementById('progress-bar');
+    let currentStep = 1;
+
+    // Update step visibility and buttons
+    function showStep(stepNumber) {
+        steps.forEach((step, index) => {
+            step.classList.toggle('hidden', index + 1 !== stepNumber);
+        });
+
+        // Update progress bar and indicators
+        progressBar.style.width = `${(stepNumber - 1) * 50}%`;
+        
+        // Update step indicators
+        for (let i = 1; i <= 3; i++) {
+            const indicator = document.getElementById(`step${i}-indicator`);
+            if (i < stepNumber) {
+                indicator.classList.remove('bg-wood-accent', 'text-wood-dark');
+                indicator.classList.add('bg-wood-brown', 'text-white');
+            } else if (i === stepNumber) {
+                indicator.classList.remove('bg-wood-accent', 'text-wood-dark');
+                indicator.classList.add('bg-wood-brown', 'text-white');
+            } else {
+                indicator.classList.remove('bg-wood-brown', 'text-white');
+                indicator.classList.add('bg-wood-accent', 'text-wood-dark');
+            }
+        }
+
+        // Update navigation buttons
+        prevBtn.classList.toggle('hidden', stepNumber === 1);
+        prevBtn.classList.toggle('opacity-50', stepNumber === 1);
+        prevBtn.classList.toggle('cursor-not-allowed', stepNumber === 1);
+        
+        nextBtn.classList.toggle('hidden', stepNumber === 3);
+        submitBtn.classList.toggle('hidden', stepNumber !== 3);
+    }
+
+    // Validate current step
+    function validateStep(stepNumber) {
+        let isValid = true;
+        const requiredFields = steps[stepNumber - 1].querySelectorAll('[required]');
+        
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                isValid = false;
+                field.classList.add('border-red-500');
+            } else {
+                field.classList.remove('border-red-500');
+            }
+        });
+
+        // Additional validation for specific steps
+        if (stepNumber === 1) {
+            const length = parseFloat(form.elements.length.value);
+            const width = parseFloat(form.elements.width.value);
+            const height = parseFloat(form.elements.height.value);
+            
+            if (length * width * height > 1000000) {
+                isValid = false;
+                showError('Package dimensions exceed maximum size limit.');
+            }
+        } else if (stepNumber === 2) {
+            const weight = parseFloat(form.elements.weight.value);
+            if (weight > 50000) {
+                isValid = false;
+                showError('Weight exceeds maximum limit of 50,000 lbs.');
+            }
+        }
+
+        return isValid;
+    }
+
+    // Show error message
+    function showError(message) {
+        const errorHtml = `
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                <strong class="font-bold">Please note:</strong>
+                <p>${message}</p>
+                <p class="mt-2">For specialized requirements, please <a href="/contact" class="underline">contact us directly</a>.</p>
+            </div>
+        `;
+        
+        const existingError = form.querySelector('.bg-red-100');
+        if (existingError) {
+            existingError.remove();
+        }
+        
+        steps[currentStep - 1].insertAdjacentHTML('afterbegin', errorHtml);
+    }
+
+    // Navigation event listeners
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            showStep(currentStep);
+        }
+    });
+
+    nextBtn.addEventListener('click', () => {
+        if (validateStep(currentStep) && currentStep < 3) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    // Form submission
+    form.addEventListener('submit', function(e) {
+        if (!validateStep(currentStep)) {
+            e.preventDefault();
+        }
+    });
+
+    // Package type description update
     const packageTypeSelect = form.elements.package_type;
     const descriptionElement = document.querySelector('.package-description');
-    const calculateButton = document.getElementById('calculateButton');
-    const loadingSpinner = document.querySelector('.loading-spinner');
-
-    // Update package description when selection changes
+    
     packageTypeSelect.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         const description = selectedOption.dataset.description || '';
         descriptionElement.textContent = description;
     });
 
-    form.addEventListener('submit', function(e) {
-        const length = parseFloat(this.elements.length.value);
-        const width = parseFloat(this.elements.width.value);
-        const height = parseFloat(this.elements.height.value);
-        const weight = parseFloat(this.elements.weight.value);
-        let hasError = false;
-        let errorMessage = [];
-        
-        // Validate dimensions
-        if (length * width * height > 1000000) {
-            hasError = true;
-            errorMessage.push('Package dimensions exceed maximum size limit.');
-        }
-        
-        // Validate weight
-        if (weight > 50000) {
-            hasError = true;
-            errorMessage.push('Weight exceeds maximum limit of 50,000 lbs.');
-        }
-
-        if (hasError) {
-            e.preventDefault();
-            const errorHtml = `
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                    <strong class="font-bold">Please note:</strong>
-                    <ul class="list-disc ml-5 mt-2">
-                        ${errorMessage.map(msg => `<li>${msg}</li>`).join('')}
-                    </ul>
-                    <p class="mt-2">For specialized requirements, please <a href="/contact" class="underline">contact us directly</a> for a custom quote.</p>
-                </div>
-            `;
-            const existingError = form.querySelector('.bg-red-100');
-            if (existingError) {
-                existingError.remove();
-            }
-            form.insertAdjacentHTML('afterbegin', errorHtml);
-            window.scrollTo({ top: form.offsetTop - 20, behavior: 'smooth' });
-        } else {
-            // Show loading state
-            calculateButton.disabled = true;
-            loadingSpinner.classList.remove('hidden');
-            calculateButton.querySelector('span:not(.loading-spinner)').textContent = 'Calculating...';
-        }
-    });
-
-    // Add real-time validation feedback
-    const dimensionInputs = form.querySelectorAll('input[type="number"]');
-    dimensionInputs.forEach(input => {
-        input.addEventListener('input', function() {
-            const value = parseFloat(this.value);
-            const min = parseFloat(this.min);
-            const isValid = !isNaN(value) && value >= min;
-            
-            this.classList.toggle('border-red-500', !isValid);
-            this.classList.toggle('border-green-500', isValid);
-            
-            const feedback = this.parentElement.querySelector('.validation-feedback');
-            if (!isValid && this.value !== '') {
-                if (!feedback) {
-                    const feedbackEl = document.createElement('p');
-                    feedbackEl.className = 'validation-feedback text-red-500 text-sm mt-1';
-                    feedbackEl.textContent = `Please enter a valid number greater than ${min}`;
-                    this.parentElement.appendChild(feedbackEl);
-                }
-            } else if (feedback) {
-                feedback.remove();
-            }
-        });
-    });
+    // Initialize first step
+    showStep(1);
 });
 </script>
 {% endblock %}
