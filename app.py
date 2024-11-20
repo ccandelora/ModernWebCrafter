@@ -33,35 +33,35 @@ with app.app_context():
             name="ISPM 15 Certified Export Crates",
             description="International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
             category="Export Crates",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             price=0.0  # Quote based
         ),
         Product(
             name="Cushioned Crates",
             description="Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
             category="Protective Packaging",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             price=0.0
         ),
         Product(
             name="Export Skidmates",
             description="Specialized skid systems designed for international shipping with integrated protection.",
             category="Export Solutions",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             price=0.0
         ),
         Product(
             name="Cushion Skids with Ramp",
             description="Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
             category="Industrial Skids",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             price=0.0
         ),
         Product(
             name="Oversize Crates",
             description="Custom-built oversized crating solutions for large industrial equipment and machinery.",
             category="Specialty Solutions",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             price=0.0
         )
     ]
@@ -100,7 +100,7 @@ with app.app_context():
         GalleryProject(
             title="Medical Equipment Export Package",
             description="ISPM 15 certified export crates designed for sensitive medical equipment shipping to Europe. Features custom foam cushioning and moisture barriers.",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             completion_date=date(2024, 1, 15),
             completion_time=14,
             client="MedTech Solutions",
@@ -119,7 +119,7 @@ with app.app_context():
         GalleryProject(
             title="Industrial Press Shipping Solution",
             description="Cushioned skids with integrated ramp system for 20-ton industrial equipment. Custom-engineered for repeated use and easy forklift access.",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             completion_date=date(2024, 2, 20),
             completion_time=21,
             client="Industrial Dynamics",
@@ -138,7 +138,7 @@ with app.app_context():
         GalleryProject(
             title="Wind Turbine Component Package",
             description="Custom oversized crates for wind turbine components with specialized bracing and moisture control systems.",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             completion_date=date(2024, 3, 10),
             completion_time=30,
             client="Green Energy Corp",
@@ -157,7 +157,7 @@ with app.app_context():
         GalleryProject(
             title="Electronics Reusable Export System",
             description="Developed a reusable crating system with Skidmates for regular international shipments, reducing packaging waste by 85%.",
-            image_url="/static/images/workshop.svg",
+            image_url="/static/images/workshop.jpg",
             completion_date=date(2024, 4, 5),
             completion_time=25,
             client="Global Electronics Ltd",
