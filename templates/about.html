@@ -105,24 +105,14 @@
     <div>
         <h2 class="text-3xl font-bold mb-8">Expert Leadership Team</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for member in team_members %}
             <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                <img src="/static/images/avatar-placeholder.svg" alt="John Smith - CEO & Founder of Wood Products Unlimited" class="w-32 h-32 mx-auto mb-4 rounded-full">
-                <h3 class="text-xl font-semibold mb-2">John Smith</h3>
-                <p class="text-wood-brown font-medium mb-2">CEO & Founder</p>
-                <p class="text-gray-600">30+ years of expertise in custom industrial packaging solutions and international shipping.</p>
+                <img src="{{ member.image_url }}" alt="{{ member.name }} - {{ member.role }} at Wood Products Unlimited" class="w-32 h-32 mx-auto mb-4 rounded-full">
+                <h3 class="text-xl font-semibold mb-2">{{ member.name }}</h3>
+                <p class="text-wood-brown font-medium mb-2">{{ member.role }}</p>
+                <p class="text-gray-600">{{ member.bio }}</p>
             </div>
-            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                <img src="/static/images/avatar-placeholder.svg" alt="Sarah Johnson - Operations Director of Wood Products Unlimited" class="w-32 h-32 mx-auto mb-4 rounded-full">
-                <h3 class="text-xl font-semibold mb-2">Sarah Johnson</h3>
-                <p class="text-wood-brown font-medium mb-2">Operations Director</p>
-                <p class="text-gray-600">25+ years of manufacturing and industrial packaging operations expertise.</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                <img src="/static/images/avatar-placeholder.svg" alt="Michael Brown - Engineering Manager of Wood Products Unlimited" class="w-32 h-32 mx-auto mb-4 rounded-full">
-                <h3 class="text-xl font-semibold mb-2">Michael Brown</h3>
-                <p class="text-wood-brown font-medium mb-2">Engineering Manager</p>
-                <p class="text-gray-600">20+ years of custom wood crating and export packaging design experience.</p>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

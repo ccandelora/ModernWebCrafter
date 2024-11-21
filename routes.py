@@ -56,7 +56,8 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    team_members = TeamMember.query.filter_by(is_active=True).order_by(TeamMember.order.asc()).all()
+    return render_template('about.html', team_members=team_members)
 
 @app.route('/products')
 def products():

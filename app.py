@@ -197,3 +197,32 @@ with app.app_context():
         db.session.add(product)
         
     db.session.commit()
+    # Add sample team members if none exist
+    from models import TeamMember
+    if not TeamMember.query.first():
+        sample_team = [
+            TeamMember(
+                name="John Smith",
+                role="CEO & Founder",
+                bio="30+ years of expertise in custom industrial packaging solutions and international shipping.",
+                order=1,
+                is_active=True
+            ),
+            TeamMember(
+                name="Sarah Johnson",
+                role="Operations Director",
+                bio="25+ years of manufacturing and industrial packaging operations expertise.",
+                order=2,
+                is_active=True
+            ),
+            TeamMember(
+                name="Michael Brown",
+                role="Engineering Manager",
+                bio="20+ years of custom wood crating and export packaging design experience.",
+                order=3,
+                is_active=True
+            )
+        ]
+        for member in sample_team:
+            db.session.add(member)
+
