@@ -422,20 +422,25 @@ def edit_project(id):
         
         image = request.files.get('image')
         if image:
-            image_path = f"/static/images/uploads/{secure_filename(image.filename)}"
-            image.save('.' + image_path)
-            project.image_url = image_path
+            try:
+                image_path = handle_file_upload(image, project.image_url)
+                project.image_url = image_path
+            except ValueError as e:
+                flash(str(e), 'error')
+                return redirect(url_for('admin_gallery'))
             
         db.session.commit()
         flash('Project updated successfully', 'success')
+        return redirect(url_for('admin_gallery'))
+        
+    return render_template('admin/edit_project.html', project=project)
 
-# Team Management Routes
 @app.route('/admin/team', methods=['GET', 'POST'])
 @login_required
 def admin_team():
     if request.method == 'POST':
         try:
-            # Get form data with validation
+            # Get and validate form data
             name = request.form.get('name', '').strip()
             role = request.form.get('role', '').strip()
             bio = request.form.get('bio', '').strip()
@@ -454,29 +459,28 @@ def admin_team():
                 flash('Order must be a valid number', 'error')
                 return redirect(url_for('admin_team'))
 
-            # Handle image upload
-            image = request.files.get('image')
-            image_path = '/static/images/avatar-placeholder.svg'
-            
-            if image and image.filename:
-                if not allowed_file(image.filename):
-                    flash('Invalid file format. Please use PNG, JPG, JPEG or GIF', 'error')
-                    return redirect(url_for('admin_team'))
-                try:
-                    image_path = handle_file_upload(image)
-                except ValueError as e:
-                    flash(str(e), 'error')
-                    return redirect(url_for('admin_team'))
-
             # Create new team member
             member = TeamMember()
             member.name = name
             member.role = role
             member.bio = bio
-            member.image_url = image_path
             member.order = order
             member.is_active = is_active
+            member.image_url = '/static/images/avatar-placeholder.svg'  # Default image
             
+            # Handle image upload if provided
+            image = request.files.get('image')
+            if image and image.filename:
+                if not allowed_file(image.filename):
+                    flash('Invalid file format. Please use PNG, JPG, JPEG or GIF', 'error')
+                    return redirect(url_for('admin_team'))
+                try:
+                    member.image_url = handle_file_upload(image)
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('admin_team'))
+            
+            # Save to database
             try:
                 db.session.add(member)
                 db.session.commit()
@@ -491,6 +495,7 @@ def admin_team():
             flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('admin_team'))
     
+    # GET request - display team members
     team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
     return render_template('admin/team.html', team_members=team_members)
 
@@ -500,7 +505,7 @@ def edit_team_member(id):
     member = TeamMember.query.get_or_404(id)
     if request.method == 'POST':
         try:
-            # Get form data with validation
+            # Get and validate form data
             name = request.form.get('name', '').strip()
             role = request.form.get('role', '').strip()
             bio = request.form.get('bio', '').strip()
@@ -538,13 +543,18 @@ def edit_team_member(id):
                     flash(str(e), 'error')
                     return redirect(url_for('edit_team_member', id=id))
             
-            db.session.commit()
-            flash('Team member updated successfully', 'success')
-            return redirect(url_for('admin_team'))
+            # Save changes to database
+            try:
+                db.session.commit()
+                flash('Team member updated successfully', 'success')
+                return redirect(url_for('admin_team'))
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error updating team member: {str(e)}', 'error')
+                return redirect(url_for('edit_team_member', id=id))
             
         except Exception as e:
-            db.session.rollback()
-            flash(f'Error updating team member: {str(e)}', 'error')
+            flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('edit_team_member', id=id))
     
     return render_template('admin/edit_team.html', member=member)
@@ -561,6 +571,8 @@ def delete_team_member(id):
         db.session.rollback()
         flash(f'Error deleting team member: {str(e)}', 'error')
     return redirect(url_for('admin_team'))
+
+
 
 
 @app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
