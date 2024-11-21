@@ -1,8 +1,45 @@
-from flask import render_template, request, flash, redirect, url_for
-from app import app, db
-from models import Product, Inquiry, Testimonial, GalleryProject
-from datetime import date
+import os
 import json
+from datetime import date
+from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.utils import secure_filename
+from werkzeug.security import generate_password_hash, check_password_hash
+from app import app, db
+from models import Product, GalleryProject, Testimonial, Admin, Inquiry
+
+# Allowed file extensions for uploads
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    if not filename:
+        return False
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Helper function to create upload directory
+def ensure_upload_dir():
+    upload_dir = './static/images/uploads'
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+    return upload_dir
+
+# Helper function to handle file uploads
+def handle_file_upload(file, current_path="/static/images/workshop.jpg"):
+    if not file or not file.filename:
+        return current_path
+        
+    if not allowed_file(file.filename):
+        raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
+        
+    secure_name = secure_filename(file.filename)
+    image_path = f"/static/images/uploads/{secure_name}"
+    
+    try:
+        upload_dir = ensure_upload_dir()
+        file.save(os.path.join('.', image_path))
+        return image_path
+    except Exception as e:
+        raise ValueError(f'Error saving file: {str(e)}')
 
 @app.route('/')
 def index():
@@ -29,10 +66,10 @@ def quote_calculator():
     if request.method == 'POST':
         # Get form data
         package_type = request.form.get('package_type')
-        length = float(request.form.get('length'))
-        width = float(request.form.get('width'))
-        height = float(request.form.get('height'))
-        weight = float(request.form.get('weight'))
+        length = float(request.form.get('length', 0))
+        width = float(request.form.get('width', 0))
+        height = float(request.form.get('height', 0))
+        weight = float(request.form.get('weight', 0))
         requirements = request.form.getlist('requirements[]')
         shipping_type = request.form.get('shipping_type')
 
@@ -135,6 +172,7 @@ def contact():
     return render_template('contact.html')
 
 @app.route('/admin/testimonials', methods=['GET', 'POST'])
+@login_required
 def manage_testimonials():
     if request.method == 'POST':
         testimonial = Testimonial(
@@ -163,3 +201,228 @@ def utility_processor():
     def get_categories():
         return db.session.query(Product.category).distinct()
     return dict(get_categories=get_categories)
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if current_user.is_authenticated:
+        return redirect(url_for('admin_dashboard'))
+        
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        admin = Admin.query.filter_by(username=username).first()
+        
+        if admin and admin.check_password(password):
+            login_user(admin)
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Invalid username or password', 'error')
+    
+    return render_template('admin/login.html')
+
+@app.route('/admin/logout', methods=['POST'])
+@login_required
+def admin_logout():
+    logout_user()
+    return redirect(url_for('admin_login'))
+
+@app.route('/admin')
+@login_required
+def admin_dashboard():
+    return render_template('admin/dashboard.html')
+
+@app.route('/admin/products', methods=['GET', 'POST'])
+@login_required
+def admin_products():
+    try:
+        if request.method == 'POST':
+            name = request.form.get('name', '').strip()
+            category = request.form.get('category', '').strip()
+            description = request.form.get('description', '').strip()
+            
+            if not all([name, category, description]):
+                flash('All fields are required', 'error')
+                return redirect(url_for('admin_products'))
+                
+            image = request.files.get('image')
+            image_path = "/static/images/workshop.jpg"
+            
+            if image and image.filename:
+                if image.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    secure_name = secure_filename(image.filename)
+                    image_path = f"/static/images/uploads/{secure_name}"
+                    try:
+                        os.makedirs('./static/images/uploads', exist_ok=True)
+                        image.save('.' + image_path)
+                    except Exception as e:
+                        flash(f'Error saving image: {str(e)}', 'error')
+                        return redirect(url_for('admin_products'))
+                else:
+                    flash('Invalid image format. Please use PNG, JPG, JPEG or GIF', 'error')
+                    return redirect(url_for('admin_products'))
+            
+            product = Product()
+            product.name = name
+            product.category = category
+            product.description = description
+            product.image_url = image_path
+            
+            try:
+                db.session.add(product)
+                db.session.commit()
+                flash('Product added successfully', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error adding product: {str(e)}', 'error')
+                
+            return redirect(url_for('admin_products'))
+            
+        products = Product.query.all()
+        return render_template('admin/products.html', products=products)
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/products/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_product(id):
+    product = Product.query.get_or_404(id)
+    if request.method == 'POST':
+        product.name = request.form.get('name')
+        product.category = request.form.get('category')
+        product.description = request.form.get('description')
+        
+        image = request.files.get('image')
+        if image:
+            image_path = f"/static/images/uploads/{secure_filename(image.filename)}"
+            image.save('.' + image_path)
+            product.image_url = image_path
+            
+        db.session.commit()
+        flash('Product updated successfully', 'success')
+        return redirect(url_for('admin_products'))
+        
+    return render_template('admin/edit_product.html', product=product)
+
+@app.route('/admin/products/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_product(id):
+    product = Product.query.get_or_404(id)
+    db.session.delete(product)
+    db.session.commit()
+    flash('Product deleted successfully', 'success')
+    return redirect(url_for('admin_products'))
+
+@app.route('/admin/gallery', methods=['GET', 'POST'])
+@login_required
+def admin_gallery():
+    try:
+        if request.method == 'POST':
+            # Get and validate required fields
+            title = request.form.get('title', '').strip()
+            description = request.form.get('description', '').strip()
+            client = request.form.get('client', '').strip()
+            category = request.form.get('category', '').strip()
+            industry_served = request.form.get('industry_served', '').strip()
+            size_category = request.form.get('size_category', '').strip()
+            weight_capacity = request.form.get('weight_capacity', '').strip()
+            
+            # Validate required fields
+            if not all([title, description, client, category, industry_served, size_category, weight_capacity]):
+                flash('All required fields must be filled out', 'error')
+                return redirect(url_for('admin_gallery'))
+            
+            try:
+                completion_time = int(request.form.get('completion_time', 0))
+                if completion_time <= 0:
+                    raise ValueError("Completion time must be positive")
+            except ValueError as e:
+                flash(f'Invalid completion time: {str(e)}', 'error')
+                return redirect(url_for('admin_gallery'))
+            
+            ispm_compliant = bool(request.form.get('ispm_compliant'))
+            is_featured = bool(request.form.get('is_featured'))
+            image = request.files.get('image')
+            
+            # Handle image upload
+            image_path = "/static/images/workshop.jpg"
+            if image and image.filename:
+                if image.filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    secure_name = secure_filename(image.filename)
+                    image_path = f"/static/images/uploads/{secure_name}"
+                    try:
+                        os.makedirs('./static/images/uploads', exist_ok=True)
+                        image.save('.' + image_path)
+                    except Exception as e:
+                        flash(f'Error saving image: {str(e)}', 'error')
+                        return redirect(url_for('admin_gallery'))
+                else:
+                    flash('Invalid image format. Please use PNG, JPG, JPEG or GIF', 'error')
+                    return redirect(url_for('admin_gallery'))
+            
+            try:
+                project = GalleryProject()
+                project.title = title
+                project.description = description
+                project.client = client
+                project.category = category
+                project.industry_served = industry_served
+                project.completion_time = completion_time
+                project.size_category = size_category
+                project.weight_capacity = weight_capacity
+                project.ispm_compliant = ispm_compliant
+                project.is_featured = is_featured
+                project.image_url = image_path
+                project.completion_date = date.today()
+                
+                db.session.add(project)
+                db.session.commit()
+                flash('Project added successfully', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error adding project: {str(e)}', 'error')
+                
+            return redirect(url_for('admin_gallery'))
+        
+        projects = GalleryProject.query.all()
+        return render_template('admin/gallery.html', projects=projects)
+    except Exception as e:
+        flash(f'An error occurred: {str(e)}', 'error')
+        return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    if request.method == 'POST':
+        project.title = request.form.get('title')
+        project.description = request.form.get('description')
+        project.client = request.form.get('client')
+        project.category = request.form.get('category')
+        project.industry_served = request.form.get('industry_served')
+        project.completion_time = int(request.form.get('completion_time'))
+        project.size_category = request.form.get('size_category')
+        project.weight_capacity = request.form.get('weight_capacity')
+        project.ispm_compliant = bool(request.form.get('ispm_compliant'))
+        project.is_featured = bool(request.form.get('is_featured'))
+        
+        image = request.files.get('image')
+        if image:
+            image_path = f"/static/images/uploads/{secure_filename(image.filename)}"
+            image.save('.' + image_path)
+            project.image_url = image_path
+            
+        db.session.commit()
+        flash('Project updated successfully', 'success')
+        return redirect(url_for('admin_gallery'))
+        
+    return render_template('admin/edit_project.html', project=project)
+
+@app.route('/admin/gallery/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    db.session.delete(project)
+    db.session.commit()
+    flash('Project deleted successfully', 'success')
+    return redirect(url_for('admin_gallery'))

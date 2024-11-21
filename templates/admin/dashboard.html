@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">Admin Dashboard</h1>
+            <form method="POST" action="{{ url_for('admin_logout') }}" class="inline">
+                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">Logout</button>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Products Management -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Products</h2>
+                <p class="text-gray-600 mb-4">Manage your product catalog</p>
+                <a href="{{ url_for('admin_products') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                    Manage Products
+                </a>
+            </div>
+
+            <!-- Gallery Management -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Project Gallery</h2>
+                <p class="text-gray-600 mb-4">Manage gallery projects and images</p>
+                <a href="{{ url_for('admin_gallery') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                    Manage Gallery
+                </a>
+            </div>
+
+            <!-- Testimonials Management -->
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4">Testimonials</h2>
+                <p class="text-gray-600 mb-4">Manage customer testimonials</p>
+                <a href="{{ url_for('manage_testimonials') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                    Manage Testimonials
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

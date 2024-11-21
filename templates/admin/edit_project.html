@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Edit Project</h1>
+            <a href="{{ url_for('admin_gallery') }}" class="text-wood-brown hover:text-wood-dark">Back to Gallery</a>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-600">Project Title</label>
+                        <input type="text" id="title" name="title" value="{{ project.title }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                    
+                    <div>
+                        <label for="client" class="block text-sm font-medium text-gray-600">Client Name</label>
+                        <input type="text" id="client" name="client" value="{{ project.client }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
+                        <input type="text" id="category" name="category" value="{{ project.category }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                    
+                    <div>
+                        <label for="industry_served" class="block text-sm font-medium text-gray-600">Industry Served</label>
+                        <input type="text" id="industry_served" name="industry_served" value="{{ project.industry_served }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-600">Description</label>
+                    <textarea id="description" name="description" rows="4" required
+                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">{{ project.description }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="completion_time" class="block text-sm font-medium text-gray-600">Completion Time (days)</label>
+                        <input type="number" id="completion_time" name="completion_time" value="{{ project.completion_time }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                    
+                    <div>
+                        <label for="size_category" class="block text-sm font-medium text-gray-600">Size Category</label>
+                        <select id="size_category" name="size_category" required
+                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            <option value="Small" {% if project.size_category == 'Small' %}selected{% endif %}>Small</option>
+                            <option value="Medium" {% if project.size_category == 'Medium' %}selected{% endif %}>Medium</option>
+                            <option value="Large" {% if project.size_category == 'Large' %}selected{% endif %}>Large</option>
+                            <option value="Oversize" {% if project.size_category == 'Oversize' %}selected{% endif %}>Oversize</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="weight_capacity" class="block text-sm font-medium text-gray-600">Weight Capacity</label>
+                        <input type="text" id="weight_capacity" name="weight_capacity" value="{{ project.weight_capacity }}" required
+                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="image" class="block text-sm font-medium text-gray-600">Project Image</label>
+                    <input type="file" id="image" name="image" accept="image/*"
+                           class="mt-1 block w-full">
+                    <p class="mt-1 text-sm text-gray-500">Current image: {{ project.image_url }}</p>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="ispm_compliant" {% if project.ispm_compliant %}checked{% endif %}
+                               class="rounded border-gray-300 text-wood-brown shadow-sm">
+                        <span class="ml-2">ISPM 15 Compliant</span>
+                    </label>
+                    
+                    <label class="flex items-center">
+                        <input type="checkbox" name="is_featured" {% if project.is_featured %}checked{% endif %}
+                               class="rounded border-gray-300 text-wood-brown shadow-sm">
+                        <span class="ml-2">Featured Project</span>
+                    </label>
+                </div>
+
+                <div class="flex justify-end">
+                    <button type="submit" class="btn-wood">Update Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
