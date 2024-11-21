@@ -414,49 +414,67 @@ def edit_project(id):
             
         db.session.commit()
         flash('Project updated successfully', 'success')
+
 # Team Management Routes
 @app.route('/admin/team', methods=['GET', 'POST'])
 @login_required
 def admin_team():
     if request.method == 'POST':
         try:
+            # Get form data with validation
             name = request.form.get('name', '').strip()
             role = request.form.get('role', '').strip()
             bio = request.form.get('bio', '').strip()
-            order = int(request.form.get('order', 0))
-            is_active = bool(request.form.get('is_active'))
-            
+            order = request.form.get('order', '0')
+            is_active = request.form.get('is_active') is not None
+
+            # Validate required fields
             if not all([name, role, bio]):
                 flash('Name, role, and bio are required fields', 'error')
                 return redirect(url_for('admin_team'))
-            
+
+            # Validate order is a valid integer
+            try:
+                order = int(order)
+            except ValueError:
+                flash('Order must be a valid number', 'error')
+                return redirect(url_for('admin_team'))
+
+            # Handle image upload
             image = request.files.get('image')
-            image_path = "/static/images/avatar-placeholder.svg"
+            image_path = '/static/images/avatar-placeholder.svg'
             
             if image and image.filename:
+                if not allowed_file(image.filename):
+                    flash('Invalid file format. Please use PNG, JPG, JPEG or GIF', 'error')
+                    return redirect(url_for('admin_team'))
                 try:
                     image_path = handle_file_upload(image)
                 except ValueError as e:
                     flash(str(e), 'error')
                     return redirect(url_for('admin_team'))
+
+            # Create new team member
+            member = TeamMember()
+            member.name = name
+            member.role = role
+            member.bio = bio
+            member.image_url = image_path
+            member.order = order
+            member.is_active = is_active
             
-            team_member = TeamMember(
-                name=name,
-                role=role,
-                bio=bio,
-                image_url=image_path,
-                order=order,
-                is_active=is_active
-            )
+            try:
+                db.session.add(member)
+                db.session.commit()
+                flash('Team member added successfully', 'success')
+            except Exception as e:
+                db.session.rollback()
+                flash(f'Error adding team member: {str(e)}', 'error')
             
-            db.session.add(team_member)
-            db.session.commit()
-            flash('Team member added successfully', 'success')
             return redirect(url_for('admin_team'))
             
         except Exception as e:
-            db.session.rollback()
-            flash(f'Error adding team member: {str(e)}', 'error')
+            flash(f'An error occurred: {str(e)}', 'error')
             return redirect(url_for('admin_team'))
     
     team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
@@ -468,14 +486,38 @@ def edit_team_member(id):
     member = TeamMember.query.get_or_404(id)
     if request.method == 'POST':
         try:
-            member.name = request.form.get('name', '').strip()
-            member.role = request.form.get('role', '').strip()
-            member.bio = request.form.get('bio', '').strip()
-            member.order = int(request.form.get('order', 0))
-            member.is_active = bool(request.form.get('is_active'))
+            # Get form data with validation
+            name = request.form.get('name', '').strip()
+            role = request.form.get('role', '').strip()
+            bio = request.form.get('bio', '').strip()
+            order = request.form.get('order', '0')
+            is_active = request.form.get('is_active') is not None
+
+            # Validate required fields
+            if not all([name, role, bio]):
+                flash('Name, role, and bio are required fields', 'error')
+                return redirect(url_for('edit_team_member', id=id))
+
+            # Validate order is a valid integer
+            try:
+                order = int(order)
+            except ValueError:
+                flash('Order must be a valid number', 'error')
+                return redirect(url_for('edit_team_member', id=id))
+
+            # Update member data
+            member.name = name
+            member.role = role
+            member.bio = bio
+            member.order = order
+            member.is_active = is_active
             
+            # Handle image upload if provided
             image = request.files.get('image')
             if image and image.filename:
+                if not allowed_file(image.filename):
+                    flash('Invalid file format. Please use PNG, JPG, JPEG or GIF', 'error')
+                    return redirect(url_for('edit_team_member', id=id))
                 try:
                     member.image_url = handle_file_upload(image)
                 except ValueError as e:
@@ -505,6 +547,7 @@ def delete_team_member(id):
         db.session.rollback()
         flash(f'Error deleting team member: {str(e)}', 'error')
     return redirect(url_for('admin_team'))
+
 
 @app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
 @login_required

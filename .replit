@@ -64,11 +64,11 @@ task = "packager.installForAll"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python main.py"
+args = "python create_admin.py && python main.py"
 waitForPort = 5000
 
 [deployment]
-run = ["sh", "-c", "python main.py"]
+run = ["sh", "-c", "python create_admin.py && python main.py"]
 
 [[ports]]
 localPort = 5000
