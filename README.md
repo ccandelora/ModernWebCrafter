@@ -297,13 +297,31 @@ npm cache clean --force
 ## Features
 
 ### Admin Interface
-- Secure authentication system
+- Secure authentication system using Flask-Login
 - Product management (CRUD operations)
+  - Add, edit, and delete products
+  - Manage product categories
+  - Update product images and specifications
 - Gallery project management
+  - Create and edit project entries
+  - Manage project images
+  - Update completion dates and specifications
 - Team member management
+  - Add and edit team profiles
+  - Update team member roles and bios
+  - Manage profile photos
 - Testimonial management
-- Secure photo upload system with validation
+  - Review and approve testimonials
+  - Feature selected testimonials
+  - Manage client feedback
+- Secure photo upload system
+  - Image validation and processing
+  - Secure file handling
+  - Size and format restrictions
 - Role-based access control
+  - Admin authentication
+  - Protected admin routes
+  - Session management
 
 ### Product Catalog
 - Categorized industrial packaging solutions
