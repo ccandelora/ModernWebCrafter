@@ -1,4 +1,8 @@
 import os
+# Create uploads directory if it doesn't exist
+if not os.path.exists('./static/images/uploads'):
+    os.makedirs('./static/images/uploads', exist_ok=True)
+
 import json
 from datetime import date
 from flask import render_template, request, flash, redirect, url_for
@@ -31,11 +35,14 @@ def handle_file_upload(file, current_path="/static/images/workshop.jpg"):
     if not allowed_file(file.filename):
         raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
         
+    # Ensure upload directory exists
+    upload_dir = './static/images/uploads'
+    os.makedirs(upload_dir, exist_ok=True)
+    
     secure_name = secure_filename(file.filename)
     image_path = f"/static/images/uploads/{secure_name}"
     
     try:
-        upload_dir = ensure_upload_dir()
         file.save(os.path.join('.', image_path))
         return image_path
     except Exception as e:
