@@ -6,7 +6,7 @@ from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db
-from models import Product, GalleryProject, Testimonial, Admin, Inquiry
+from models import Product, GalleryProject, Testimonial, Admin, Inquiry, TeamMember
 
 # Allowed file extensions for uploads
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -414,8 +414,140 @@ def edit_project(id):
             
         db.session.commit()
         flash('Project updated successfully', 'success')
-        return redirect(url_for('admin_gallery'))
+# Team Management Routes
+@app.route('/admin/team', methods=['GET', 'POST'])
+@login_required
+def admin_team():
+    if request.method == 'POST':
+        try:
+            name = request.form.get('name', '').strip()
+            role = request.form.get('role', '').strip()
+            bio = request.form.get('bio', '').strip()
+            order = int(request.form.get('order', 0))
+            is_active = bool(request.form.get('is_active'))
+            
+            if not all([name, role, bio]):
+                flash('Name, role, and bio are required fields', 'error')
+                return redirect(url_for('admin_team'))
+            
+            image = request.files.get('image')
+            image_path = "/static/images/avatar-placeholder.svg"
+            
+            if image and image.filename:
+                try:
+                    image_path = handle_file_upload(image)
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('admin_team'))
+            
+            team_member = TeamMember(
+                name=name,
+                role=role,
+                bio=bio,
+                image_url=image_path,
+                order=order,
+                is_active=is_active
+            )
+            
+            db.session.add(team_member)
+            db.session.commit()
+            flash('Team member added successfully', 'success')
+            return redirect(url_for('admin_team'))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding team member: {str(e)}', 'error')
+            return redirect(url_for('admin_team'))
+    
+    team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
+    return render_template('admin/team.html', team_members=team_members)
+
+@app.route('/admin/team/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_team_member(id):
+    member = TeamMember.query.get_or_404(id)
+    if request.method == 'POST':
+        try:
+            member.name = request.form.get('name', '').strip()
+            member.role = request.form.get('role', '').strip()
+            member.bio = request.form.get('bio', '').strip()
+            member.order = int(request.form.get('order', 0))
+            member.is_active = bool(request.form.get('is_active'))
+            
+            image = request.files.get('image')
+            if image and image.filename:
+                try:
+                    member.image_url = handle_file_upload(image)
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('edit_team_member', id=id))
+            
+            db.session.commit()
+            flash('Team member updated successfully', 'success')
+            return redirect(url_for('admin_team'))
+            
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating team member: {str(e)}', 'error')
+            return redirect(url_for('edit_team_member', id=id))
+    
+    return render_template('admin/edit_team.html', member=member)
+
+@app.route('/admin/team/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_team_member(id):
+    member = TeamMember.query.get_or_404(id)
+    try:
+        db.session.delete(member)
+        db.session.commit()
+        flash('Team member deleted successfully', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting team member: {str(e)}', 'error')
+    return redirect(url_for('admin_team'))
+
+@app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_gallery_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    if request.method == 'POST':
+        project.title = request.form.get('title', '').strip()
+        project.description = request.form.get('description', '').strip()
+        project.client = request.form.get('client', '').strip()
+        project.category = request.form.get('category', '').strip()
+        project.industry_served = request.form.get('industry_served', '').strip()
+        try:
+            project.completion_time = int(request.form.get('completion_time', 0))
+        except ValueError:
+            flash('Invalid completion time value', 'error')
+            return redirect(url_for('edit_gallery_project', id=id))
+            
+        project.size_category = request.form.get('size_category')
+        project.weight_capacity = request.form.get('weight_capacity')
+        project.ispm_compliant = bool(request.form.get('ispm_compliant'))
+        project.is_featured = bool(request.form.get('is_featured'))
         
+        image = request.files.get('image')
+        if image and image.filename:
+            if allowed_file(image.filename):
+                try:
+                    project.image_url = handle_file_upload(image, project.image_url)
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('edit_gallery_project', id=id))
+            else:
+                flash('Invalid image format. Please use PNG, JPG, JPEG or GIF', 'error')
+                return redirect(url_for('edit_gallery_project', id=id))
+            
+        try:
+            db.session.commit()
+            flash('Project updated successfully', 'success')
+            return redirect(url_for('admin_gallery'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating project: {str(e)}', 'error')
+            return redirect(url_for('edit_gallery_project', id=id))
+    
     return render_template('admin/edit_project.html', project=project)
 
 @app.route('/admin/gallery/<int:id>/delete', methods=['POST'])

@@ -842,6 +842,10 @@ body {
   width: 100%;
 }
 
+.w-16 {
+  width: 4rem;
+}
+
 .max-w-4xl {
   max-width: 56rem;
 }
