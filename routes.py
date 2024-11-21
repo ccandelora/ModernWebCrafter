@@ -268,9 +268,16 @@ def admin_products():
             product.image_url = image_path
             
             try:
+                # Handle price field
+                price = float(request.form.get('price', 0.0))
+                product.price = price
+                
                 db.session.add(product)
                 db.session.commit()
                 flash('Product added successfully', 'success')
+            except ValueError:
+                db.session.rollback()
+                flash('Invalid price value', 'error')
             except Exception as e:
                 db.session.rollback()
                 flash(f'Error adding product: {str(e)}', 'error')
