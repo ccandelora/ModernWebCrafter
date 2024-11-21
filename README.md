@@ -57,6 +57,26 @@ FLASK_SECRET_KEY=your_secret_key
 
 ## Local Development Setup
 
+### Admin Account Setup
+
+1. Create an admin user:
+```bash
+# Start Python shell
+python
+>>> from app import app, db
+>>> from models import Admin
+>>> with app.app_context():
+...     admin = Admin(username='admin', email='admin@example.com')
+...     admin.set_password('your-secure-password')
+...     db.session.add(admin)
+...     db.session.commit()
+```
+
+2. Access admin interface:
+- Navigate to `/admin/login`
+- Login with admin credentials
+- Access admin dashboard at `/admin`
+
 ### Database Setup
 
 1. SQLite Database Initialization:
@@ -254,7 +274,9 @@ npm cache clean --force
 │   │   │   └── input.css      # Tailwind source
 │   │   ├── custom.css         # Custom styles
 │   │   └── tailwind.css       # Generated styles
-│   ├── images/                # SVG assets
+│   ├── images/
+│   │   ├── uploads/           # Uploaded images storage
+│   │   └── assets/            # Static SVG assets
 │   └── js/
 │       └── main.js           # Frontend JavaScript
 ├── templates/
@@ -273,6 +295,15 @@ npm cache clean --force
 ```
 
 ## Features
+
+### Admin Interface
+- Secure authentication system
+- Product management (CRUD operations)
+- Gallery project management
+- Team member management
+- Testimonial management
+- Secure photo upload system with validation
+- Role-based access control
 
 ### Product Catalog
 - Categorized industrial packaging solutions
@@ -350,10 +381,14 @@ npx tailwindcss -i ./static/css/src/input.css -o ./static/css/tailwind.css --wat
 
 ## Security Features
 
+- Flask-Login based authentication
+- Role-based access control
 - CSRF protection
 - Secure form handling
 - Input validation
 - Sanitized database queries
+- Secure file upload handling
+- Image validation and processing
 - Environment variable configuration
 
 ## License
