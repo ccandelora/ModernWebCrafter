@@ -21,7 +21,7 @@
         <!-- Add Project Form -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Add New Project</h2>
-            <form method="POST" action="{{ url_for('admin.gallery') }}" class="space-y-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ url_for('admin.admin_gallery.gallery') }}" class="space-y-4" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-600">Project Title</label>
@@ -116,8 +116,8 @@
                             <p class="text-gray-600">{{ project.description }}</p>
                         </div>
                         <div class="flex space-x-2">
-                            <a href="{{ url_for('admin.edit_gallery_project', id=project.id) }}" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
-                            <form method="POST" action="{{ url_for('admin.delete_project', id=project.id) }}" class="inline">
+                            <a href="{{ url_for('admin.admin_gallery.edit_gallery_project', id=project.id) }}" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
+                            <form method="POST" action="{{ url_for('admin.admin_gallery.delete_project', id=project.id) }}" class="inline">
                                 <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
                             </form>
                         </div>
