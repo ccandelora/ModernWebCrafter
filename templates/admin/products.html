@@ -21,7 +21,7 @@
         <!-- Add Product Form -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
-            <form method="POST" action="{{ url_for('admin.products') }}" class="space-y-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ url_for('admin.admin_products.products') }}" class="space-y-4" enctype="multipart/form-data">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-600">Product Name</label>
                     <input type="text" id="name" name="name" required
