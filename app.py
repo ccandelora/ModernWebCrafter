@@ -30,6 +30,9 @@ def load_user(user_id):
     return Admin.query.get(int(user_id))
 
 db.init_app(app)
+# Register error handlers
+from routes.utils.error_handlers import ErrorHandler
+ErrorHandler.init_app(app)
 
 # Register blueprints
 from routes.public.routes import public
