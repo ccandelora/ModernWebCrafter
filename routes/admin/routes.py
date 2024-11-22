@@ -31,27 +31,37 @@ def log_request_info():
 def dashboard():
     """Render the admin dashboard with enhanced logging and error handling."""
     try:
+        # Log authentication status
+        current_app.logger.debug(f'User authenticated: {current_user.is_authenticated}')
+        
         current_app.logger.info(
             f'Admin dashboard accessed by user: {current_user.username}\n'
-            f'Authentication status: {current_user.is_authenticated}\n'
             f'User ID: {current_user.id}'
         )
 
-        # Get counts for dashboard stats
+        # Get counts for dashboard stats with enhanced error handling
         try:
             stats = {
                 'products': Product.query.count(),
                 'gallery_projects': GalleryProject.query.count(),
                 'testimonials': Testimonial.query.count()
             }
-            current_app.logger.debug(f'Dashboard stats retrieved: {stats}')
+            current_app.logger.debug(f'Stats retrieved: {stats}')
         except SQLAlchemyError as e:
-            current_app.logger.error(f'Error fetching dashboard stats: {str(e)}')
+            current_app.logger.error(f'Database query error: {str(e)}')
             stats = {'products': 0, 'gallery_projects': 0, 'testimonials': 0}
             flash('Some dashboard statistics may be unavailable.', 'warning')
 
-        current_app.logger.info('Rendering admin dashboard template')
-        return render_template('admin/dashboard.html', stats=stats)
+        # Log template rendering attempt
+        current_app.logger.debug('Attempting to render admin dashboard')
+        
+        # Wrap template rendering in try-except
+        try:
+            return render_template('admin/dashboard.html', stats=stats)
+        except Exception as e:
+            current_app.logger.error(f'Template rendering error: {str(e)}')
+            return render_template('errors/500.html'), 500
+            
     except Exception as e:
         current_app.logger.error(f'Error in dashboard route: {str(e)}')
         flash('An error occurred while loading the dashboard.', 'error')
