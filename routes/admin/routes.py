@@ -53,3 +53,30 @@ def dashboard():
     except Exception as e:
         current_app.logger.error(f'Dashboard error: {str(e)}')
         return render_template('errors/500.html'), 500
+@admin.route('/products')
+@login_required
+@log_route_access('admin_products')
+@handle_exceptions
+def products():
+    return products_bp.products()
+
+@admin.route('/gallery')
+@login_required
+@log_route_access('admin_gallery')
+@handle_exceptions
+def gallery():
+    return gallery_bp.gallery()
+
+@admin.route('/testimonials')
+@login_required
+@log_route_access('admin_testimonials')
+@handle_exceptions
+def testimonials():
+    return testimonials_bp.testimonials()
+
+@admin.route('/team')
+@login_required
+@log_route_access('admin_team')
+@handle_exceptions
+def team():
+    return team_bp.team()
