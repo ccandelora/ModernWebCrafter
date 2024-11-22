@@ -48,3 +48,14 @@ def edit_team_member(id):
         return redirect(url_for('admin.team'))
     
     return render_template('admin/edit_team.html', member=member)
+
+@team_bp.route('/<int:id>/delete', methods=['POST'])
+@login_required
+@log_route_access('delete_team_member')
+@handle_exceptions
+def delete_team_member(id):
+    member = TeamMember.query.get_or_404(id)
+    db.session.delete(member)
+    db.session.commit()
+    flash('Team member deleted successfully', 'success')
+    return redirect(url_for('admin.team'))
