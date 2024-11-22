@@ -11,6 +11,6 @@
 
 @layer components {
   .btn-wood {
-    @apply bg-wood-brown text-white hover:bg-wood-dark hover:text-wood-light transition-colors duration-300;
+    @apply bg-oak-brown text-white hover:bg-oak-dark hover:text-oak-light transition-colors duration-300;
   }
 }

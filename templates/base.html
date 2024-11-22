@@ -20,8 +20,7 @@
     <link href="{{ url_for('static', filename='css/tailwind.css') }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/220e222529.js" crossorigin="anonymous"></script>
     <!-- Structured Data -->
     <script type="application/ld+json">
     {
@@ -72,37 +71,37 @@
     }
     </script>
 </head>
-<body class="flex flex-col min-h-screen bg-white text-wood-dark">
-    <nav class="bg-wood-dark">
+<body class="flex flex-col min-h-screen bg-white text-oak-dark">
+    <nav class="bg-oak-dark">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
-                <a href="/" class="flex items-center text-wood-light">
+                <a href="/" class="flex items-center text-oak-light">
                     <img src="{{ url_for('static', filename='images/logo.svg') }}" class="h-8 w-8 mr-2" alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions">
                     <span class="text-xl font-semibold">Wood Products Unlimited</span>
                 </a>
                 <div class="hidden md:flex space-x-4">
-                    <a href="/" class="text-wood-light hover:text-wood-accent">Home</a>
-                    <a href="/about" class="text-wood-light hover:text-wood-accent">About</a>
-                    <a href="/products" class="text-wood-light hover:text-wood-accent">Products</a>
-                    <a href="/quote" class="text-wood-light hover:text-wood-accent">Quote Calculator</a>
-                    <a href="/gallery" class="text-wood-light hover:text-wood-accent">Gallery</a>
-                    <a href="/contact" class="text-wood-light hover:text-wood-accent">Contact</a>
+                    <a href="/" class="text-oak-light hover:text-oak-accent">Home</a>
+                    <a href="/about" class="text-oak-light hover:text-oak-accent">About</a>
+                    <a href="/products" class="text-oak-light hover:text-oak-accent">Products</a>
+                    <a href="/quote" class="text-oak-light hover:text-oak-accent">Quote Calculator</a>
+                    <a href="/gallery" class="text-oak-light hover:text-oak-accent">Gallery</a>
+                    <a href="/contact" class="text-oak-light hover:text-oak-accent">Contact</a>
                 </div>
-                <button class="md:hidden text-wood-light" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" aria-label="Toggle navigation menu">
+                <button class="md:hidden text-oak-light" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" aria-label="Toggle navigation menu">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
                     </svg>
                 </button>
             </div>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-wood-dark">
+        <div id="mobile-menu" class="hidden md:hidden bg-oak-dark">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="/" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Home</a>
-                <a href="/about" class="block px-3 py-2 text-wood-light hover:text-wood-accent">About</a>
-                <a href="/products" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Products</a>
-                <a href="/quote" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Quote Calculator</a>
-                <a href="/gallery" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Gallery</a>
-                <a href="/contact" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Contact</a>
+                <a href="/" class="block px-3 py-2 text-oak-light hover:text-oak-accent">Home</a>
+                <a href="/about" class="block px-3 py-2 text-oak-light hover:text-oak-accent">About</a>
+                <a href="/products" class="block px-3 py-2 text-oak-light hover:text-oak-accent">Products</a>
+                <a href="/quote" class="block px-3 py-2 text-oak-light hover:text-oak-accent">Quote Calculator</a>
+                <a href="/gallery" class="block px-3 py-2 text-oak-light hover:text-oak-accent">Gallery</a>
+                <a href="/contact" class="block px-3 py-2 text-oak-light hover:text-oak-accent">Contact</a>
             </div>
         </div>
     </nav>
@@ -127,7 +126,7 @@
 
     {% block content %}{% endblock %}
 
-    <footer class="bg-wood-dark text-wood-light mt-auto py-10">
+    <footer class="bg-oak-dark text-oak-light mt-auto py-10">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
@@ -139,11 +138,11 @@
                 <div>
                     <h2 class="text-lg font-semibold mb-4">Quick Links</h2>
                     <ul class="space-y-2">
-                        <li><a href="/about" class="hover:text-wood-accent">About Us</a></li>
-                        <li><a href="/products" class="hover:text-wood-accent">Industrial Packaging Solutions</a></li>
-                        <li><a href="/quote" class="hover:text-wood-accent">Custom Quote Calculator</a></li>
-                        <li><a href="/gallery" class="hover:text-wood-accent">Project Gallery</a></li>
-                        <li><a href="/contact" class="hover:text-wood-accent">Contact</a></li>
+                        <li><a href="/about" class="hover:text-oak-accent">About Us</a></li>
+                        <li><a href="/products" class="hover:text-oak-accent">Industrial Packaging Solutions</a></li>
+                        <li><a href="/quote" class="hover:text-oak-accent">Custom Quote Calculator</a></li>
+                        <li><a href="/gallery" class="hover:text-oak-accent">Project Gallery</a></li>
+                        <li><a href="/contact" class="hover:text-oak-accent">Contact</a></li>
                     </ul>
                 </div>
                 <div>

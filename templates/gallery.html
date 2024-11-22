@@ -13,12 +13,12 @@
                 <label class="block text-sm font-medium text-gray-600 mb-2">Project Type</label>
                 <div class="space-y-2">
                     <a href="{{ url_for('gallery', industry=selected_industry, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         All Categories
                     </a>
                     {% for category in categories %}
                     <a href="{{ url_for('gallery', category=category[0], industry=selected_industry, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_category == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if selected_category == category[0] %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         {{ category[0] }}
                     </a>
                     {% endfor %}
@@ -30,13 +30,13 @@
                 <label class="block text-sm font-medium text-gray-600 mb-2">Industry Served</label>
                 <div class="space-y-2">
                     <a href="{{ url_for('gallery', category=selected_category, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_industry %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if not selected_industry %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         All Industries
                     </a>
                     {% for industry in industries %}
                     {% if industry[0] %}
                     <a href="{{ url_for('gallery', category=selected_category, industry=industry[0], size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_industry == industry[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if selected_industry == industry[0] %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         {{ industry[0] }}
                     </a>
                     {% endif %}
@@ -49,13 +49,13 @@
                 <label class="block text-sm font-medium text-gray-600 mb-2">Size Category</label>
                 <div class="space-y-2">
                     <a href="{{ url_for('gallery', category=selected_category, industry=selected_industry) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_size %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if not selected_size %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         All Sizes
                     </a>
                     {% for size in sizes %}
                     {% if size[0] %}
                     <a href="{{ url_for('gallery', category=selected_category, industry=selected_industry, size=size[0]) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_size == size[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                       class="block px-4 py-2 rounded-lg {% if selected_size == size[0] %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                         {{ size[0] }}
                     </a>
                     {% endif %}
@@ -72,7 +72,7 @@
             <div class="relative">
                 <img src="{{ project.image_url }}" alt="{{ project.title }}" class="w-full h-64 object-cover">
                 {% if project.is_featured %}
-                <span class="absolute top-4 right-4 bg-wood-brown text-white px-3 py-1 rounded-full text-sm">Featured</span>
+                <span class="absolute top-4 right-4 bg-oak-brown text-white px-3 py-1 rounded-full text-sm">Featured</span>
                 {% endif %}
                 {% if project.ispm_compliant %}
                 <span class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">ISPM 15 Certified</span>
@@ -115,7 +115,7 @@
                         <ul class="space-y-2 text-sm">
                             {% for key, value in features.items() %}
                             <li class="flex items-start">
-                                <i class="fas fa-check-circle text-wood-brown mr-2 mt-1"></i>
+                                <i class="fas fa-check-circle text-oak-brown mr-2 mt-1"></i>
                                 <span><strong class="text-gray-700">{{ key|replace('_', ' ')|title }}:</strong> {{ value }}</span>
                             </li>
                             {% endfor %}

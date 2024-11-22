@@ -13,12 +13,12 @@
         <div class="md:col-span-1">
             <h2 class="text-xl font-semibold mb-4">Categories</h2>
             <div class="space-y-2">
-                <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                     All Products
                 </a>
                 {% for category in categories %}
                 <a href="/products?category={{ category[0] }}" 
-                   class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                   class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-oak-brown text-white{% else %}bg-oak-accent hover:bg-oak-brown hover:text-white{% endif %} transition duration-300">
                     {{ category[0] }}
                 </a>
                 {% endfor %}
@@ -54,10 +54,10 @@
                         <div class="flex justify-between items-center">
                             <div itemprop="offers" itemscope itemtype="https://schema.org/Offer">
                                 <meta itemprop="priceCurrency" content="USD">
-                                <span class="text-wood-brown font-bold" itemprop="availability" content="https://schema.org/InStock">Custom Quote</span>
+                                <span class="text-oak-brown font-bold" itemprop="availability" content="https://schema.org/InStock">Custom Quote</span>
                                 <link itemprop="url" href="{{ request.url_root }}products/{{ product.id }}">
                             </div>
-                            <a href="/contact?product={{ product.id }}" class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Request Quote</a>
+                            <a href="/contact?product={{ product.id }}" class="inline-block bg-oak-brown hover:bg-oak-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Request Quote</a>
                         </div>
                         <div itemprop="brand" itemscope itemtype="https://schema.org/Brand">
                             <meta itemprop="name" content="Wood Products Unlimited">

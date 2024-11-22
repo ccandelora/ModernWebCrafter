@@ -1027,17 +1027,17 @@ body {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
 }
 
-.bg-wood-brown {
+.bg-oak-brown {
   --tw-bg-opacity: 1;
   background-color: rgb(139 69 19 / var(--tw-bg-opacity, 1));
 }
 
-.bg-wood-dark {
+.bg-oak-dark {
   --tw-bg-opacity: 1;
   background-color: rgb(62 39 35 / var(--tw-bg-opacity, 1));
 }
 
-.bg-wood-accent {
+.bg-oak-accent {
   --tw-bg-opacity: 1;
   background-color: rgb(215 204 200 / var(--tw-bg-opacity, 1));
 }
@@ -1209,17 +1209,17 @@ body {
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-.text-wood-brown {
+.text-oak-brown {
   --tw-text-opacity: 1;
   color: rgb(139 69 19 / var(--tw-text-opacity, 1));
 }
 
-.text-wood-dark {
+.text-oak-dark {
   --tw-text-opacity: 1;
   color: rgb(62 39 35 / var(--tw-text-opacity, 1));
 }
 
-.text-wood-light {
+.text-oak-light {
   --tw-text-opacity: 1;
   color: rgb(222 184 135 / var(--tw-text-opacity, 1));
 }
@@ -1310,22 +1310,22 @@ body {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.hover\:border-wood-brown:hover {
+.hover\:border-oak-brown:hover {
   --tw-border-opacity: 1;
   border-color: rgb(139 69 19 / var(--tw-border-opacity, 1));
 }
 
-.hover\:bg-wood-dark:hover {
+.hover\:bg-oak-dark:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(62 39 35 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:bg-wood-brown:hover {
+.hover\:bg-oak-brown:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(139 69 19 / var(--tw-bg-opacity, 1));
 }
 
-.hover\:text-wood-accent:hover {
+.hover\:text-oak-accent:hover {
   --tw-text-opacity: 1;
   color: rgb(215 204 200 / var(--tw-text-opacity, 1));
 }

@@ -1,8 +1,8 @@
 :root {
-    --wood-brown: #8B4513;
-    --wood-light: #DEB887;
-    --wood-dark: #3E2723;
-    --wood-accent: #D7CCC8;
+    --oak-brown: #8B4513;
+    --oak-light: #DEB887;
+    --oak-dark: #3E2723;
+    --oak-accent: #D7CCC8;
 }
 
 body {
@@ -10,15 +10,15 @@ body {
 }
 
 .navbar {
-    bg-wood-dark;
+    bg-oak-dark;
 }
 
 .navbar-brand {
-    text-wood-light;
+    text-oak-light;
 }
 
 .hero-section {
-    bg-gradient-to-b from-wood-dark to-wood-dark;
+    bg-gradient-to-b from-oak-dark to-oak-dark;
     bg-cover;
     bg-no-repeat;
     bg-center;
@@ -48,19 +48,19 @@ body {
 }
 
 .btn-wood {
-    bg-wood-brown;
+    bg-oak-brown;
     text-white;
     border-none;
 }
 
 .btn-wood:hover {
-    bg-wood-dark;
-    text-wood-light;
+    bg-oak-dark;
+    text-oak-light;
 }
 
 .footer {
-    bg-wood-dark;
-    text-wood-light;
+    bg-oak-dark;
+    text-oak-light;
     py-10;
 }
 
