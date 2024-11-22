@@ -8,15 +8,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from datetime import date
 import json
 
-# Import modular blueprints
-from .product_routes import products_bp
-from .gallery_routes import gallery_bp
-
 admin = Blueprint('admin', __name__, url_prefix='/admin')
-
-# Register modular blueprints
-admin.register_blueprint(products_bp)
-admin.register_blueprint(gallery_bp)
 
 @admin.before_request
 def verify_admin():
@@ -68,6 +60,8 @@ def dashboard():
 
 @admin.route('/products', methods=['GET', 'POST'])
 @login_required
+@log_route_access('admin_products')
+@handle_exceptions
 def products():
     try:
         if request.method == 'POST':
