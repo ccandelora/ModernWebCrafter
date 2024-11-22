@@ -3,6 +3,9 @@ from flask_login import login_required
 from models import Product, GalleryProject, Testimonial
 from app import db
 from routes.utils.upload import handle_file_upload
+from routes.utils.validation import validate_product_data, validate_gallery_data, validate_testimonial_data
+from routes.utils.error_handlers import handle_exceptions, log_route_access
+import logging
 from datetime import date
 import json
 
@@ -10,7 +13,10 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 @admin.route('/')
 @login_required
+@log_route_access('admin_dashboard')
+@handle_exceptions
 def dashboard():
+    """Render the admin dashboard."""
     return render_template('admin/dashboard.html')
 
 @admin.route('/products', methods=['GET', 'POST'])
