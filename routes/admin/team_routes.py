@@ -4,6 +4,7 @@ from models import TeamMember
 from app import db
 from routes.utils.error_handlers import handle_exceptions, log_route_access
 from routes.utils.upload import handle_file_upload
+from routes.utils.validation import validate_team_member_data
 
 team_bp = Blueprint('admin_team', __name__)
 
@@ -64,9 +65,16 @@ def manage_team():
         try:
             # Create new team member
             member = TeamMember()
-            member.name = request.form.get('name').strip()
-            member.role = request.form.get('role').strip()
-            member.bio = request.form.get('bio').strip()
+            name = request.form.get('name')
+            role = request.form.get('role')
+            bio = request.form.get('bio')
+            
+            if not all([name, role, bio]):
+                raise ValueError("Name, role, and bio are required fields")
+                
+            member.name = name.strip()
+            member.role = role.strip()
+            member.bio = bio.strip()
             member.order = int(request.form.get('order', 0))
             member.is_active = bool(request.form.get('is_active'))
             
