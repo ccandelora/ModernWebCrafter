@@ -62,21 +62,24 @@ def dashboard():
 @log_route_access('admin_products')
 @handle_exceptions
 def products():
-    return products_bp.products()
+    products = Product.query.all()
+    return render_template('admin/products.html', products=products)
 
 @admin.route('/gallery')
 @login_required
 @log_route_access('admin_gallery')
 @handle_exceptions
 def gallery():
-    return gallery_bp.gallery()
+    projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
+    return render_template('admin/gallery.html', projects=projects)
 
 @admin.route('/testimonials')
 @login_required
 @log_route_access('admin_testimonials')
 @handle_exceptions
 def testimonials():
-    return testimonials_bp.testimonials()
+    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
+    return render_template('admin/testimonials.html', testimonials=testimonials)
 
 @admin.route('/team')
 @login_required
