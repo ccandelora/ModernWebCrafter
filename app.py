@@ -22,7 +22,7 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'admin_login'
+login_manager.login_view = 'auth.login'  # type: ignore
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -31,9 +31,17 @@ def load_user(user_id):
 
 db.init_app(app)
 
+# Register blueprints
+from routes.public.routes import public
+from routes.admin.routes import admin
+from routes.auth.routes import auth
+
+app.register_blueprint(public)
+app.register_blueprint(admin)
+app.register_blueprint(auth)
+
 with app.app_context():
     import models
-    import routes
     db.create_all()
     
     # Clear existing products
