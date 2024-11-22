@@ -9,7 +9,7 @@ import json
 
 gallery_bp = Blueprint('admin_gallery', __name__)
 
-@gallery_bp.route('/gallery', methods=['GET', 'POST'])
+@gallery_bp.route('/', methods=['GET', 'POST'])
 @login_required
 @log_route_access('admin_gallery')
 @handle_exceptions

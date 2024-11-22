@@ -8,7 +8,7 @@ from routes.utils.error_handlers import handle_exceptions, log_route_access
 
 products_bp = Blueprint('admin_products', __name__)
 
-@products_bp.route('/products', methods=['GET', 'POST'])
+@products_bp.route('/', methods=['GET', 'POST'])
 @login_required
 @log_route_access('admin_products')
 @handle_exceptions
@@ -65,7 +65,7 @@ def products():
         flash(f'An error occurred: {str(e)}', 'error')
         return redirect(url_for('admin.dashboard'))
 
-@products_bp.route('/products/<int:id>/edit', methods=['GET', 'POST'])
+@products_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
 @log_route_access('edit_product')
 @handle_exceptions
@@ -94,7 +94,7 @@ def edit_product(id):
 
     return render_template('admin/edit_product.html', product=product)
 
-@products_bp.route('/products/<int:id>/delete', methods=['POST'])
+@products_bp.route('/<int:id>/delete', methods=['POST'])
 @login_required
 @log_route_access('delete_product')
 @handle_exceptions
