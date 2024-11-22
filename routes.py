@@ -1,4 +1,42 @@
 import os
+import os
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def ensure_upload_dir():
+    upload_dir = os.path.join('static', 'images', 'uploads')
+    if not os.path.exists(upload_dir):
+        os.makedirs(upload_dir)
+    return upload_dir
+
+def handle_file_upload(file, old_file_path=None):
+    if not allowed_file(file.filename):
+        raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
+    
+    upload_dir = ensure_upload_dir()
+    secure_name = secure_filename(file.filename)
+    file_path = f"/static/images/uploads/{secure_name}"
+    full_path = os.path.join('.', file_path)
+    
+    # Save the new file
+    file.save(full_path)
+    if not os.path.exists(full_path):
+        raise ValueError("Failed to save the file")
+    
+    # If there was an old file and it's not the default image, try to remove it
+    if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
+        try:
+            old_full_path = os.path.join('.', old_file_path)
+            if os.path.exists(old_full_path):
+                os.remove(old_full_path)
+        except Exception:
+            pass  # Ignore errors when trying to remove old file
+    
+    return file_path
 # Create uploads directory if it doesn't exist
 if not os.path.exists('./static/images/uploads'):
     os.makedirs('./static/images/uploads', exist_ok=True)
