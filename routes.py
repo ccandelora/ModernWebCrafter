@@ -1,71 +1,9 @@
 import os
+import logging
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
-
-def allowed_file(filename):
-    if not filename:
-        return False
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def ensure_upload_dir():
-    if not os.path.exists(UPLOAD_FOLDER):
-        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-    return UPLOAD_FOLDER
-
-def handle_file_upload(file, old_file_path=None):
-    """
-    Handle file upload with proper path handling and verification
-    """
-    if not file or not file.filename:
-        raise ValueError('No file provided')
-
-    if not allowed_file(file.filename):
-        raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
-    
-    # Ensure upload directory exists
-    upload_dir = ensure_upload_dir()
-    
-    # Create secure filename and construct proper paths
-    secure_name = secure_filename(file.filename)
-    relative_path = os.path.join('static', 'images', 'uploads', secure_name)
-    full_path = os.path.join('.', relative_path)
-    
-    try:
-        # Save the new file
-        file.save(full_path)
-        if not os.path.exists(full_path):
-            raise ValueError("Failed to save the file")
-        
-        # Handle old file removal if exists
-        if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
-            try:
-                old_full_path = os.path.join('.', old_file_path.lstrip('/'))
-                if os.path.exists(old_full_path):
-                    os.remove(old_full_path)
-            except Exception:
-                pass  # Ignore errors when trying to remove old file
-        
-        # Return the path relative to static folder, with leading slash for URL
-        return '/' + relative_path
-    except Exception as e:
-        raise ValueError(f'Error saving file: {str(e)}')
-
-# Ensure upload directory exists at startup
-ensure_upload_dir()
-
-import json
-from datetime import date
-from flask import render_template, request, flash, redirect, url_for
-from flask_login import login_user, logout_user, login_required, current_user
-from werkzeug.utils import secure_filename
-from werkzeug.security import generate_password_hash, check_password_hash
-from app import app, db
-from models import Product, GalleryProject, Testimonial, Admin, Inquiry, TeamMember
-
-# Allowed file extensions for uploads
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 
 def allowed_file(filename):
@@ -75,35 +13,78 @@ def allowed_file(filename):
         '.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-# Helper function to create upload directory
 def ensure_upload_dir():
-    upload_dir = './static/images/uploads'
-    if not os.path.exists(upload_dir):
-        os.makedirs(upload_dir)
-    return upload_dir
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    return UPLOAD_FOLDER
 
 
-# Helper function to handle file uploads
-def handle_file_upload(file, current_path="/static/images/uploads"):
+def handle_file_upload(file, old_file_path=None):
+    """
+    Handle file upload with proper path handling and verification
+    Args:
+        file: FileStorage object from request.files
+        old_file_path: Optional path to old file that should be removed
+    Returns:
+        str: URL path to the saved file (with leading slash)
+    Raises:
+        ValueError: If file validation or saving fails
+    """
     if not file or not file.filename:
-        return current_path
+        logging.warning("No file provided for upload")
+        raise ValueError('No file provided')
 
     if not allowed_file(file.filename):
+        logging.warning(f"Invalid file format: {file.filename}")
         raise ValueError(
             'Invalid file format. Please use PNG, JPG, JPEG or GIF')
 
     # Ensure upload directory exists
-    upload_dir = './static/images/uploads'
-    os.makedirs(upload_dir, exist_ok=True)
+    upload_dir = ensure_upload_dir()
+    logging.info(f"Using upload directory: {upload_dir}")
 
+    # Create secure filename and construct proper paths
     secure_name = secure_filename(file.filename)
-    image_path = f"/static/images/uploads/{secure_name}"
+    relative_path = os.path.join('static', 'images', 'uploads', secure_name)
+    full_path = os.path.join('.', relative_path)
 
     try:
-        file.save(os.path.join('.', image_path))
-        return image_path
+        # Save the new file
+        file.save(full_path)
+        if not os.path.exists(full_path):
+            logging.error(f"Failed to save file to {full_path}")
+            raise ValueError("Failed to save the file")
+
+        logging.info(f"Successfully saved file to {full_path}")
+
+        # Handle old file removal if exists
+        if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
+            try:
+                old_full_path = os.path.join('.', old_file_path.lstrip('/'))
+                if os.path.exists(old_full_path):
+                    os.remove(old_full_path)
+                    logging.info(f"Removed old file: {old_full_path}")
+            except Exception as e:
+                logging.warning(
+                    f"Failed to remove old file {old_full_path}: {str(e)}")
+
+        # Return the path relative to static folder, with leading slash for URL
+        return '/' + relative_path
     except Exception as e:
+        logging.error(f"Error saving file {secure_name}: {str(e)}")
         raise ValueError(f'Error saving file: {str(e)}')
+
+
+# Ensure upload directory exists at startup
+ensure_upload_dir()
+
+import json
+from datetime import date
+from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_user, logout_user, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from app import app, db
+from models import Product, GalleryProject, Testimonial, Admin, Inquiry, TeamMember
 
 
 @app.route('/')
