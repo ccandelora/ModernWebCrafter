@@ -365,23 +365,16 @@ def admin_products():
                 return redirect(url_for('admin_products'))
 
             image = request.files.get('image')
-            image_path = "/static/images/workshop.jpg"
+            image_path = "/static/images/workshop.jpg"  # Default image
 
             if image and image.filename:
-                if image.filename.lower().endswith(
-                    ('.png', '.jpg', '.jpeg', '.gif')):
-                    secure_name = secure_filename(image.filename)
-                    image_path = f"/static/images/uploads/{secure_name}"
-                    try:
-                        os.makedirs('./static/images/uploads', exist_ok=True)
-                        image.save('.' + image_path)
-                    except Exception as e:
-                        flash(f'Error saving image: {str(e)}', 'error')
-                        return redirect(url_for('admin_products'))
-                else:
-                    flash(
-                        'Invalid image format. Please use PNG, JPG, JPEG or GIF',
-                        'error')
+                try:
+                    image_path = handle_file_upload(image)
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('admin_products'))
+                except Exception as e:
+                    flash(f'Error saving image: {str(e)}', 'error')
                     return redirect(url_for('admin_products'))
 
             product = Product()
@@ -424,10 +417,16 @@ def edit_product(id):
         product.description = request.form.get('description')
 
         image = request.files.get('image')
-        if image:
-            image_path = f"/static/images/uploads/{secure_filename(image.filename)}"
-            image.save('.' + image_path)
-            product.image_url = image_path
+        if image and image.filename:
+            try:
+                new_image_path = handle_file_upload(image, old_file_path=product.image_url)
+                product.image_url = new_image_path
+            except ValueError as e:
+                flash(str(e), 'error')
+                return redirect(url_for('admin_products'))
+            except Exception as e:
+                flash(f'Error saving image: {str(e)}', 'error')
+                return redirect(url_for('admin_products'))
 
         db.session.commit()
         flash('Product updated successfully', 'success')
@@ -458,62 +457,45 @@ def admin_gallery():
             category = request.form.get('category', '').strip()
             industry_served = request.form.get('industry_served', '').strip()
             size_category = request.form.get('size_category', '').strip()
-            weight_capacity = request.form.get('weight_capacity', '').strip()
+            completion_time = request.form.get('completion_time')
+            weight_capacity = request.form.get('weight_capacity')
+            ispm_compliant = bool(request.form.get('ispm_compliant', False))
+            is_featured = bool(request.form.get('is_featured', False))
 
-            # Validate required fields
-            if not all([
-                    title, description, client, category, industry_served,
-                    size_category, weight_capacity
-            ]):
+            if not all([title, description, client, category, industry_served, size_category]):
                 flash('All required fields must be filled out', 'error')
                 return redirect(url_for('admin_gallery'))
 
-            try:
-                completion_time = int(request.form.get('completion_time', 0))
-                if completion_time <= 0:
-                    raise ValueError("Completion time must be positive")
-            except ValueError as e:
-                flash(f'Invalid completion time: {str(e)}', 'error')
+            # Handle image upload
+            image = request.files.get('image')
+            if not image or not image.filename:
+                flash('Project image is required', 'error')
                 return redirect(url_for('admin_gallery'))
 
-            ispm_compliant = bool(request.form.get('ispm_compliant'))
-            is_featured = bool(request.form.get('is_featured'))
-            image = request.files.get('image')
+            try:
+                image_path = handle_file_upload(image)
+            except ValueError as e:
+                flash(str(e), 'error')
+                return redirect(url_for('admin_gallery'))
+            except Exception as e:
+                flash(f'Error saving image: {str(e)}', 'error')
+                return redirect(url_for('admin_gallery'))
 
-            # Handle image upload
-            image_path = "/static/images/workshop.jpg"
-            if image and image.filename:
-                if image.filename.lower().endswith(
-                    ('.png', '.jpg', '.jpeg', '.gif')):
-                    secure_name = secure_filename(image.filename)
-                    image_path = f"/static/images/uploads/{secure_name}"
-                    try:
-                        os.makedirs('./static/images/uploads', exist_ok=True)
-                        image.save('.' + image_path)
-                    except Exception as e:
-                        flash(f'Error saving image: {str(e)}', 'error')
-                        return redirect(url_for('admin_gallery'))
-                else:
-                    flash(
-                        'Invalid image format. Please use PNG, JPG, JPEG or GIF',
-                        'error')
-                    return redirect(url_for('admin_gallery'))
+            project = GalleryProject()
+            project.title = title
+            project.description = description
+            project.client = client
+            project.category = category
+            project.industry_served = industry_served
+            project.size_category = size_category
+            project.image_url = image_path
+            project.completion_date = date.today()
+            project.completion_time = int(completion_time) if completion_time else None
+            project.weight_capacity = weight_capacity
+            project.ispm_compliant = ispm_compliant
+            project.is_featured = is_featured
 
             try:
-                project = GalleryProject()
-                project.title = title
-                project.description = description
-                project.client = client
-                project.category = category
-                project.industry_served = industry_served
-                project.completion_time = completion_time
-                project.size_category = size_category
-                project.weight_capacity = weight_capacity
-                project.ispm_compliant = ispm_compliant
-                project.is_featured = is_featured
-                project.image_url = image_path
-                project.completion_date = date.today()
-
                 db.session.add(project)
                 db.session.commit()
                 flash('Project added successfully', 'success')
@@ -525,6 +507,7 @@ def admin_gallery():
 
         projects = GalleryProject.query.all()
         return render_template('admin/gallery.html', projects=projects)
+
     except Exception as e:
         flash(f'An error occurred: {str(e)}', 'error')
         return redirect(url_for('admin_dashboard'))
@@ -532,34 +515,68 @@ def admin_gallery():
 
 @app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
-def edit_project(id):
+def edit_gallery_project(id):
     project = GalleryProject.query.get_or_404(id)
+    
     if request.method == 'POST':
         project.title = request.form.get('title')
         project.description = request.form.get('description')
         project.client = request.form.get('client')
         project.category = request.form.get('category')
         project.industry_served = request.form.get('industry_served')
-        project.completion_time = int(request.form.get('completion_time'))
         project.size_category = request.form.get('size_category')
+        project.completion_time = int(request.form.get('completion_time')) if request.form.get('completion_time') else None
         project.weight_capacity = request.form.get('weight_capacity')
-        project.ispm_compliant = bool(request.form.get('ispm_compliant'))
-        project.is_featured = bool(request.form.get('is_featured'))
+        project.ispm_compliant = bool(request.form.get('ispm_compliant', False))
+        project.is_featured = bool(request.form.get('is_featured', False))
 
+        # Handle image upload if new image is provided
         image = request.files.get('image')
-        if image:
+        if image and image.filename:
             try:
-                image_path = handle_file_upload(image, project.image_url)
-                project.image_url = image_path
+                new_image_path = handle_file_upload(image, old_file_path=project.image_url)
+                project.image_url = new_image_path
             except ValueError as e:
                 flash(str(e), 'error')
-                return redirect(url_for('admin_gallery'))
+                return redirect(url_for('edit_gallery_project', id=id))
+            except Exception as e:
+                flash(f'Error saving image: {str(e)}', 'error')
+                return redirect(url_for('edit_gallery_project', id=id))
 
-        db.session.commit()
-        flash('Project updated successfully', 'success')
-        return redirect(url_for('admin_gallery'))
+        try:
+            db.session.commit()
+            flash('Project updated successfully', 'success')
+            return redirect(url_for('admin_gallery'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating project: {str(e)}', 'error')
+            return redirect(url_for('edit_gallery_project', id=id))
 
     return render_template('admin/edit_project.html', project=project)
+
+
+@app.route('/admin/gallery/<int:id>/delete', methods=['POST'])
+@login_required
+def delete_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    
+    # Remove the project image if it exists
+    if project.image_url and 'uploads' in project.image_url:
+        try:
+            old_full_path = os.path.join('.', project.image_url.lstrip('/'))
+            if os.path.exists(old_full_path):
+                os.remove(old_full_path)
+                logging.info(f"Removed old project image: {old_full_path}")
+        except Exception as e:
+            logging.warning(f"Failed to remove project image: {str(e)}")
+    
+    db.session.delete(project)
+    db.session.commit()
+    flash('Project deleted successfully', 'success')
+    return redirect(url_for('admin_gallery'))
+
+
+
 
 
 @app.route('/admin/team', methods=['GET', 'POST'])
@@ -706,60 +723,4 @@ def delete_team_member(id):
     return redirect(url_for('admin_team'))
 
 
-@app.route('/admin/gallery/<int:id>/edit', methods=['GET', 'POST'])
-@login_required
-def edit_gallery_project(id):
-    project = GalleryProject.query.get_or_404(id)
-    if request.method == 'POST':
-        project.title = request.form.get('title', '').strip()
-        project.description = request.form.get('description', '').strip()
-        project.client = request.form.get('client', '').strip()
-        project.category = request.form.get('category', '').strip()
-        project.industry_served = request.form.get('industry_served',
-                                                   '').strip()
-        try:
-            project.completion_time = int(
-                request.form.get('completion_time', 0))
-        except ValueError:
-            flash('Invalid completion time value', 'error')
-            return redirect(url_for('edit_gallery_project', id=id))
 
-        project.size_category = request.form.get('size_category')
-        project.weight_capacity = request.form.get('weight_capacity')
-        project.ispm_compliant = bool(request.form.get('ispm_compliant'))
-        project.is_featured = bool(request.form.get('is_featured'))
-
-        image = request.files.get('image')
-        if image and image.filename:
-            if allowed_file(image.filename):
-                try:
-                    project.image_url = handle_file_upload(
-                        image, project.image_url)
-                except ValueError as e:
-                    flash(str(e), 'error')
-                    return redirect(url_for('edit_gallery_project', id=id))
-            else:
-                flash('Invalid image format. Please use PNG, JPG, JPEG or GIF',
-                      'error')
-                return redirect(url_for('edit_gallery_project', id=id))
-
-        try:
-            db.session.commit()
-            flash('Project updated successfully', 'success')
-            return redirect(url_for('admin_gallery'))
-        except Exception as e:
-            db.session.rollback()
-            flash(f'Error updating project: {str(e)}', 'error')
-            return redirect(url_for('edit_gallery_project', id=id))
-
-    return render_template('admin/edit_project.html', project=project)
-
-
-@app.route('/admin/gallery/<int:id>/delete', methods=['POST'])
-@login_required
-def delete_project(id):
-    project = GalleryProject.query.get_or_404(id)
-    db.session.delete(project)
-    db.session.commit()
-    flash('Project deleted successfully', 'success')
-    return redirect(url_for('admin_gallery'))
