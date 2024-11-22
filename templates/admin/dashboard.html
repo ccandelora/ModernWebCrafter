@@ -5,9 +5,25 @@
     <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold">Admin Dashboard</h1>
-            <form method="POST" action="{{ url_for('admin_logout') }}" class="inline">
+            <form method="POST" action="{{ url_for('auth.logout') }}" class="inline">
                 <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">Logout</button>
             </form>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="mb-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="text-lg font-semibold text-gray-700">Total Products</h3>
+                <p class="text-2xl font-bold text-wood-brown">{{ stats.products }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="text-lg font-semibold text-gray-700">Gallery Projects</h3>
+                <p class="text-2xl font-bold text-wood-brown">{{ stats.gallery_projects }}</p>
+            </div>
+            <div class="bg-white rounded-lg shadow p-4">
+                <h3 class="text-lg font-semibold text-gray-700">Testimonials</h3>
+                <p class="text-2xl font-bold text-wood-brown">{{ stats.testimonials }}</p>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -15,7 +31,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Products</h2>
                 <p class="text-gray-600 mb-4">Manage your product catalog</p>
-                <a href="{{ url_for('admin_products') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                <a href="{{ url_for('admin_products.products') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
                     Manage Products
                 </a>
             </div>
@@ -24,7 +40,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Project Gallery</h2>
                 <p class="text-gray-600 mb-4">Manage gallery projects and images</p>
-                <a href="{{ url_for('admin_gallery') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                <a href="{{ url_for('admin_gallery.gallery') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
                     Manage Gallery
                 </a>
             </div>
@@ -33,7 +49,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Testimonials</h2>
                 <p class="text-gray-600 mb-4">Manage customer testimonials</p>
-                <a href="{{ url_for('manage_testimonials') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                <a href="{{ url_for('admin.testimonials') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
                     Manage Testimonials
                 </a>
             </div>
@@ -42,7 +58,7 @@
             <div class="bg-white rounded-lg shadow-lg p-6">
                 <h2 class="text-xl font-semibold mb-4">Team Members</h2>
                 <p class="text-gray-600 mb-4">Manage team member profiles</p>
-                <a href="{{ url_for('admin_team') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
+                <a href="{{ url_for('admin.team') }}" class="btn-wood block text-center py-2 px-4 rounded-md">
                     Manage Team
                 </a>
             </div>

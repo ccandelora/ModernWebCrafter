@@ -3,7 +3,10 @@ from flask_login import login_required, current_user
 from models import Product, GalleryProject, Testimonial, Admin
 from app import db
 from routes.utils.error_handlers import handle_exceptions, log_route_access
+from routes.utils.upload import handle_file_upload
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import date
+import json
 
 # Import modular blueprints
 from .product_routes import products_bp
@@ -14,6 +17,23 @@ admin = Blueprint('admin', __name__, url_prefix='/admin')
 # Register modular blueprints
 admin.register_blueprint(products_bp)
 admin.register_blueprint(gallery_bp)
+
+@admin.before_request
+def verify_admin():
+    """Verify admin authentication."""
+    if not current_user.is_authenticated:
+        current_app.logger.warning(f'Unauthorized dashboard access attempt from {request.remote_addr}')
+        flash('Please log in to access the admin dashboard', 'error')
+        return redirect(url_for('auth.login'))
+
+@admin.before_request
+def verify_db():
+    """Verify database connection."""
+    try:
+        db.session.query(Admin).first()
+    except Exception as e:
+        current_app.logger.error(f'Database connection error: {str(e)}')
+        return render_template('errors/500.html'), 500
 
 @admin.before_request
 def log_request_info():
@@ -33,42 +53,18 @@ def log_request_info():
 @handle_exceptions
 def dashboard():
     """Render the admin dashboard with enhanced logging and error handling."""
+    current_app.logger.debug(f'Dashboard access attempt by user: {current_user.username}')
     try:
-        # Log authentication status
-        current_app.logger.debug(f'User authenticated: {current_user.is_authenticated}')
-        
-        current_app.logger.info(
-            f'Admin dashboard accessed by user: {current_user.username}\n'
-            f'User ID: {current_user.id}'
-        )
-
-        # Get counts for dashboard stats with enhanced error handling
-        try:
-            stats = {
-                'products': Product.query.count(),
-                'gallery_projects': GalleryProject.query.count(),
-                'testimonials': Testimonial.query.count()
-            }
-            current_app.logger.debug(f'Stats retrieved: {stats}')
-        except SQLAlchemyError as e:
-            current_app.logger.error(f'Database query error: {str(e)}')
-            stats = {'products': 0, 'gallery_projects': 0, 'testimonials': 0}
-            flash('Some dashboard statistics may be unavailable.', 'warning')
-
-        # Log template rendering attempt
-        current_app.logger.debug('Attempting to render admin dashboard')
-        
-        # Wrap template rendering in try-except
-        try:
-            return render_template('admin/dashboard.html', stats=stats)
-        except Exception as e:
-            current_app.logger.error(f'Template rendering error: {str(e)}')
-            return render_template('errors/500.html'), 500
-            
+        stats = {
+            'products': Product.query.count(),
+            'gallery_projects': GalleryProject.query.count(),
+            'testimonials': Testimonial.query.count()
+        }
+        current_app.logger.debug(f'Dashboard stats retrieved: {stats}')
+        return render_template('admin/dashboard.html', stats=stats)
     except Exception as e:
-        current_app.logger.error(f'Error in dashboard route: {str(e)}')
-        flash('An error occurred while loading the dashboard.', 'error')
-        return redirect(url_for('public.index'))
+        current_app.logger.error(f'Dashboard error: {str(e)}')
+        return render_template('errors/500.html'), 500
 
 @admin.route('/products', methods=['GET', 'POST'])
 @login_required
