@@ -55,27 +55,47 @@ def edit_team_member(id):
 @handle_exceptions
 def manage_team():
     if request.method == 'POST':
-        # Create new team member
-        member = TeamMember()
-        member.name = request.form.get('name')
-        member.role = request.form.get('role')
-        member.bio = request.form.get('bio')
-        member.order = int(request.form.get('order', 0))
-        member.is_active = bool(request.form.get('is_active'))
-        
-        image = request.files.get('image')
-        if image and image.filename:
-            try:
-                image_path = handle_file_upload(image)
-                member.image_url = image_path
-            except Exception as e:
-                flash(str(e), 'error')
-                return redirect(url_for('admin.admin_team.manage_team'))
-        
-        db.session.add(member)
-        db.session.commit()
-        flash('Team member added successfully', 'success')
-        return redirect(url_for('admin.admin_team.manage_team'))
+        # Validate form data
+        error = validate_team_member_data(request.form)
+        if error:
+            flash(error, 'error')
+            return redirect(url_for('admin.team'))
+
+        try:
+            # Create new team member
+            member = TeamMember()
+            member.name = request.form.get('name').strip()
+            member.role = request.form.get('role').strip()
+            member.bio = request.form.get('bio').strip()
+            member.order = int(request.form.get('order', 0))
+            member.is_active = bool(request.form.get('is_active'))
+            
+            # Handle image upload
+            image = request.files.get('image')
+            if image and image.filename:
+                try:
+                    image_path = handle_file_upload(image)
+                    member.image_url = image_path
+                except ValueError as e:
+                    flash(str(e), 'error')
+                    return redirect(url_for('admin.team'))
+                except Exception as e:
+                    flash(f'Error uploading image: {str(e)}', 'error')
+                    return redirect(url_for('admin.team'))
+            
+            db.session.add(member)
+            db.session.commit()
+            flash('Team member added successfully', 'success')
+            
+        except ValueError as e:
+            flash(f'Invalid data: {str(e)}', 'error')
+            return redirect(url_for('admin.team'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error adding team member: {str(e)}', 'error')
+            return redirect(url_for('admin.team'))
+            
+        return redirect(url_for('admin.team'))
 
     team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
     return render_template('admin/team.html', team_members=team_members)
