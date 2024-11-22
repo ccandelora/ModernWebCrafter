@@ -2,15 +2,18 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for,
 from flask_login import login_required, current_user
 from models import Product, GalleryProject, Testimonial, Admin
 from app import db
-from routes.utils.upload import handle_file_upload
-from routes.utils.validation import validate_product_data, validate_gallery_data, validate_testimonial_data
 from routes.utils.error_handlers import handle_exceptions, log_route_access
-import logging
-from datetime import date
-import json
 from sqlalchemy.exc import SQLAlchemyError
 
+# Import modular blueprints
+from .product_routes import products_bp
+from .gallery_routes import gallery_bp
+
 admin = Blueprint('admin', __name__, url_prefix='/admin')
+
+# Register modular blueprints
+admin.register_blueprint(products_bp)
+admin.register_blueprint(gallery_bp)
 
 @admin.before_request
 def log_request_info():

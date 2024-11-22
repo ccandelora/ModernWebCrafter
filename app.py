@@ -29,18 +29,48 @@ def load_user(user_id):
     from models import Admin
     return Admin.query.get(int(user_id))
 
+import logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+
+# Initialize database
 db.init_app(app)
+
 # Register error handlers
-from routes.utils.error_handlers import ErrorHandler
-ErrorHandler.init_app(app)
+try:
+    from routes.utils.error_handlers import ErrorHandler
+    ErrorHandler.init_app(app)
+    app.logger.info('Error handlers initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize error handlers: {str(e)}')
+    raise
 
-# Initialize routes
-from routes import init_app
-init_app(app)
+# Initialize routes with error handling
+try:
+    from routes import init_app
+    init_app(app)
+    app.logger.info('Routes initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize routes: {str(e)}')
+    raise
 
-with app.app_context():
-    import models
-    db.create_all()
+# Database initialization with error handling
+try:
+    with app.app_context():
+        import models
+        # Ensure instance folder exists
+        import os
+        if not os.path.exists('instance'):
+            os.makedirs('instance')
+            app.logger.info('Created instance directory')
+        
+        db.create_all()
+        app.logger.info('Database initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize database: {str(e)}')
+    raise
     
     # Clear existing products
     from models import Product
