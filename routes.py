@@ -1,45 +1,59 @@
 import os
-import os
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 
 def allowed_file(filename):
+    if not filename:
+        return False
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def ensure_upload_dir():
-    upload_dir = os.path.join('static', 'images', 'uploads')
-    if not os.path.exists(upload_dir):
-        os.makedirs(upload_dir)
-    return upload_dir
+    if not os.path.exists(UPLOAD_FOLDER):
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    return UPLOAD_FOLDER
 
 def handle_file_upload(file, old_file_path=None):
+    """
+    Handle file upload with proper path handling and verification
+    """
+    if not file or not file.filename:
+        raise ValueError('No file provided')
+
     if not allowed_file(file.filename):
         raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
     
+    # Ensure upload directory exists
     upload_dir = ensure_upload_dir()
+    
+    # Create secure filename and construct proper paths
     secure_name = secure_filename(file.filename)
-    file_path = f"/static/images/uploads/{secure_name}"
-    full_path = os.path.join('.', file_path)
+    relative_path = os.path.join('static', 'images', 'uploads', secure_name)
+    full_path = os.path.join('.', relative_path)
     
-    # Save the new file
-    file.save(full_path)
-    if not os.path.exists(full_path):
-        raise ValueError("Failed to save the file")
-    
-    # If there was an old file and it's not the default image, try to remove it
-    if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
-        try:
-            old_full_path = os.path.join('.', old_file_path)
-            if os.path.exists(old_full_path):
-                os.remove(old_full_path)
-        except Exception:
-            pass  # Ignore errors when trying to remove old file
-    
-    return file_path
-# Create uploads directory if it doesn't exist
-if not os.path.exists('./static/images/uploads'):
-    os.makedirs('./static/images/uploads', exist_ok=True)
+    try:
+        # Save the new file
+        file.save(full_path)
+        if not os.path.exists(full_path):
+            raise ValueError("Failed to save the file")
+        
+        # Handle old file removal if exists
+        if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
+            try:
+                old_full_path = os.path.join('.', old_file_path.lstrip('/'))
+                if os.path.exists(old_full_path):
+                    os.remove(old_full_path)
+            except Exception:
+                pass  # Ignore errors when trying to remove old file
+        
+        # Return the path relative to static folder, with leading slash for URL
+        return '/' + relative_path
+    except Exception as e:
+        raise ValueError(f'Error saving file: {str(e)}')
+
+# Ensure upload directory exists at startup
+ensure_upload_dir()
 
 import json
 from datetime import date
