@@ -3,6 +3,10 @@ from flask_login import login_required, current_user
 from models import Product, GalleryProject, Testimonial, Admin, TeamMember
 from app import db
 from routes.utils.error_handlers import handle_exceptions, log_route_access
+from routes.admin.product_routes import products_bp
+from routes.admin.gallery_routes import gallery_bp
+from routes.admin.testimonial_routes import testimonials_bp
+from routes.admin.team_routes import team_bp
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -79,4 +83,5 @@ def testimonials():
 @log_route_access('admin_team')
 @handle_exceptions
 def team():
-    return team_bp.team()
+    team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
+    return render_template('admin/team.html', team_members=team_members)
