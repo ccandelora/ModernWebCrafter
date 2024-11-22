@@ -51,7 +51,7 @@ def handle_exceptions(f: Callable) -> Callable:
             )
             
             flash('An error occurred while processing your request. Please try again.', 'error')
-            if request.is_xhr:
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return jsonify({"error": "An internal error occurred"}), 500
             return render_template('errors/500.html'), 500
     return wrapper

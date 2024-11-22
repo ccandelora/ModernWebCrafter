@@ -34,14 +34,9 @@ db.init_app(app)
 from routes.utils.error_handlers import ErrorHandler
 ErrorHandler.init_app(app)
 
-# Register blueprints
-from routes.public.routes import public
-from routes.admin.routes import admin
-from routes.auth.routes import auth
-
-app.register_blueprint(public)
-app.register_blueprint(admin)
-app.register_blueprint(auth)
+# Initialize routes
+from routes import init_app
+init_app(app)
 
 with app.app_context():
     import models
