@@ -81,10 +81,4 @@ def testimonials():
     testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
     return render_template('admin/testimonials.html', testimonials=testimonials)
 
-@admin.route('/team')
-@login_required
-@log_route_access('admin_team')
-@handle_exceptions
-def team():
-    team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
-    return render_template('admin/team.html', team_members=team_members)
+# Team management route moved to team_routes.py
