@@ -81,12 +81,30 @@
                     <span class="text-xl font-semibold">Wood Products Unlimited</span>
                 </a>
                 <div class="hidden md:flex space-x-4">
-                    <a href="/" class="text-wood-light hover:text-wood-accent">Home</a>
-                    <a href="/about" class="text-wood-light hover:text-wood-accent">About</a>
-                    <a href="/products" class="text-wood-light hover:text-wood-accent">Products</a>
-                    <a href="/quote" class="text-wood-light hover:text-wood-accent">Quote Calculator</a>
-                    <a href="/gallery" class="text-wood-light hover:text-wood-accent">Gallery</a>
-                    <a href="/contact" class="text-wood-light hover:text-wood-accent">Contact</a>
+                    <a href="{{ url_for('main.home') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        Home
+                    </a>
+                    <a href="{{ url_for('main.about') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        About
+                    </a>
+                    <a href="{{ url_for('main.products') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        Products
+                    </a>
+                    <a href="{{ url_for('main.quote_calculator') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        Quote Calculator
+                    </a>
+                    <a href="{{ url_for('main.gallery') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        Gallery
+                    </a>
+                    <a href="{{ url_for('main.contact') }}" 
+                       class="px-3 py-2 rounded-md text-sm font-medium hover:bg-wood-light">
+                        Contact
+                    </a>
                 </div>
                 <button class="md:hidden text-wood-light" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" aria-label="Toggle navigation menu">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,12 +115,12 @@
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-wood-dark">
             <div class="px-2 pt-2 pb-3 space-y-1">
-                <a href="/" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Home</a>
-                <a href="/about" class="block px-3 py-2 text-wood-light hover:text-wood-accent">About</a>
-                <a href="/products" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Products</a>
-                <a href="/quote" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Quote Calculator</a>
-                <a href="/gallery" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Gallery</a>
-                <a href="/contact" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Contact</a>
+                <a href="{{ url_for('main.home') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Home</a>
+                <a href="{{ url_for('main.about') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">About</a>
+                <a href="{{ url_for('main.products') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Products</a>
+                <a href="{{ url_for('main.quote_calculator') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Quote Calculator</a>
+                <a href="{{ url_for('main.gallery') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Gallery</a>
+                <a href="{{ url_for('main.contact') }}" class="block px-3 py-2 text-wood-light hover:text-wood-accent">Contact</a>
             </div>
         </div>
     </nav>
@@ -139,11 +157,11 @@
                 <div>
                     <h2 class="text-lg font-semibold mb-4">Quick Links</h2>
                     <ul class="space-y-2">
-                        <li><a href="/about" class="hover:text-wood-accent">About Us</a></li>
-                        <li><a href="/products" class="hover:text-wood-accent">Industrial Packaging Solutions</a></li>
-                        <li><a href="/quote" class="hover:text-wood-accent">Custom Quote Calculator</a></li>
-                        <li><a href="/gallery" class="hover:text-wood-accent">Project Gallery</a></li>
-                        <li><a href="/contact" class="hover:text-wood-accent">Contact</a></li>
+                        <li><a href="{{ url_for('main.about') }}" class="hover:text-wood-accent">About Us</a></li>
+                        <li><a href="{{ url_for('main.products') }}" class="hover:text-wood-accent">Industrial Packaging Solutions</a></li>
+                        <li><a href="{{ url_for('main.quote_calculator') }}" class="hover:text-wood-accent">Custom Quote Calculator</a></li>
+                        <li><a href="{{ url_for('main.gallery') }}" class="hover:text-wood-accent">Project Gallery</a></li>
+                        <li><a href="{{ url_for('main.contact') }}" class="hover:text-wood-accent">Contact</a></li>
                     </ul>
                 </div>
                 <div>

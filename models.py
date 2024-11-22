@@ -1,72 +1,80 @@
-from app import db
-from datetime import datetime
-from werkzeug.security import generate_password_hash, check_password_hash
+from extensions import db
 from flask_login import UserMixin
-
-class Product(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    category = db.Column(db.String(50), nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class Inquiry(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(120), nullable=False)
-    company = db.Column(db.String(100))
-    industry = db.Column(db.String(50))
-    package_type = db.Column(db.String(50))
-    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
-    message = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class Testimonial(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    client_name = db.Column(db.String(100), nullable=False)
-    rating = db.Column(db.Integer, nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    is_featured = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-class GalleryProject(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False)
-    completion_date = db.Column(db.Date, nullable=False)
-    completion_time = db.Column(db.Integer)  # In days
-    client = db.Column(db.String(100))
-    category = db.Column(db.String(50), nullable=False)
-    industry_served = db.Column(db.String(50))
-    size_category = db.Column(db.String(50))  # Small, Medium, Large, Oversize
-    weight_capacity = db.Column(db.String(50))  # Weight capacity specification
-    ispm_compliant = db.Column(db.Boolean, default=False)  # International shipping compliance
-    special_features = db.Column(db.Text)  # JSON string of special features
-    is_featured = db.Column(db.Boolean, default=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+from datetime import datetime
 
 class Admin(UserMixin, db.Model):
+    __tablename__ = 'admins'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    password = db.Column(db.String(120), nullable=False)
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-class TeamMember(db.Model):
+class Product(db.Model):
+    __tablename__ = 'products'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
-    role = db.Column(db.String(80), nullable=False)
-    bio = db.Column(db.Text, nullable=False)
-    image_url = db.Column(db.String(200), nullable=False, default='/static/images/avatar-placeholder.svg')
-    order = db.Column(db.Integer, default=0)
-    is_active = db.Column(db.Boolean, default=True)
+    name = db.Column(db.String(100), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.Text)
+    image_url = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class TeamMember(db.Model):
+    __tablename__ = 'team_members'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    role = db.Column(db.String(100), nullable=False)
+    bio = db.Column(db.Text)
+    image_url = db.Column(db.String(255))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class GalleryProject(db.Model):
+    __tablename__ = 'gallery_projects'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.Text)
+    image_url = db.Column(db.String(255))
+    industry = db.Column(db.String(50))
+    size = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    completion_date = db.Column(db.DateTime)
+    category = db.Column(db.String(50))
+    industry_served = db.Column(db.String(50))
+    size_category = db.Column(db.String(50))
+
+
+    def __repr__(self):
+        return f'<GalleryProject {self.title}>'
+
+class Testimonial(db.Model):
+    __tablename__ = 'testimonials'
+    id = db.Column(db.Integer, primary_key=True)
+    client_name = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    rating = db.Column(db.Integer)  # Optional: for star ratings
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+def init_gallery_projects():
+    if GalleryProject.query.count() == 0:
+        projects = [
+            GalleryProject(
+                title="Custom Shipping Crates",
+                description="Heavy-duty shipping crates for industrial equipment",
+                image_url="/static/images/projects/crates.jpg",
+                industry="shipping",
+                size="large"
+            ),
+            GalleryProject(
+                title="Export Packaging",
+                description="ISPM-15 certified export packaging solutions",
+                image_url="/static/images/projects/export.jpg",
+                industry="export",
+                size="medium"
+            ),
+            # Add more sample projects as needed
+        ]
+        
+        for project in projects:
+            db.session.add(project)
+        db.session.commit()

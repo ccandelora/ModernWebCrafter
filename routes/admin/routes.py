@@ -1,14 +1,10 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request,current_app
 from flask_login import login_required, current_user
 from models import Product, GalleryProject, Testimonial, Admin, TeamMember
-from app import db
-from routes.utils.error_handlers import handle_exceptions, log_route_access
-from routes.admin.product_routes import products_bp
-from routes.admin.gallery_routes import gallery_bp
-from routes.admin.testimonial_routes import testimonials_bp
-from routes.admin.team_routes import team_bp
+from extensions import db
+from utils.decorators import log_route_access, handle_exceptions
 
-admin = Blueprint('admin', __name__, url_prefix='/admin')
+admin = Blueprint('admin', __name__)
 
 @admin.before_request
 def verify_admin():
@@ -57,34 +53,3 @@ def dashboard():
     except Exception as e:
         current_app.logger.error(f'Dashboard error: {str(e)}')
         return render_template('errors/500.html'), 500
-@admin.route('/products')
-@login_required
-@log_route_access('admin_products')
-@handle_exceptions
-def products():
-    products = Product.query.all()
-    return render_template('admin/products.html', products=products)
-
-@admin.route('/gallery')
-@login_required
-@log_route_access('admin_gallery')
-@handle_exceptions
-def gallery():
-    projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
-    return render_template('admin/gallery.html', projects=projects)
-
-@admin.route('/testimonials')
-@login_required
-@log_route_access('admin_testimonials')
-@handle_exceptions
-def testimonials():
-    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
-    return render_template('admin/testimonials.html', testimonials=testimonials)
-
-@admin.route('/team')
-@login_required
-@log_route_access('admin_team')
-@handle_exceptions
-def team():
-    team_members = TeamMember.query.order_by(TeamMember.order.asc()).all()
-    return render_template('admin/team.html', team_members=team_members)
