@@ -14,6 +14,15 @@ class Base(DeclarativeBase):
 
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
+from flask import json
+
+@app.template_filter('parse_json')
+def parse_json_filter(value):
+    try:
+        return json.loads(value) if value else {}
+    except:
+        return {}
+
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "woodcraft_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///woodproducts.db"
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
