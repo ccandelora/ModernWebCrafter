@@ -10,13 +10,17 @@ from routes.admin.team_routes import team_bp
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
+
 @admin.before_request
 def verify_admin():
     """Verify admin authentication."""
     if not current_user.is_authenticated:
-        current_app.logger.warning(f'Unauthorized dashboard access attempt from {request.remote_addr}')
+        current_app.logger.warning(
+            f'Unauthorized dashboard access attempt from {request.remote_addr}'
+        )
         flash('Please log in to access the admin dashboard', 'error')
         return redirect(url_for('auth.login'))
+
 
 @admin.before_request
 def verify_db():
@@ -27,6 +31,7 @@ def verify_db():
         current_app.logger.error(f'Database connection error: {str(e)}')
         return render_template('errors/500.html'), 500
 
+
 @admin.before_request
 def log_request_info():
     """Log detailed information about each request to admin routes."""
@@ -36,8 +41,8 @@ def log_request_info():
         f'Method: {request.method}\n'
         f'User: {current_user.username if not current_user.is_anonymous else "anonymous"}\n'
         f'IP: {request.remote_addr}\n'
-        f'User Agent: {request.user_agent.string}'
-    )
+        f'User Agent: {request.user_agent.string}')
+
 
 @admin.route('/')
 @login_required
@@ -45,7 +50,8 @@ def log_request_info():
 @handle_exceptions
 def dashboard():
     """Render the admin dashboard with enhanced logging and error handling."""
-    current_app.logger.debug(f'Dashboard access attempt by user: {current_user.username}')
+    current_app.logger.debug(
+        f'Dashboard access attempt by user: {current_user.username}')
     try:
         stats = {
             'products': Product.query.count(),
@@ -57,6 +63,8 @@ def dashboard():
     except Exception as e:
         current_app.logger.error(f'Dashboard error: {str(e)}')
         return render_template('errors/500.html'), 500
+
+
 @admin.route('/products')
 @login_required
 @log_route_access('admin_products')
@@ -65,20 +73,26 @@ def products():
     products = Product.query.all()
     return render_template('admin/products.html', products=products)
 
+
 @admin.route('/gallery')
 @login_required
 @log_route_access('admin_gallery')
 @handle_exceptions
 def gallery():
-    projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
+    projects = GalleryProject.query.order_by(
+        GalleryProject.completion_date.desc()).all()
     return render_template('admin/gallery.html', projects=projects)
+
 
 @admin.route('/testimonials')
 @login_required
 @log_route_access('admin_testimonials')
 @handle_exceptions
 def testimonials():
-    testimonials = Testimonial.query.order_by(Testimonial.created_at.desc()).all()
-    return render_template('admin/testimonials.html', testimonials=testimonials)
+    testimonials = Testimonial.query.order_by(
+        Testimonial.created_at.desc()).all()
+    return render_template('admin/testimonials.html',
+                           testimonials=testimonials)
+
 
 # Team management route moved to team_routes.py
