@@ -12,12 +12,12 @@
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-2">Project Type</label>
                 <div class="space-y-2">
-                    <a href="{{ url_for('gallery', industry=selected_industry, size=selected_size) }}" 
+                    <a href="{{ url_for('public.gallery', industry=selected_industry, size=selected_size) }}" 
                        class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         All Categories
                     </a>
                     {% for category in categories %}
-                    <a href="{{ url_for('gallery', category=category[0], industry=selected_industry, size=selected_size) }}" 
+                    <a href="{{ url_for('public.gallery', category=category[0], industry=selected_industry, size=selected_size) }}" 
                        class="block px-4 py-2 rounded-lg {% if selected_category == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         {{ category[0] }}
                     </a>
@@ -29,13 +29,13 @@
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-2">Industry Served</label>
                 <div class="space-y-2">
-                    <a href="{{ url_for('gallery', category=selected_category, size=selected_size) }}" 
+                    <a href="{{ url_for('public.gallery', category=selected_category, size=selected_size) }}" 
                        class="block px-4 py-2 rounded-lg {% if not selected_industry %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         All Industries
                     </a>
                     {% for industry in industries %}
                     {% if industry[0] %}
-                    <a href="{{ url_for('gallery', category=selected_category, industry=industry[0], size=selected_size) }}" 
+                    <a href="{{ url_for('public.gallery', category=selected_category, industry=industry[0], size=selected_size) }}" 
                        class="block px-4 py-2 rounded-lg {% if selected_industry == industry[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         {{ industry[0] }}
                     </a>
@@ -48,13 +48,13 @@
             <div>
                 <label class="block text-sm font-medium text-gray-600 mb-2">Size Category</label>
                 <div class="space-y-2">
-                    <a href="{{ url_for('gallery', category=selected_category, industry=selected_industry) }}" 
+                    <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry) }}" 
                        class="block px-4 py-2 rounded-lg {% if not selected_size %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         All Sizes
                     </a>
                     {% for size in sizes %}
                     {% if size[0] %}
-                    <a href="{{ url_for('gallery', category=selected_category, industry=selected_industry, size=size[0]) }}" 
+                    <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry, size=size[0]) }}" 
                        class="block px-4 py-2 rounded-lg {% if selected_size == size[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         {{ size[0] }}
                     </a>
