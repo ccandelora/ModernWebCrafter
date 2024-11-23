@@ -1,16 +1,22 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from models import Product, GalleryProject, Testimonial, Inquiry, TeamMember
+from models import Product, GalleryProject, Testimonial, TeamMember, Inquiry
 from app import db
 
-public = Blueprint('public', __name__)
+public = Blueprint('public', __name__, template_folder='templates')
 
 @public.route('/')
 def index():
-    featured_products = Product.query.limit(3).all()
-    testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
-    return render_template('index.html',
-                         products=featured_products,
-                         testimonials=testimonials)
+    try:
+        print("Attempting to render index page")
+        featured_products = Product.query.limit(3).all()
+        testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
+        print(f"Found {len(featured_products)} products and {len(testimonials)} testimonials")
+        return render_template('index.html',
+                             products=featured_products,
+                             testimonials=testimonials)
+    except Exception as e:
+        print(f"Error in index route: {str(e)}")
+        return str(e), 500
 
 @public.route('/about')
 def about():
