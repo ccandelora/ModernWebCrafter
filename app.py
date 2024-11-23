@@ -2,8 +2,12 @@ import os
 from flask import Flask
 from extensions import db, login_manager, csrf
 from datetime import datetime
-from models import GalleryProject
+from models import GalleryProject, User
 from routes.main import main_bp
+from routes.admin import admin
+from routes.admin.product_routes import products_bp
+from routes.auth import auth_bp
+from routes.public.routes import public
 
 def create_app():
     app = Flask(__name__)
@@ -25,32 +29,34 @@ def create_app():
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
 
-    with app.app_context():
-        # Import routes
-        from routes.main import main_bp
-        from routes.admin.routes import admin as admin_bp
-        from routes.auth.routes import auth as auth_bp
-
-        # Register blueprints
-        app.register_blueprint(main_bp, url_prefix='/')
-        app.register_blueprint(admin_bp, url_prefix='/admin')
-        app.register_blueprint(auth_bp, url_prefix='/auth')
-
-        # Initialize database and add sample data
-        init_db(app)
-
+    # Add user loader
     @login_manager.user_loader
     def load_user(user_id):
-        from models import Admin
-        return Admin.query.get(int(user_id))
+        return User.query.get(int(user_id))
 
-    # Context processors
+    # Add context processor for datetime
     @app.context_processor
     def utility_processor():
         return {
-            'now': datetime.utcnow()
+            'now': datetime.utcnow
         }
 
+    with app.app_context():
+        # Import blueprints
+        from routes.public.routes import public
+        from routes.admin import admin
+        from routes.admin.product_routes import products_bp
+        from routes.auth import auth_bp
+        
+        # Register blueprints with explicit template folders
+        app.register_blueprint(public)  # Register at root level
+        app.register_blueprint(admin, url_prefix='/admin')
+        app.register_blueprint(auth_bp, url_prefix='/auth')
+        app.register_blueprint(products_bp, url_prefix='/admin/products')
+        
+        # Initialize database
+        db.create_all()
+        
     return app
 
 def init_db(app):

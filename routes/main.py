@@ -12,9 +12,6 @@ def home():
 def about():
     return render_template('about.html')
 
-@main_bp.route('/products')
-def products():
-    return render_template('products.html')
 
 @main_bp.route('/quote-calculator')
 def quote_calculator():

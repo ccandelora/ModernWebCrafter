@@ -1,55 +1,19 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request,current_app
-from flask_login import login_required, current_user
-from models import Product, GalleryProject, Testimonial, Admin, TeamMember
-from extensions import db
+from flask import Blueprint, redirect, url_for, render_template
 from utils.decorators import log_route_access, handle_exceptions
+from flask_login import login_required
 
 admin = Blueprint('admin', __name__)
 
-@admin.before_request
-def verify_admin():
-    """Verify admin authentication."""
-    if not current_user.is_authenticated:
-        current_app.logger.warning(f'Unauthorized dashboard access attempt from {request.remote_addr}')
-        flash('Please log in to access the admin dashboard', 'error')
-        return redirect(url_for('auth.login'))
-
-@admin.before_request
-def verify_db():
-    """Verify database connection."""
-    try:
-        db.session.query(Admin).first()
-    except Exception as e:
-        current_app.logger.error(f'Database connection error: {str(e)}')
-        return render_template('errors/500.html'), 500
-
-@admin.before_request
-def log_request_info():
-    """Log detailed information about each request to admin routes."""
-    current_app.logger.debug(
-        'Admin Route Request:\n'
-        f'Path: {request.path}\n'
-        f'Method: {request.method}\n'
-        f'User: {current_user.username if not current_user.is_anonymous else "anonymous"}\n'
-        f'IP: {request.remote_addr}\n'
-        f'User Agent: {request.user_agent.string}'
-    )
-
 @admin.route('/')
+@login_required
+@log_route_access('admin_index')
+@handle_exceptions
+def admin_index():
+    return redirect(url_for('admin.dashboard'))
+
+@admin.route('/dashboard')
 @login_required
 @log_route_access('admin_dashboard')
 @handle_exceptions
 def dashboard():
-    """Render the admin dashboard with enhanced logging and error handling."""
-    current_app.logger.debug(f'Dashboard access attempt by user: {current_user.username}')
-    try:
-        stats = {
-            'products': Product.query.count(),
-            'gallery_projects': GalleryProject.query.count(),
-            'testimonials': Testimonial.query.count()
-        }
-        current_app.logger.debug(f'Dashboard stats retrieved: {stats}')
-        return render_template('admin/dashboard.html', stats=stats)
-    except Exception as e:
-        current_app.logger.error(f'Dashboard error: {str(e)}')
-        return render_template('errors/500.html'), 500
+    return render_template('admin/dashboard.html')
