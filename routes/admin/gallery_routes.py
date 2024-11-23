@@ -81,3 +81,45 @@ def gallery():
     except Exception as e:
         flash(f'An error occurred: {str(e)}', 'error')
         return redirect(url_for('admin.dashboard'))
+
+@gallery_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
+@login_required
+@log_route_access('edit_gallery_project')
+@handle_exceptions
+def edit_gallery_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    if request.method == 'POST':
+        project.title = request.form.get('title')
+        project.description = request.form.get('description')
+        project.category = request.form.get('category')
+        project.industry_served = request.form.get('industry_served')
+        project.size_category = request.form.get('size_category')
+        project.weight_capacity = request.form.get('weight_capacity')
+        project.ispm_compliant = bool(request.form.get('ispm_compliant'))
+        project.is_featured = bool(request.form.get('is_featured'))
+
+        image = request.files.get('image')
+        if image and image.filename:
+            try:
+                new_image_path = handle_file_upload(image, old_file_path=project.image_url)
+                project.image_url = new_image_path
+            except Exception as e:
+                flash(str(e), 'error')
+                return redirect(url_for('admin.admin_gallery.gallery'))
+
+        db.session.commit()
+        flash('Project updated successfully', 'success')
+        return redirect(url_for('admin.admin_gallery.gallery'))
+
+    return render_template('admin/edit_project.html', project=project)
+
+@gallery_bp.route('/<int:id>/delete', methods=['POST'])
+@login_required
+@log_route_access('delete_gallery_project')
+@handle_exceptions
+def delete_project(id):
+    project = GalleryProject.query.get_or_404(id)
+    db.session.delete(project)
+    db.session.commit()
+    flash('Project deleted successfully', 'success')
+    return redirect(url_for('admin.admin_gallery.gallery'))
