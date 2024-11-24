@@ -7,25 +7,32 @@ def init_app(app):
     try:
         # Initialize error handlers first
         ErrorHandler.init_app(app)
+        app.logger.debug('Error handlers initialized')
         
-        # Import blueprints
-        from routes.admin.routes import admin
-        from routes.auth.routes import auth
-        from routes.public.routes import public
-        
-        # Register blueprints in a single try block
-        blueprints = [
-            ('admin', admin),
-            ('auth', auth),
-            ('public', public)
-        ]
-        
-        for name, blueprint in blueprints:
-            try:
-                app.register_blueprint(blueprint)
-            except Exception as e:
-                app.logger.error(f'Failed to register {name} blueprint: {str(e)}')
-                raise
+        # Import and register blueprints with error handling
+        try:
+            from routes.admin.routes import admin
+            app.register_blueprint(admin)
+            app.logger.debug('Admin blueprint registered')
+        except Exception as e:
+            app.logger.error(f'Failed to register admin blueprint: {str(e)}')
+            raise
+
+        try:
+            from routes.auth.routes import auth
+            app.register_blueprint(auth)
+            app.logger.debug('Auth blueprint registered')
+        except Exception as e:
+            app.logger.error(f'Failed to register auth blueprint: {str(e)}')
+            raise
+
+        try:
+            from routes.public.routes import public
+            app.register_blueprint(public)
+            app.logger.debug('Public blueprint registered')
+        except Exception as e:
+            app.logger.error(f'Failed to register public blueprint: {str(e)}')
+            raise
 
         app.logger.info('All routes registered successfully')
         

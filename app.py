@@ -26,86 +26,255 @@ def parse_json_filter(value):
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "woodcraft_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///woodproducts.db"
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 300,
     "pool_pre_ping": True,
-    "pool_recycle": 30,  # Recycle connections every 30 seconds for faster cleanup
-    "pool_timeout": 3,   # Reduce timeout for faster failure detection
-    "pool_size": 3,      # Minimal pool size for better resource usage
-    "max_overflow": 1,   # Limited overflow to prevent resource exhaustion
-    "connect_args": {
-        "timeout": 3,     # Faster timeout for connection attempts
-        "check_same_thread": False,
-        "cached_statements": 10   # Further reduced statement cache for memory optimization
-    }
 }
-
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-# Configure logging
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO)
-
-# Import models at the top level
-from models import Admin
 
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth.login'  # type: ignore
 
+
 @login_manager.user_loader
 def load_user(user_id):
+    from models import Admin
     return Admin.query.get(int(user_id))
 
-def init_app():
-    """Initialize the Flask application with optimized startup."""
-    try:
-        # Create instance directory if it doesn't exist
+
+import logging
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# Initialize database
+db.init_app(app)
+
+# Register error handlers
+try:
+    from routes.utils.error_handlers import ErrorHandler
+    ErrorHandler.init_app(app)
+    app.logger.info('Error handlers initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize error handlers: {str(e)}')
+    raise
+
+# Initialize routes with error handling
+try:
+    from routes import init_app
+    init_app(app)
+    app.logger.info('Routes initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize routes: {str(e)}')
+    raise
+
+# Database initialization with error handling
+try:
+    with app.app_context():
+        import models
+        # Ensure instance folder exists
+        import os
         if not os.path.exists('instance'):
-            os.makedirs('instance', exist_ok=True)
-            logger.info('Created instance directory')
-        
-        # Initialize database
-        db.init_app(app)
-        
-        # Initialize database with retry logic
-        from database import init_db_with_retry
-        init_db_with_retry(app)
-        
-        # Initialize blueprints and error handlers
-        with app.app_context():
-            from routes import init_app as init_routes
-            init_routes(app)
-        
-        logger.info('Application initialized successfully')
-        return True
-    except Exception as e:
-        logger.error(f'Failed to initialize application: {str(e)}')
-        raise
+            os.makedirs('instance')
+            app.logger.info('Created instance directory')
 
-# Register cleanup handlers
-@atexit.register
-def cleanup():
-    """Cleanup function to be called on application shutdown."""
-    try:
-        if hasattr(db, 'session'):
-            db.session.remove()
-        if hasattr(db, 'engine'):
-            db.engine.dispose()
-        logger.info("Database connections cleaned up successfully")
-    except Exception as e:
-        logger.error(f"Error during cleanup: {str(e)}")
+        db.create_all()
+        app.logger.info('Database initialized successfully')
+except Exception as e:
+    app.logger.error(f'Failed to initialize database: {str(e)}')
+    raise
 
-if __name__ == '__main__':
-    # Initialize the application
-    init_app()
-    
-    # Initialize sample data
-    try:
-        from init_db import init_sample_data
-        init_sample_data()
-        logger.info("Sample data initialized successfully")
-    except Exception as e:
-        logger.error(f"Error initializing sample data: {str(e)}")
-    
-    # Run the application
-    app.run(host='0.0.0.0', port=5000)
+    # Clear existing products
+    from models import Product
+    Product.query.delete()
+
+    # Add sample products
+    sample_products = [
+        Product(
+            name="ISPM 15 Certified Export Crates",
+            description=
+            "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
+            category="Export Crates",
+            image_url="/static/images/workshop.jpg",
+            price=0.0  # Quote based
+        ),
+        Product(
+            name="Cushioned Crates",
+            description=
+            "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
+            category="Protective Packaging",
+            image_url="/static/images/workshop.jpg",
+            price=0.0),
+        Product(
+            name="Export Skidmates",
+            description=
+            "Specialized skid systems designed for international shipping with integrated protection.",
+            category="Export Solutions",
+            image_url="/static/images/workshop.jpg",
+            price=0.0),
+        Product(
+            name="Cushion Skids with Ramp",
+            description=
+            "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
+            category="Industrial Skids",
+            image_url="/static/images/workshop.jpg",
+            price=0.0),
+        Product(
+            name="Oversize Crates",
+            description=
+            "Custom-built oversized crating solutions for large industrial equipment and machinery.",
+            category="Specialty Solutions",
+            image_url="/static/images/workshop.jpg",
+            price=0.0)
+    ]
+
+    # Add sample testimonials if none exist
+    from models import Testimonial
+    if not Testimonial.query.first():
+        sample_testimonials = [
+            Testimonial(
+                client_name="John D.",
+                rating=5,
+                content=
+                "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
+                is_featured=True),
+            Testimonial(
+                client_name="Sarah M.",
+                rating=4,
+                content=
+                "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
+                is_featured=True),
+            Testimonial(
+                client_name="Michael R.",
+                rating=5,
+                content=
+                "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
+                is_featured=True)
+        ]
+        for testimonial in sample_testimonials:
+            db.session.add(testimonial)
+
+    # Clear and add updated gallery projects
+    from models import GalleryProject
+    GalleryProject.query.delete()
+
+    sample_projects = [
+        GalleryProject(
+            title="Medical Equipment Export Package",
+            description=
+            "ISPM 15 certified export crates designed for sensitive medical equipment shipping to Europe. Features custom foam cushioning and moisture barriers.",
+            image_url="/static/images/workshop.jpg",
+            completion_date=date(2024, 1, 15),
+            completion_time=14,
+            client="MedTech Solutions",
+            category="ISPM 15 Certified Export Crates",
+            industry_served="Medical Equipment",
+            size_category="Large",
+            weight_capacity="Up to 2,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "moisture_control":
+                "Vapor barrier system",
+                "cushioning":
+                "Custom foam inserts",
+                "monitoring":
+                "Shock indicators installed"
+            }),
+            is_featured=True),
+        GalleryProject(
+            title="Industrial Press Shipping Solution",
+            description=
+            "Cushioned skids with integrated ramp system for 20-ton industrial equipment. Custom-engineered for repeated use and easy forklift access.",
+            image_url="/static/images/workshop.jpg",
+            completion_date=date(2024, 2, 20),
+            completion_time=21,
+            client="Industrial Dynamics",
+            category="Cushion Skids with Ramp",
+            industry_served="Manufacturing",
+            size_category="Oversize",
+            weight_capacity="Up to 20,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "ramp_system": "Integrated hydraulic ramp",
+                "cushioning": "Heavy-duty shock absorption",
+                "reusability": "Designed for 10+ uses"
+            }),
+            is_featured=True),
+        GalleryProject(
+            title="Wind Turbine Component Package",
+            description=
+            "Custom oversized crates for wind turbine components with specialized bracing and moisture control systems.",
+            image_url="/static/images/workshop.jpg",
+            completion_date=date(2024, 3, 10),
+            completion_time=30,
+            client="Green Energy Corp",
+            category="Specialty/Oversize Solutions",
+            industry_served="Renewable Energy",
+            size_category="Oversize",
+            weight_capacity="Up to 15,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "bracing": "Custom steel reinforcement",
+                "moisture_control": "Active dehumidification",
+                "monitoring": "GPS tracking system"
+            }),
+            is_featured=True),
+        GalleryProject(
+            title="Electronics Reusable Export System",
+            description=
+            "Developed a reusable crating system with Skidmates for regular international shipments, reducing packaging waste by 85%.",
+            image_url="/static/images/workshop.jpg",
+            completion_date=date(2024, 4, 5),
+            completion_time=25,
+            client="Global Electronics Ltd",
+            category="Export with Skidmates",
+            industry_served="Electronics",
+            size_category="Medium",
+            weight_capacity="Up to 5,000 kg",
+            ispm_compliant=True,
+            special_features=json.dumps({
+                "reusability": "100+ use cycle",
+                "cushioning": "Modular foam system",
+                "security": "Tamper-evident seals"
+            }),
+            is_featured=True)
+    ]
+
+    # Add the sample projects
+    for project in sample_projects:
+        db.session.add(project)
+
+    # Add the sample products
+    for product in sample_products:
+        db.session.add(product)
+
+    db.session.commit()
+    # Add sample team members if none exist
+    from models import TeamMember
+    if not TeamMember.query.first():
+        sample_team = [
+            TeamMember(
+                name="John Smith",
+                role="CEO & Founder",
+                bio=
+                "30+ years of expertise in custom industrial packaging solutions and international shipping.",
+                order=1,
+                is_active=True),
+            TeamMember(
+                name="Sarah Johnson",
+                role="Operations Director",
+                bio=
+                "25+ years of manufacturing and industrial packaging operations expertise.",
+                order=2,
+                is_active=True),
+            TeamMember(
+                name="Michael Brown",
+                role="Engineering Manager",
+                bio=
+                "20+ years of custom wood crating and export packaging design experience.",
+                order=3,
+                is_active=True)
+        ]
+        for member in sample_team:
+            db.session.add(member)
