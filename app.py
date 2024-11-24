@@ -26,16 +26,19 @@ def parse_json_filter(value):
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "woodcraft_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///woodproducts.db"
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_recycle": 300,
     "pool_pre_ping": True,
-    "pool_timeout": 30,
-    "connect_args": {"timeout": 15}
+    "pool_recycle": 30,  # Recycle connections every 30 seconds for faster cleanup
+    "pool_timeout": 3,   # Reduce timeout for faster failure detection
+    "pool_size": 3,      # Minimal pool size for better resource usage
+    "max_overflow": 1,   # Limited overflow to prevent resource exhaustion
+    "connect_args": {
+        "timeout": 3,     # Faster timeout for connection attempts
+        "check_same_thread": False,
+        "cached_statements": 10   # Further reduced statement cache for memory optimization
+    }
 }
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-import time
-import logging
-from sqlalchemy.exc import OperationalError
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -47,68 +50,62 @@ from models import Admin
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'auth.login'
+login_manager.login_view = 'auth.login'  # type: ignore
 
 @login_manager.user_loader
 def load_user(user_id):
     return Admin.query.get(int(user_id))
 
-def init_db_with_retry(max_retries=3, retry_delay=2):
-    """Initialize database with retry logic."""
-    retries = 0
-    while retries < max_retries:
-        try:
-            with app.app_context():
-                # Ensure instance folder exists
-                if not os.path.exists('instance'):
-                    os.makedirs('instance')
-                    logger.info('Created instance directory')
-                
-                # Initialize database
-                db.create_all()
-                logger.info('Database initialized successfully')
-                return True
-        except OperationalError as e:
-            retries += 1
-            logger.warning(f'Database initialization attempt {retries} failed: {str(e)}')
-            if retries < max_retries:
-                time.sleep(retry_delay)
-            else:
-                logger.error('Database initialization failed after maximum retries')
-                raise
-        except Exception as e:
-            logger.error(f'Unexpected error during database initialization: {str(e)}')
-            raise
-
 def init_app():
-    """Initialize the Flask application."""
+    """Initialize the Flask application with optimized startup."""
     try:
+        # Create instance directory if it doesn't exist
+        if not os.path.exists('instance'):
+            os.makedirs('instance', exist_ok=True)
+            logger.info('Created instance directory')
+        
         # Initialize database
         db.init_app(app)
         
         # Initialize database with retry logic
-        init_db_with_retry()
+        from database import init_db_with_retry
+        init_db_with_retry(app)
         
-        # Register error handlers
-        from routes.utils.error_handlers import ErrorHandler
-        ErrorHandler.init_app(app)
-        
-        # Initialize routes
-        from routes import init_app as init_routes
-        init_routes(app)
+        # Initialize blueprints and error handlers
+        with app.app_context():
+            from routes import init_app as init_routes
+            init_routes(app)
         
         logger.info('Application initialized successfully')
+        return True
     except Exception as e:
         logger.error(f'Failed to initialize application: {str(e)}')
         raise
 
-# Initialize the application
-init_app()
+# Register cleanup handlers
+@atexit.register
+def cleanup():
+    """Cleanup function to be called on application shutdown."""
+    try:
+        if hasattr(db, 'session'):
+            db.session.remove()
+        if hasattr(db, 'engine'):
+            db.engine.dispose()
+        logger.info("Database connections cleaned up successfully")
+    except Exception as e:
+        logger.error(f"Error during cleanup: {str(e)}")
 
-# Initialize sample data
-try:
-    from init_db import init_sample_data
-    init_sample_data()
-    logger.info("Sample data initialized successfully")
-except Exception as e:
-    logger.error(f"Error initializing sample data: {str(e)}")
+if __name__ == '__main__':
+    # Initialize the application
+    init_app()
+    
+    # Initialize sample data
+    try:
+        from init_db import init_sample_data
+        init_sample_data()
+        logger.info("Sample data initialized successfully")
+    except Exception as e:
+        logger.error(f"Error initializing sample data: {str(e)}")
+    
+    # Run the application
+    app.run(host='0.0.0.0', port=5000)
