@@ -28,7 +28,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///woodproducts.db"
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
+    "pool_timeout": 30,
+    "connect_args": {"timeout": 15}
 }
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -85,12 +88,12 @@ except Exception as e:
     app.logger.error(f'Failed to initialize database: {str(e)}')
     raise
 
-    # Clear existing products
-    from models import Product
-    Product.query.delete()
-
-    # Add sample products
-    sample_products = [
+    # Only add sample data if tables are empty
+    from models import Product, Testimonial, GalleryProject, TeamMember
+    
+    if not Product.query.first():
+        # Add sample products
+        sample_products = [
         Product(
             name="ISPM 15 Certified Export Crates",
             description=
