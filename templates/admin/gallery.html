@@ -82,7 +82,9 @@
                 <div>
                     <label for="image" class="block text-sm font-medium text-gray-600">Project Image</label>
                     <input type="file" id="image" name="image" accept="image/*"
-                           class="mt-1 block w-full">
+                           class="mt-1 block w-full"
+                           onchange="previewImage(this)">
+                    <img id="imagePreview" class="mt-2 hidden max-w-xs" loading="lazy" decoding="async">
                 </div>
 
                 <div class="flex items-center space-x-4">

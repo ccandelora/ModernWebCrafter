@@ -1,25 +1,46 @@
-{% extends "base.html" %}
-
-{% block content %}
-<div class="bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[600px] relative overflow-hidden">
+{% extends "base.html" %} {% block content %}
+<div
+    class="bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[300px] relative overflow-hidden"
+>
     <div class="absolute inset-0 opacity-10 bg-pattern"></div>
-    <div class="relative w-full min-h-[600px]">
+    <div class="relative w-full min-h-[300px]">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 h-full relative">
-                <div class="text-left flex flex-col justify-center z-10 space-y-6 md:space-y-4 px-4 py-12 md:py-24">
-                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">Industrial Wood Packaging Solutions</h1>
-                    <p class="text-lg sm:text-xl opacity-90">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
+                <div
+                    class="text-left flex flex-col justify-center z-10 space-y-6 md:space-y-4 px-4 py-12 md:py-24"
+                >
+                    <h1
+                        class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
+                    >
+                        Industrial Wood Packaging Solutions
+                    </h1>
+                    <p class="text-lg sm:text-xl opacity-90">
+                        Custom-engineered wood packaging solutions for global
+                        shipping and industrial applications
+                    </p>
                     <div class="flex flex-col sm:flex-row gap-4 sm:space-x-4">
-                        <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">View Solutions</a>
-                        <a href="/quote" class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">Get Quote</a>
+                        <a
+                            href="/products"
+                            class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center"
+                            >View Solutions</a
+                        >
+                        <a
+                            href="/quote"
+                            class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center"
+                            >Get Quote</a
+                        >
                     </div>
                 </div>
-                <div class="absolute right-0 top-0 h-full w-full md:w-[60%] order-last">
-                    <img 
-                        src="/static/images/wood_crate2.jpg" 
-                        alt="Industrial Wood Packaging" 
-                        class="w-full h-[300px] md:h-full object-cover object-center md:object-left" 
-                        loading="lazy"
+                <div
+                    class="absolute right-0 top-0 h-full w-full md:w-[47%] order-last"
+                >
+                    <img
+                        src="/static/images/wood_crate.jpg"
+                        alt="Industrial Wood Packaging"
+                        class="w-full h-[300px] md:h-full object-cover object-center md:object-right"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
                     />
                 </div>
             </div>
@@ -28,17 +49,35 @@
 </div>
 
 <div class="container mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold text-center mb-12">Industrial Packaging Solutions</h2>
+    <h2 class="text-3xl font-bold text-center mb-12">
+        Industrial Packaging Solutions
+    </h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% for product in products %}
         <div class="transform hover:-translate-y-1 transition duration-300">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <img src="{{ product.image_url }}" class="w-full h-64 object-cover" loading="lazy" alt="{{ product.name }}" decoding="async">
+                <img
+                    src="{{ product.image_url }}"
+                    class="w-full h-64 object-cover"
+                    loading="lazy"
+                    alt="{{ product.name }}"
+                    decoding="async"
+                />
                 <div class="p-6">
-                    <h5 class="text-xl font-semibold mb-2">{{ product.name }}</h5>
-                    <p class="text-gray-600 mb-4">{{ product.description[:100] }}...</p>
-                    <p class="text-wood-brown font-bold text-lg mb-4">Contact for Quote</p>
-                    <a href="/contact" class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">Request Quote</a>
+                    <h5 class="text-xl font-semibold mb-2">
+                        {{ product.name }}
+                    </h5>
+                    <p class="text-gray-600 mb-4">
+                        {{ product.description[:100] }}...
+                    </p>
+                    <p class="text-wood-brown font-bold text-lg mb-4">
+                        Contact for Quote
+                    </p>
+                    <a
+                        href="/contact"
+                        class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300"
+                        >Request Quote</a
+                    >
                 </div>
             </div>
         </div>
@@ -51,31 +90,68 @@
         <div>
             <h2 class="text-3xl font-bold mb-8">Why Choose Us?</h2>
             <ul class="space-y-4">
-                <li class="flex items-center"><i class="fas fa-certificate text-wood-brown mr-2"></i> NELMA Certified Manufacturing</li>
-                <li class="flex items-center"><i class="fas fa-check-circle text-wood-brown mr-2"></i> ISPM 15 Compliance for Global Shipping</li>
-                <li class="flex items-center"><i class="fas fa-globe text-wood-brown mr-2"></i> Global Shipping Expertise</li>
-                <li class="flex items-center"><i class="fas fa-history text-wood-brown mr-2"></i> 40+ Years Industry Experience</li>
+                <li class="flex items-center">
+                    <i class="fas fa-certificate text-wood-brown mr-2"></i>
+                    NELMA Certified Manufacturing
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-check-circle text-wood-brown mr-2"></i>
+                    ISPM 15 Compliance for Global Shipping
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-globe text-wood-brown mr-2"></i> Global
+                    Shipping Expertise
+                </li>
+                <li class="flex items-center">
+                    <i class="fas fa-history text-wood-brown mr-2"></i> 40+
+                    Years Industry Experience
+                </li>
             </ul>
         </div>
         <div>
-            <img src="/static/images/workshop.jpg" class="rounded-lg shadow-lg" loading="lazy" decoding="async" alt="Industrial Workshop">
+            <img
+                src="/static/images/workshop.jpg"
+                class="rounded-lg shadow-lg"
+                loading="lazy"
+                decoding="async"
+                alt="Industrial Workshop"
+            />
         </div>
     </div>
 </div>
 
 <div class="bg-wood-accent bg-opacity-10 py-16">
     <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">Client Testimonials</h2>
+        <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">
+            Client Testimonials
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {% for testimonial in testimonials %}
-            <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">
+            <div
+                class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300"
+            >
                 <div class="flex items-center mb-4">
-                    <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4" loading="lazy" decoding="async">
+                    <img
+                        src="/static/images/avatar-placeholder.svg"
+                        alt="Client"
+                        class="w-12 h-12 rounded-full mr-4"
+                        loading="lazy"
+                        decoding="async"
+                        loading="lazy"
+                        decoding="async"
+                    />
                     <div>
-                        <h4 class="font-semibold text-wood-dark">{{ testimonial.client_name }}</h4>
+                        <h4 class="font-semibold text-wood-dark">
+                            {{ testimonial.client_name }}
+                        </h4>
                         <div class="flex">
                             {% for _ in range(testimonial.rating) %}
-                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4" loading="lazy">
+                            <img
+                                src="/static/images/star.svg"
+                                alt="star"
+                                class="w-4 h-4"
+                                loading="lazy"
+                            />
                             {% endfor %}
                         </div>
                     </div>
