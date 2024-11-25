@@ -1,20 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="relative overflow-hidden bg-gradient-to-r from-wood-dark to-wood-brown text-white" style="height: 600px;">
+<div class="relative overflow-hidden bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[600px]">
     <div class="absolute inset-0 opacity-10 bg-pattern"></div>
-    <div class="container mx-auto px-4 h-full">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full relative overflow-visible">
-            <div class="text-left flex flex-col justify-center order-2 md:order-1 z-10">
-                <h1 class="text-4xl md:text-5xl font-bold mb-4">Industrial Wood Packaging Solutions</h1>
-                <p class="text-xl mb-8">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
-                <div class="flex space-x-4">
-                    <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">View Solutions</a>
-                    <a href="/quote" class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">Get Quote</a>
+    <div class="container mx-auto px-4 py-12 md:py-0 min-h-[600px]">
+        <div class="flex flex-col md:grid md:grid-cols-2 gap-8 h-full relative">
+            <div class="text-left flex flex-col justify-center z-10 space-y-6 md:space-y-4">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">Industrial Wood Packaging Solutions</h1>
+                <p class="text-lg sm:text-xl opacity-90">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
+                <div class="flex flex-col sm:flex-row gap-4 sm:space-x-4">
+                    <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">View Solutions</a>
+                    <a href="/quote" class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">Get Quote</a>
                 </div>
             </div>
-            <div class="absolute md:relative w-full h-full order-1 md:order-2 overflow-visible" style="right: -15%;">
-                <img src="/static/images/wood_crate2.jpg" alt="Industrial Wood Packaging" class="w-[115%] h-full object-cover object-left" loading="lazy" style="max-width: none;" />
+            <div class="relative w-full md:h-full order-last">
+                <img 
+                    src="/static/images/wood_crate2.jpg" 
+                    alt="Industrial Wood Packaging" 
+                    class="w-full md:w-[115%] h-[300px] md:h-full object-cover object-center md:object-left rounded-lg md:rounded-none" 
+                    loading="lazy"
+                />
             </div>
         </div>
     </div>
