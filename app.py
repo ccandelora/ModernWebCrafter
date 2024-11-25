@@ -15,6 +15,17 @@ class Base(DeclarativeBase):
 db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 from flask import json
+from flask import json
+import datetime
+
+def custom_json_encoder(obj):
+    if hasattr(obj, '__dict__'):
+        return obj.__dict__
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    raise TypeError(f'Object of type {type(obj)} is not JSON serializable')
+
+app.json.encoder = custom_json_encoder
 
 @app.template_filter('parse_json')
 def parse_json_filter(value):

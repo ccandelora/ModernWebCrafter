@@ -10,7 +10,25 @@ def index():
         print("Attempting to render index page")
         featured_products = Product.query.limit(3).all()
         testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
+        print("Attempting to fetch featured products and testimonials...")
         print(f"Found {len(featured_products)} products and {len(testimonials)} testimonials")
+        
+        # Debug products data
+        for idx, product in enumerate(featured_products):
+            print(f"Product {idx + 1}:")
+            print(f"  Name: {product.name}")
+            print(f"  Description: {product.description}")
+            print(f"  Image URL: {product.image_url}")
+            print(f"  Category: {product.category}")
+            
+        # Debug testimonials data
+        for idx, testimonial in enumerate(testimonials):
+            print(f"Testimonial {idx + 1}:")
+            print(f"  Client Name: {testimonial.client_name}")
+            print(f"  Rating: {testimonial.rating}")
+            print(f"  Content: {testimonial.content}")
+            print(f"  Featured: {testimonial.is_featured}")
+            
         hero_variant = request.args.get('hero', '1')
         return render_template('index.html',
                              products=featured_products,
