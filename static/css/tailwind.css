@@ -866,6 +866,10 @@ body {
   width: 100%;
 }
 
+.w-\[115\%\] {
+  width: 115%;
+}
+
 .max-w-4xl {
   max-width: 56rem;
 }
@@ -983,6 +987,10 @@ body {
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
 }
 
 .rounded {
@@ -1112,6 +1120,11 @@ body {
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.object-left {
+  -o-object-position: left;
+     object-position: left;
 }
 
 .p-2 {
