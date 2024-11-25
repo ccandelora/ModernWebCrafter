@@ -1,14 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="relative bg-wood-dark text-white py-24">
-    <div class="absolute inset-0 bg-opacity-80" style="background-image: url('/static/images/wood-texture.svg'); background-size: cover;"></div>
-    <div class="container mx-auto px-4 text-center relative z-10">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4">Industrial Wood Packaging Solutions</h1>
-        <p class="text-xl mb-8">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
-        <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">View Solutions</a>
+    <div class="mx-auto w-full max-w-7xl pb-20 pt-16 text-center lg:py-48 lg:text-left">
+      <div class="px-6 sm:px-8 lg:w-1/2 xl:pr-16">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl lg:text-5xl xl:text-6xl">
+          <span class="block xl:inline">Industrial Wood</span>
+          <span class="block text-wood-brown xl:inline">Packaging Solutions</span>
+        </h1>
+        <p class="mx-auto mt-3 max-w-md text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
+          Custom-engineered wood packaging solutions for global shipping and industrial applications
+        </p>
+        <div class="mt-10 sm:flex sm:justify-center lg:justify-start">
+          <div class="rounded-md shadow">
+            <a href="/products" class="flex w-full items-center justify-center rounded-md border border-transparent bg-wood-brown px-8 py-3 text-base font-medium text-white hover:bg-wood-dark md:px-10 md:py-4 md:text-lg">
+              View Solutions
+            </a>
+          </div>
+          <div class="mt-3 rounded-md shadow sm:ml-3 sm:mt-0">
+            <a href="/contact" class="flex w-full items-center justify-center rounded-md border border-transparent bg-white px-8 py-3 text-base font-medium text-wood-brown hover:bg-gray-50 md:px-10 md:py-4 md:text-lg">
+              Request Quote
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    <div class="relative h-64 w-full sm:h-72 md:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-full lg:w-1/2">
+      <img class="absolute inset-0 size-full object-cover" src="/static/images/wood_crate.jpg" alt="Industrial wood crate packaging">
+    </div>
 
 <div class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold text-center mb-12">Industrial Packaging Solutions</h2>
