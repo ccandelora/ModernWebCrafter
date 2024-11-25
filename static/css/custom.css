@@ -10,15 +10,24 @@
 
 /* Mobile optimized text styles */
 @media (max-width: 768px) {
-    .hero-title {
-        @apply text-black;
-        -webkit-text-stroke: 1px white;
-        text-shadow: 2px 2px 0 white;
+    .hero-content {
+        position: relative;
+        z-index: 10;
+        padding: 2rem;
     }
+    .hero-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: -1;
+    }
+    .hero-title,
     .hero-subtitle {
-        @apply text-black;
-        -webkit-text-stroke: 0.5px white;
-        text-shadow: 1px 1px 0 white;
+        color: white;
     }
     .hero-cta {
         @apply bg-wood-brown text-white border-none;
