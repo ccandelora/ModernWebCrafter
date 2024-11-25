@@ -87,22 +87,20 @@ try:
 
         # Sample products data
         sample_products = [
-            Product(
-                name="ISPM 15 Certified Export Crates",
-                description=
-                "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
-                category="Export Crates",
-                image_url="/static/images/workshop.jpg",
-                price=0.0  # Quote based
-            ),
-            Product(
-                name="Cushioned Crates",
-                description=
-                "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
-                category="Protective Packaging",
-                image_url="/static/images/workshop.jpg",
-                price=0.0
-            ),
+            Product(**{
+                'name': "ISPM 15 Certified Export Crates",
+                'description': "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
+                'category': "Export Crates",
+                'image_url': "/static/images/workshop.jpg",
+                'price': 0.0  # Quote based
+            }),
+            Product(**{
+                'name': "Cushioned Crates",
+                'description': "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
+                'category': "Protective Packaging",
+                'image_url': "/static/images/workshop.jpg",
+                'price': 0.0
+            }),
             Product(
                 name="Export Skidmates",
                 description=
@@ -137,37 +135,38 @@ try:
             db.session.commit()
             app.logger.info(f'Added {len(sample_products)} products successfully')
 
-        # Check and populate testimonials
+        # Check and populate testimonials independently
         if not Testimonial.query.first():
-                app.logger.info('Populating sample testimonials data...')
-                sample_testimonials = [
-                    Testimonial(
-                        client_name="John D.",
-                        rating=5,
-                        content=
-                        "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
-                        is_featured=True),
-                    Testimonial(
-                        client_name="Sarah M.",
-                        rating=4,
-                        content=
-                        "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
-                        is_featured=True),
-                    Testimonial(
-                        client_name="Michael R.",
-                        rating=5,
-                        content=
-                        "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
-                        is_featured=True)
-                ]
-                for testimonial in sample_testimonials:
-                    db.session.add(testimonial)
+            app.logger.info('Populating sample testimonials data...')
+            sample_testimonials = [
+                Testimonial(**{
+                    'client_name': "John D.",
+                    'rating': 5,
+                    'content': "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
+                    'is_featured': True
+                }),
+                Testimonial(
+                    client_name="Sarah M.",
+                    rating=4,
+                    content=
+                    "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
+                    is_featured=True),
+                Testimonial(
+                    client_name="Michael R.",
+                    rating=5,
+                    content=
+                    "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
+                    is_featured=True)
+            ]
+            for testimonial in sample_testimonials:
+                db.session.add(testimonial)
+            db.session.commit()
+            app.logger.info(f'Added {len(sample_testimonials)} testimonials successfully')
 
-                # Add gallery projects if none exist
-                from models import GalleryProject
-                if not GalleryProject.query.first():
-                    app.logger.info('Populating sample gallery projects data...')
-                    sample_projects = [
+        # Check and populate gallery projects independently
+        if not GalleryProject.query.first():
+            app.logger.info('Populating sample gallery projects data...')
+            sample_projects = [
         GalleryProject(
             title="Medical Equipment Export Package",
             description=
@@ -250,43 +249,38 @@ try:
     ]
 
     # Add the sample projects
-                    for project in sample_projects:
-                        db.session.add(project)
+            for project in sample_projects:
+                db.session.add(project)
+            db.session.commit()
+            app.logger.info(f'Added {len(sample_projects)} gallery projects successfully')
 
-                db.session.commit()
-                app.logger.info(f'Added {len(sample_testimonials)} testimonials successfully')
-
-                # Add sample team members if none exist
-                from models import TeamMember
-                if not TeamMember.query.first():
-                    app.logger.info('Populating sample team members data...')
-                    sample_team = [
-                        TeamMember(
-                            name="John Smith",
-                            role="CEO & Founder",
-                            bio=
-                            "30+ years of expertise in custom industrial packaging solutions and international shipping.",
-                            order=1,
-                            is_active=True),
-                        TeamMember(
-                            name="Sarah Johnson",
-                            role="Operations Director",
-                            bio=
-                            "25+ years of manufacturing and industrial packaging operations expertise.",
-                            order=2,
-                            is_active=True),
-                        TeamMember(
-                            name="Michael Brown",
-                            role="Engineering Manager",
-                            bio=
-                            "20+ years of custom wood crating and export packaging design experience.",
-                            order=3,
-                            is_active=True)
-                    ]
-                    for member in sample_team:
-                        db.session.add(member)
-                    db.session.commit()
-                    app.logger.info('Sample team members populated successfully')
+        # Check and populate team members independently
+        if not TeamMember.query.first():
+            app.logger.info('Populating sample team members data...')
+            sample_team = [
+                TeamMember(
+                    name="John Smith",
+                    role="CEO & Founder",
+                    bio="30+ years of expertise in custom industrial packaging solutions and international shipping.",
+                    order=1,
+                    is_active=True),
+                TeamMember(
+                    name="Sarah Johnson",
+                    role="Operations Director",
+                    bio="25+ years of manufacturing and industrial packaging operations expertise.",
+                    order=2,
+                    is_active=True),
+                TeamMember(
+                    name="Michael Brown",
+                    role="Engineering Manager",
+                    bio="20+ years of custom wood crating and export packaging design experience.",
+                    order=3,
+                    is_active=True)
+            ]
+            for member in sample_team:
+                db.session.add(member)
+            db.session.commit()
+            app.logger.info('Sample team members populated successfully')
 
 except Exception as e:
     app.logger.error(f'Failed to initialize database: {str(e)}')
