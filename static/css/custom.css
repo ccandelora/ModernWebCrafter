@@ -9,17 +9,20 @@
 }
 
 /* Mobile optimized text styles */
-@media (max-width: 640px) {
-    .hero-section h1 {
-        letter-spacing: -0.02em;
-        word-spacing: 0.1em;
+@media (max-width: 768px) {
+    .hero-title {
+        @apply text-black;
+        -webkit-text-stroke: 1px white;
+        text-shadow: 2px 2px 0 white;
     }
-    
-    .hero-section p {
-        line-height: 1.6;
-        letter-spacing: 0.01em;
+    .hero-subtitle {
+        @apply text-black;
+        -webkit-text-stroke: 0.5px white;
+        text-shadow: 1px 1px 0 white;
     }
-}
+    .hero-cta {
+        @apply bg-wood-brown text-white border-none;
+    }
 }
 
 body {
