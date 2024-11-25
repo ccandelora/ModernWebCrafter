@@ -81,16 +81,13 @@ try:
 
         db.create_all()
         app.logger.info('Database initialized successfully')
-except Exception as e:
-    app.logger.error(f'Failed to initialize database: {str(e)}')
-    raise
 
-    # Clear existing products
-    from models import Product
-    Product.query.delete()
-
-    # Add sample products
-    sample_products = [
+        # Check if we need to populate sample data
+        from models import Product, Testimonial
+        if not Product.query.first():
+            app.logger.info('Populating sample products data...')
+            # Add sample products
+            sample_products = [
         Product(
             name="ISPM 15 Certified Export Crates",
             description=
@@ -130,36 +127,36 @@ except Exception as e:
     ]
 
     # Add sample testimonials if none exist
-    from models import Testimonial
-    if not Testimonial.query.first():
-        sample_testimonials = [
-            Testimonial(
-                client_name="John D.",
-                rating=5,
-                content=
-                "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
-                is_featured=True),
-            Testimonial(
-                client_name="Sarah M.",
-                rating=4,
-                content=
-                "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
-                is_featured=True),
-            Testimonial(
-                client_name="Michael R.",
-                rating=5,
-                content=
-                "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
-                is_featured=True)
-        ]
-        for testimonial in sample_testimonials:
-            db.session.add(testimonial)
+            if not Testimonial.query.first():
+                app.logger.info('Populating sample testimonials data...')
+                sample_testimonials = [
+                    Testimonial(
+                        client_name="John D.",
+                        rating=5,
+                        content=
+                        "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
+                        is_featured=True),
+                    Testimonial(
+                        client_name="Sarah M.",
+                        rating=4,
+                        content=
+                        "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
+                        is_featured=True),
+                    Testimonial(
+                        client_name="Michael R.",
+                        rating=5,
+                        content=
+                        "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
+                        is_featured=True)
+                ]
+                for testimonial in sample_testimonials:
+                    db.session.add(testimonial)
 
-    # Clear and add updated gallery projects
-    from models import GalleryProject
-    GalleryProject.query.delete()
-
-    sample_projects = [
+                # Add gallery projects if none exist
+                from models import GalleryProject
+                if not GalleryProject.query.first():
+                    app.logger.info('Populating sample gallery projects data...')
+                    sample_projects = [
         GalleryProject(
             title="Medical Equipment Export Package",
             description=
@@ -242,39 +239,48 @@ except Exception as e:
     ]
 
     # Add the sample projects
-    for project in sample_projects:
-        db.session.add(project)
+                    for project in sample_projects:
+                        db.session.add(project)
 
-    # Add the sample products
-    for product in sample_products:
-        db.session.add(product)
+                # Add the sample products
+                for product in sample_products:
+                    db.session.add(product)
 
-    db.session.commit()
-    # Add sample team members if none exist
-    from models import TeamMember
-    if not TeamMember.query.first():
-        sample_team = [
-            TeamMember(
-                name="John Smith",
-                role="CEO & Founder",
-                bio=
-                "30+ years of expertise in custom industrial packaging solutions and international shipping.",
-                order=1,
-                is_active=True),
-            TeamMember(
-                name="Sarah Johnson",
-                role="Operations Director",
-                bio=
-                "25+ years of manufacturing and industrial packaging operations expertise.",
-                order=2,
-                is_active=True),
-            TeamMember(
-                name="Michael Brown",
-                role="Engineering Manager",
-                bio=
-                "20+ years of custom wood crating and export packaging design experience.",
-                order=3,
-                is_active=True)
-        ]
-        for member in sample_team:
-            db.session.add(member)
+                db.session.commit()
+                app.logger.info('Sample data populated successfully')
+
+                # Add sample team members if none exist
+                from models import TeamMember
+                if not TeamMember.query.first():
+                    app.logger.info('Populating sample team members data...')
+                    sample_team = [
+                        TeamMember(
+                            name="John Smith",
+                            role="CEO & Founder",
+                            bio=
+                            "30+ years of expertise in custom industrial packaging solutions and international shipping.",
+                            order=1,
+                            is_active=True),
+                        TeamMember(
+                            name="Sarah Johnson",
+                            role="Operations Director",
+                            bio=
+                            "25+ years of manufacturing and industrial packaging operations expertise.",
+                            order=2,
+                            is_active=True),
+                        TeamMember(
+                            name="Michael Brown",
+                            role="Engineering Manager",
+                            bio=
+                            "20+ years of custom wood crating and export packaging design experience.",
+                            order=3,
+                            is_active=True)
+                    ]
+                    for member in sample_team:
+                        db.session.add(member)
+                    db.session.commit()
+                    app.logger.info('Sample team members populated successfully')
+
+except Exception as e:
+    app.logger.error(f'Failed to initialize database: {str(e)}')
+    raise
