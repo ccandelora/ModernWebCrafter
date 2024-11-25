@@ -3,6 +3,23 @@
     --wood-light: #DEB887;
     --wood-dark: #3E2723;
     --wood-accent: #D7CCC8;
+/* Text shadow for better contrast on hero section */
+.text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile optimized text styles */
+@media (max-width: 640px) {
+    .hero-section h1 {
+        letter-spacing: -0.02em;
+        word-spacing: 0.1em;
+    }
+    
+    .hero-section p {
+        line-height: 1.6;
+        letter-spacing: 0.01em;
+    }
+}
 }
 
 body {
