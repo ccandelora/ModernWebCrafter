@@ -1,13 +1,15 @@
 // Enhanced image loading performance tracking and optimization
 document.addEventListener('DOMContentLoaded', function() {
-    // Track image loading performance
-    const images = document.querySelectorAll('img[loading="lazy"]');
-    let loadedImages = 0;
+    // Only track non-critical images
+    const images = document.querySelectorAll('img[loading="lazy"]:not([fetchpriority="high"])');
+    let loadedImages = new Set(); // Use Set to avoid duplicate counts
     const totalImages = images.length;
 
-    function updateProgress() {
-        loadedImages++;
-        console.debug(`Loaded ${loadedImages}/${totalImages} lazy-loaded images`);
+    function updateProgress(img) {
+        if (!loadedImages.has(img)) {
+            loadedImages.add(img);
+            console.debug(`Loaded ${loadedImages.size}/${totalImages} lazy-loaded images`);
+        }
     }
 
     // Intersection Observer for better lazy loading
@@ -16,13 +18,16 @@ document.addEventListener('DOMContentLoaded', function() {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
+                    // Only handle images that haven't been loaded yet
+                    if (!loadedImages.has(img)) {
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
                         if (img.complete) {
-                            updateProgress();
+                            updateProgress(img);
                         } else {
-                            img.addEventListener('load', updateProgress);
+                            img.addEventListener('load', () => updateProgress(img), { once: true });
                         }
                     }
                     observer.unobserve(img);
@@ -37,16 +42,16 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!img.complete) {
                 imageObserver.observe(img);
             } else {
-                updateProgress();
+                updateProgress(img);
             }
         });
     } else {
         // Fallback for browsers that don't support Intersection Observer
         images.forEach(img => {
             if (img.complete) {
-                updateProgress();
+                updateProgress(img);
             } else {
-                img.addEventListener('load', updateProgress);
+                img.addEventListener('load', () => updateProgress(img), { once: true });
             }
         });
     }
