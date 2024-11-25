@@ -82,8 +82,10 @@ try:
         db.create_all()
         app.logger.info('Database initialized successfully')
 
-        # Check if we need to populate sample data
+        # Import models for sample data
         from models import Product, Testimonial, GalleryProject, TeamMember
+        
+        app.logger.info('Starting sample data population checks...')
 
         # Sample products data
         sample_products = [
@@ -101,39 +103,38 @@ try:
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0
             }),
-            Product(
-                name="Export Skidmates",
-                description=
-                "Specialized skid systems designed for international shipping with integrated protection.",
-                category="Export Solutions",
-                image_url="/static/images/workshop.jpg",
-                price=0.0
-            ),
-            Product(
-                name="Cushion Skids with Ramp",
-                description=
-                "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
-                category="Industrial Skids",
-                image_url="/static/images/workshop.jpg",
-                price=0.0
-            ),
-            Product(
-                name="Oversize Crates",
-                description=
-                "Custom-built oversized crating solutions for large industrial equipment and machinery.",
-                category="Specialty Solutions",
-                image_url="/static/images/workshop.jpg",
-                price=0.0
-            )
+            Product(**{
+                'name': "Export Skidmates",
+                'description': "Specialized skid systems designed for international shipping with integrated protection.",
+                'category': "Export Solutions",
+                'image_url': "/static/images/workshop.jpg",
+                'price': 0.0
+            }),
+            Product(**{
+                'name': "Cushion Skids with Ramp",
+                'description': "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
+                'category': "Industrial Skids",
+                'image_url': "/static/images/workshop.jpg",
+                'price': 0.0
+            }),
+            Product(**{
+                'name': "Oversize Crates",
+                'description': "Custom-built oversized crating solutions for large industrial equipment and machinery.",
+                'category': "Specialty Solutions",
+                'image_url': "/static/images/workshop.jpg",
+                'price': 0.0
+            })
         ]
 
-        # Check and populate products
+        # Check and populate products independently
         if not Product.query.first():
             app.logger.info('Populating sample products data...')
             for product in sample_products:
                 db.session.add(product)
             db.session.commit()
-            app.logger.info(f'Added {len(sample_products)} products successfully')
+            products_count = Product.query.count()
+            featured_products = Product.query.limit(3).all()
+            app.logger.info(f'Added {products_count} products successfully. Featured products: {len(featured_products)}')
 
         # Check and populate testimonials independently
         if not Testimonial.query.first():
@@ -145,23 +146,25 @@ try:
                     'content': "Exceptional industrial packaging solutions! The custom crates perfectly protected our sensitive equipment during overseas shipping.",
                     'is_featured': True
                 }),
-                Testimonial(
-                    client_name="Sarah M.",
-                    rating=4,
-                    content=
-                    "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
-                    is_featured=True),
-                Testimonial(
-                    client_name="Michael R.",
-                    rating=5,
-                    content=
-                    "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
-                    is_featured=True)
+                Testimonial(**{
+                    'client_name': "Sarah M.",
+                    'rating': 4,
+                    'content': "Their ISPM 15 certified export crates ensured smooth customs clearance. Great attention to international shipping requirements.",
+                    'is_featured': True
+                }),
+                Testimonial(**{
+                    'client_name': "Michael R.",
+                    'rating': 5,
+                    'content': "The cushioned skids were perfect for our heavy machinery. Outstanding quality and professional service!",
+                    'is_featured': True
+                })
             ]
             for testimonial in sample_testimonials:
                 db.session.add(testimonial)
             db.session.commit()
-            app.logger.info(f'Added {len(sample_testimonials)} testimonials successfully')
+            testimonials_count = Testimonial.query.count()
+            featured_testimonials = Testimonial.query.filter_by(is_featured=True).count()
+            app.logger.info(f'Added {testimonials_count} testimonials successfully. Featured testimonials: {featured_testimonials}')
 
         # Check and populate gallery projects independently
         if not GalleryProject.query.first():
