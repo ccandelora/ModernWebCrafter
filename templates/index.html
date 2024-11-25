@@ -48,13 +48,13 @@
     </div>
 </div>
 
-<div class="container mx-auto px-4 py-16">
+<section class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold text-center mb-12">
         Industrial Packaging Solutions
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% for product in products %}
-        <div class="transform hover:-translate-y-1 transition duration-300">
+        <div class="product-card transform hover:-translate-y-1 transition duration-300">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
                 <img
                     src="{{ product.image_url }}"
@@ -83,7 +83,7 @@
         </div>
         {% endfor %}
     </div>
-</div>
+</section>
 
 <div class="container mx-auto px-4 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -120,7 +120,7 @@
     </div>
 </div>
 
-<div class="bg-wood-accent bg-opacity-10 py-16">
+<section class="bg-wood-accent bg-opacity-10 py-16">
     <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold text-center text-wood-dark mb-12">
             Client Testimonials
@@ -128,7 +128,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {% for testimonial in testimonials %}
             <div
-                class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300"
+                class="testimonial-card bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300"
             >
                 <div class="flex items-center mb-4">
                     <img
