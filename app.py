@@ -20,12 +20,23 @@ import datetime
 
 def custom_json_encoder(obj):
     if hasattr(obj, '__dict__'):
-        return obj.__dict__
+        result = {}
+        for key, value in obj.__dict__.items():
+            if not key.startswith('_'):  # Skip SQLAlchemy internal attributes
+                if isinstance(value, datetime.datetime):
+                    result[key] = value.isoformat()
+                else:
+                    result[key] = value
+        return result
     if isinstance(obj, datetime.datetime):
         return obj.isoformat()
     raise TypeError(f'Object of type {type(obj)} is not JSON serializable')
 
 app.json.encoder = custom_json_encoder
+
+@app.template_filter('to_json')
+def to_json_filter(value):
+    return json.dumps(value, default=custom_json_encoder)
 
 @app.template_filter('parse_json')
 def parse_json_filter(value):

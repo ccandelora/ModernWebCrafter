@@ -132,11 +132,17 @@
     <h2 class="text-3xl font-bold text-center mb-12">
         Industrial Packaging Solutions
     </h2>
+    <!-- Debug output -->
+    <div class="hidden">
+        <pre>Products: {{ products|to_json }}</pre>
+        <pre>Testimonials: {{ testimonials|to_json }}</pre>
+    </div>
+    
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         {% if products %}
             {% for product in products %}
-        <div class="product-card transform hover:-translate-y-1 transition duration-300">
-            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="product-card group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 ease-in-out">
+            <div class="relative">
                 <img
                     src="{{ product.image_url }}"
                     class="w-full h-64 object-cover"
@@ -215,7 +221,7 @@
             {% if testimonials %}
                 {% for testimonial in testimonials %}
             <div
-                class="testimonial-card bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300"
+                class="testimonial-card group bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition-all duration-300 ease-in-out hover:shadow-xl"
             >
                 <div class="flex items-center mb-4">
                     <img
