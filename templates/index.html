@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="absolute md:relative w-full h-full order-1 md:order-2 overflow-visible" style="right: -15%;">
-                <img src="/static/images/wood_crate2.jpg" alt="Industrial Wood Packaging" class="w-[115%] h-full object-cover object-left" style="max-width: none;" />
+                <img src="/static/images/wood_crate2.jpg" alt="Industrial Wood Packaging" class="w-[115%] h-full object-cover object-left" loading="lazy" style="max-width: none;" />
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
         {% for product in products %}
         <div class="transform hover:-translate-y-1 transition duration-300">
             <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-                <img src="{{ product.image_url }}" class="w-full h-64 object-cover" alt="{{ product.name }}">
+                <img src="{{ product.image_url }}" class="w-full h-64 object-cover" loading="lazy" alt="{{ product.name }}">
                 <div class="p-6">
                     <h5 class="text-xl font-semibold mb-2">{{ product.name }}</h5>
                     <p class="text-gray-600 mb-4">{{ product.description[:100] }}...</p>
@@ -51,7 +51,7 @@
             </ul>
         </div>
         <div>
-            <img src="/static/images/workshop.jpg" class="rounded-lg shadow-lg" alt="Industrial Workshop">
+            <img src="/static/images/workshop.jpg" class="rounded-lg shadow-lg" loading="lazy" alt="Industrial Workshop">
         </div>
     </div>
 </div>
@@ -63,12 +63,12 @@
             {% for testimonial in testimonials %}
             <div class="bg-white p-6 rounded-lg shadow-lg transform hover:-translate-y-1 transition duration-300">
                 <div class="flex items-center mb-4">
-                    <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                    <img src="/static/images/avatar-placeholder.svg" alt="Client" class="w-12 h-12 rounded-full mr-4" loading="lazy">
                     <div>
                         <h4 class="font-semibold text-wood-dark">{{ testimonial.client_name }}</h4>
                         <div class="flex">
                             {% for _ in range(testimonial.rating) %}
-                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
+                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4" loading="lazy">
                             {% endfor %}
                         </div>
                     </div>
