@@ -1556,6 +1556,10 @@ body {
     width: 115%;
   }
 
+  .md\:w-\[130\%\] {
+    width: 130%;
+  }
+
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -1572,6 +1576,10 @@ body {
     --tw-space-y-reverse: 0;
     margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+  }
+
+  .md\:overflow-visible {
+    overflow: visible;
   }
 
   .md\:rounded-none {
