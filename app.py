@@ -83,58 +83,62 @@ try:
         app.logger.info('Database initialized successfully')
 
         # Check if we need to populate sample data
-        from models import Product, Testimonial
+        from models import Product, Testimonial, GalleryProject, TeamMember
+
+        # Sample products data
+        sample_products = [
+            Product(
+                name="ISPM 15 Certified Export Crates",
+                description=
+                "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
+                category="Export Crates",
+                image_url="/static/images/workshop.jpg",
+                price=0.0  # Quote based
+            ),
+            Product(
+                name="Cushioned Crates",
+                description=
+                "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
+                category="Protective Packaging",
+                image_url="/static/images/workshop.jpg",
+                price=0.0
+            ),
+            Product(
+                name="Export Skidmates",
+                description=
+                "Specialized skid systems designed for international shipping with integrated protection.",
+                category="Export Solutions",
+                image_url="/static/images/workshop.jpg",
+                price=0.0
+            ),
+            Product(
+                name="Cushion Skids with Ramp",
+                description=
+                "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
+                category="Industrial Skids",
+                image_url="/static/images/workshop.jpg",
+                price=0.0
+            ),
+            Product(
+                name="Oversize Crates",
+                description=
+                "Custom-built oversized crating solutions for large industrial equipment and machinery.",
+                category="Specialty Solutions",
+                image_url="/static/images/workshop.jpg",
+                price=0.0
+            )
+        ]
+
+        # Check and populate products
         if not Product.query.first():
             app.logger.info('Populating sample products data...')
-            # Add sample products
-            sample_products = [
-                Product(
-                    name="ISPM 15 Certified Export Crates",
-                    description=
-                    "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
-                    category="Export Crates",
-                    image_url="/static/images/workshop.jpg",
-                    price=0.0  # Quote based
-                ),
-        Product(
-                    name="Cushioned Crates",
-                    description=
-                    "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
-                    category="Protective Packaging",
-                    image_url="/static/images/workshop.jpg",
-                    price=0.0),
-                Product(
-                    name="Export Skidmates",
-                    description=
-                    "Specialized skid systems designed for international shipping with integrated protection.",
-                    category="Export Solutions",
-                    image_url="/static/images/workshop.jpg",
-                    price=0.0),
-                Product(
-                    name="Cushion Skids with Ramp",
-                    description=
-                    "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
-                    category="Industrial Skids",
-                    image_url="/static/images/workshop.jpg",
-                    price=0.0),
-                Product(
-                    name="Oversize Crates",
-                    description=
-                    "Custom-built oversized crating solutions for large industrial equipment and machinery.",
-                    category="Specialty Solutions",
-                    image_url="/static/images/workshop.jpg",
-                    price=0.0)
-            ]
-            
-            # Add the sample products and commit
-            app.logger.info('Adding sample products to database...')
             for product in sample_products:
                 db.session.add(product)
             db.session.commit()
-            app.logger.info('Sample products added successfully')
+            app.logger.info(f'Added {len(sample_products)} products successfully')
 
-    # Add sample testimonials if none exist
-            if not Testimonial.query.first():
+        # Check and populate testimonials
+        if not Testimonial.query.first():
                 app.logger.info('Populating sample testimonials data...')
                 sample_testimonials = [
                     Testimonial(
@@ -249,12 +253,8 @@ try:
                     for project in sample_projects:
                         db.session.add(project)
 
-                # Add the sample products
-                for product in sample_products:
-                    db.session.add(product)
-
                 db.session.commit()
-                app.logger.info('Sample data populated successfully')
+                app.logger.info(f'Added {len(sample_testimonials)} testimonials successfully')
 
                 # Add sample team members if none exist
                 from models import TeamMember
