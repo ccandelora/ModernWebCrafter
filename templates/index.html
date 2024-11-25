@@ -3,9 +3,9 @@
 {% block content %}
 <div class="relative overflow-hidden bg-gradient-to-r from-wood-dark to-wood-brown text-white" style="height: 600px;">
     <div class="absolute inset-0 opacity-10 bg-pattern"></div>
-    <div class="container mx-auto px-4 h-full relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center h-full py-24">
-            <div class="text-left order-1 md:order-first">
+    <div class="container mx-auto px-4 h-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 h-full relative">
+            <div class="text-left flex flex-col justify-center order-2 md:order-1 z-10">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">Industrial Wood Packaging Solutions</h1>
                 <p class="text-xl mb-8">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
                 <div class="flex space-x-4">
@@ -13,10 +13,10 @@
                     <a href="/quote" class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">Get Quote</a>
                 </div>
             </div>
+            <div class="absolute md:relative w-full md:w-auto h-full order-1 md:order-2">
+                <img src="/static/images/wood_crate2.jpg" alt="Industrial Wood Packaging" class="w-full h-full object-cover" />
+            </div>
         </div>
-    </div>
-    <div class="absolute inset-0 md:right-0 md:w-1/2 overflow-hidden order-2 md:order-last">
-        <div class="hero-image absolute inset-0 w-full h-[120%] top-0" style="background: url('/static/images/wood_crate2.jpg') center center / cover no-repeat; transform-origin: center; will-change: transform;"></div>
     </div>
 </div>
 
