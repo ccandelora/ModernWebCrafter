@@ -12,4 +12,5 @@ dependencies = [
     "flask-login",
     "pillow>=11.0.0",
     "sqlalchemy",
+    "flask-mail>=0.10.0",
 ]

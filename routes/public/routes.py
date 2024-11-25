@@ -61,54 +61,69 @@ def quote_calculator():
     if request.method == 'POST':
         # Get form data
         package_type = request.form.get('package_type')
-        length = float(request.form.get('length', 0))
-        width = float(request.form.get('width', 0))
-        height = float(request.form.get('height', 0))
-        weight = float(request.form.get('weight', 0))
+        length = request.form.get('length', '0')
+        width = request.form.get('width', '0')
+        height = request.form.get('height', '0')
+        weight = request.form.get('weight', '0')
         requirements = request.form.getlist('requirements[]')
-        shipping_type = request.form.get('shipping_type')
+        shipping_type = request.form.get('shipping_type', 'domestic')
 
-        # Calculate cubic feet
-        cubic_feet = (length * width * height) / 1728  # Convert cubic inches to cubic feet
-
-        # Base rates per cubic foot for different package types
-        base_rates = {
-            'export_crate': 12.0,
-            'cushioned_crate': 15.0,
-            'skidmate': 10.0,
-            'cushion_skid': 14.0,
-            'oversize': 18.0
+        # Create email content
+        package_types = {
+            'export_crate': 'ISPM 15 Export Crate',
+            'cushioned_crate': 'Cushioned Crate',
+            'skidmate': 'Export Skidmate',
+            'cushion_skid': 'Cushion Skid with Ramp',
+            'oversize': 'Oversize Crate'
         }
 
-        # Calculate base cost
-        base_cost = cubic_feet * base_rates.get(package_type, 12.0)
-
-        # Add weight factor
-        weight_factor = max(1.0, weight / 1000)  # Increase cost for heavy items
-        base_cost *= weight_factor
-
-        # Add costs for special requirements
-        requirement_costs = {
-            'moisture_barrier': 200,
-            'shock_absorption': 300,
-            'custom_foam': 400,
-            'ramp_system': 500
+        requirement_names = {
+            'moisture_barrier': 'Moisture Barrier Protection',
+            'shock_absorption': 'Shock Absorption System',
+            'custom_foam': 'Custom Foam Interior',
+            'ramp_system': 'Loading Ramp System'
         }
 
-        for req in requirements:
-            base_cost += requirement_costs.get(req, 0)
+        html_content = f"""
+        <h2>New Quote Request</h2>
+        <h3>Package Details:</h3>
+        <ul>
+            <li><strong>Package Type:</strong> {package_types.get(package_type, 'Standard Crate')}</li>
+            <li><strong>Dimensions:</strong> {length}" × {width}" × {height}"</li>
+            <li><strong>Weight:</strong> {weight} lbs</li>
+            <li><strong>Shipping Type:</strong> {'International' if shipping_type == 'international' else 'Domestic'}</li>
+        </ul>
+        """
 
-        # International shipping markup
-        if shipping_type == 'international':
-            base_cost *= 1.3  # 30% markup for international
+        if requirements:
+            html_content += "<h3>Special Requirements:</h3><ul>"
+            for req in requirements:
+                html_content += f"<li>{requirement_names.get(req, req)}</li>"
+            html_content += "</ul>"
 
-        # Add range for estimate
-        min_cost = round(base_cost * 0.9, 2)
-        max_cost = round(base_cost * 1.1, 2)
+        # Configure Mailtrap client
+        from mailtrap import Mail, Sender, Config
 
-        estimated_quote = {'min': min_cost, 'max': max_cost}
+        config = Config(
+            api_token=os.environ['MAILTRAP_API_TOKEN']
+        )
 
-        return render_template('quote.html', estimated_quote=estimated_quote)
+        mail = Mail(
+            sender=Sender(name="Wood Products Unlimited", email="quotes@woodproducts.com"),
+            to=[{"email": "chris.candelora@gmail.com", "name": "Chris Candelora"}],
+            subject="New Quote Request - Wood Products Unlimited",
+            html=html_content,
+            category="quote_request"
+        )
+
+        try:
+            mail.send(config=config)
+            flash('Thank you for your quote request! Our team will contact you shortly with pricing details.', 'success')
+        except Exception as e:
+            current_app.logger.error(f'Error sending email: {str(e)}')
+            flash('There was an error processing your request. Please try again or contact us directly.', 'error')
+
+        return redirect(url_for('public.quote'))
 
     return render_template('quote.html')
 
