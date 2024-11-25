@@ -11,9 +11,11 @@ def index():
         featured_products = Product.query.limit(3).all()
         testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
         print(f"Found {len(featured_products)} products and {len(testimonials)} testimonials")
+        hero_variant = request.args.get('hero', '1')
         return render_template('index.html',
                              products=featured_products,
-                             testimonials=testimonials)
+                             testimonials=testimonials,
+                             hero_variant=hero_variant)
     except Exception as e:
         print(f"Error in index route: {str(e)}")
         return str(e), 500

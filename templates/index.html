@@ -1,17 +1,15 @@
 {% extends "base.html" %} {% block content %}
-<div
-    class="bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[300px] relative overflow-hidden"
->
+{% set hero_variant = request.args.get('hero', '1') %}
+
+{% if hero_variant == '1' %}
+<!-- Variant 1: Original Left-aligned with Gradient -->
+<div class="bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[300px] relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 bg-pattern"></div>
     <div class="relative w-full min-h-[300px]">
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 h-full relative">
-                <div
-                    class="text-left flex flex-col justify-center z-10 space-y-6 md:space-y-4 px-4 py-12 md:py-24"
-                >
-                    <h1
-                        class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight"
-                    >
+                <div class="text-left flex flex-col justify-center z-10 space-y-6 md:space-y-4 px-4 py-12 md:py-24">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
                         Industrial Wood Packaging Solutions
                     </h1>
                     <p class="text-lg sm:text-xl opacity-90">
@@ -19,34 +17,83 @@
                         shipping and industrial applications
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 sm:space-x-4">
-                        <a
-                            href="/products"
-                            class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center"
-                            >View Solutions</a
-                        >
-                        <a
-                            href="/quote"
-                            class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center"
-                            >Get Quote</a
-                        >
+                        <a href="/products"
+                            class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                            View Solutions</a>
+                        <a href="/quote"
+                            class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                            Get Quote</a>
                     </div>
                 </div>
-                <div
-                    class="absolute right-0 top-0 h-full w-full md:w-[47%] order-last"
-                >
-                    <img
-                        src="/static/images/wood_crate.jpg"
-                        alt="Industrial Wood Packaging"
-                        class="w-full h-[300px] md:h-full object-cover object-center md:object-right"
-                        loading="eager"
-                        fetchpriority="high"
-                        decoding="async"
-                    />
+                <div class="absolute right-0 top-0 h-full w-full md:w-[47%] order-last">
+                    <img src="/static/images/wood_crate.jpg" alt="Industrial Wood Packaging"
+                        class="w-full h-[300px] md:h-full object-cover object-center md:object-right" loading="eager"
+                        fetchpriority="high" decoding="async" />
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+{% elif hero_variant == '2' %}
+<!-- Variant 2: Centered Content with Overlay -->
+<div class="relative min-h-[500px] overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="/static/images/wood_crate.jpg" alt="Industrial Wood Packaging"
+            class="w-full h-full object-cover brightness-50" loading="eager" fetchpriority="high" decoding="async" />
+    </div>
+    <div class="relative max-w-7xl mx-auto px-4 py-24 flex items-center justify-center min-h-[500px]">
+        <div class="text-center text-white space-y-6 max-w-3xl">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+                Expert Wood Packaging Solutions
+            </h1>
+            <p class="text-xl sm:text-2xl opacity-90 mb-8">
+                Global shipping expertise with ISPM 15 certified solutions
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="/products"
+                    class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-4 px-10 rounded-lg transition duration-300">
+                    Explore Products</a>
+                <a href="/quote"
+                    class="bg-transparent border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-4 px-10 rounded-lg transition duration-300">
+                    Calculate Quote</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% else %}
+<!-- Variant 3: Split Design with Offset Elements -->
+<div class="bg-wood-dark text-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 relative">
+            <div class="px-4 py-16 lg:py-24 lg:px-8 flex flex-col justify-center relative z-10">
+                <div class="absolute top-0 left-0 w-full h-full bg-wood-dark opacity-90 lg:opacity-100 -z-10"></div>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+                    Transform Your <br class="hidden lg:block">
+                    Shipping Experience
+                </h1>
+                <p class="text-lg sm:text-xl opacity-90 mb-8 max-w-xl">
+                    Innovative industrial packaging solutions engineered for your global logistics needs
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="/products"
+                        class="bg-wood-brown hover:bg-opacity-90 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                        Discover Solutions</a>
+                    <a href="/quote"
+                        class="bg-transparent border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
+                        Request Quote</a>
+                </div>
+            </div>
+            <div class="relative h-[400px] lg:h-auto lg:absolute lg:right-0 lg:top-0 lg:bottom-0 lg:w-1/2">
+                <img src="/static/images/wood_crate.jpg" alt="Industrial Wood Packaging"
+                    class="w-full h-full object-cover" loading="eager" fetchpriority="high" decoding="async" />
+                <div class="absolute inset-0 bg-gradient-to-r from-wood-dark to-transparent lg:hidden"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
 
 <section class="container mx-auto px-4 py-16">
     <h2 class="text-3xl font-bold text-center mb-12">
