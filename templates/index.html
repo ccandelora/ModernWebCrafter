@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="relative bg-gradient-to-r from-wood-dark to-wood-brown text-white py-24">
+<div class="relative overflow-hidden bg-gradient-to-r from-wood-dark to-wood-brown text-white" style="height: 600px;">
     <div class="absolute inset-0 opacity-10 bg-pattern"></div>
-    <div class="container mx-auto px-4 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <div class="absolute inset-0 md:right-0 md:w-1/2 overflow-hidden">
+        <div class="hero-image absolute inset-0 w-full h-[120%] top-0" style="background: url('/static/images/hero-crate.jpg') center center / cover no-repeat; will-change: transform;"></div>
+    </div>
+    <div class="container mx-auto px-4 h-full relative z-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center h-full py-24">
             <div class="text-left">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">Industrial Wood Packaging Solutions</h1>
                 <p class="text-xl mb-8">Custom-engineered wood packaging solutions for global shipping and industrial applications</p>
@@ -12,9 +15,6 @@
                     <a href="/products" class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">View Solutions</a>
                     <a href="/quote" class="border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300">Get Quote</a>
                 </div>
-            </div>
-            <div class="hidden md:block">
-                <img src="/static/images/crate2.jpg" alt="Industrial Wood Packaging" class="rounded-lg shadow-xl w-full h-auto object-cover" loading="lazy">
             </div>
         </div>
     </div>
