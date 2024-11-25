@@ -1079,6 +1079,20 @@ body {
   --tw-bg-opacity: 0.8;
 }
 
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+.from-wood-dark {
+  --tw-gradient-from: #3E2723 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(62 39 35 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-wood-brown {
+  --tw-gradient-to: #8B4513 var(--tw-gradient-to-position);
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -1281,6 +1295,10 @@ body {
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.opacity-10 {
+  opacity: 0.1;
 }
 
 .shadow {
