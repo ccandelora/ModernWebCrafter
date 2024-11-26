@@ -131,7 +131,7 @@ def quote_calculator():
             current_app.logger.error(f'Error sending email: {str(e)}')
             flash('There was an error processing your request. Please try again or contact us directly.', 'error')
 
-        return redirect(url_for('public.quote'))
+        return redirect(url_for('public.quote_calculator'))
 
     return render_template('quote.html')
 
