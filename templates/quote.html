@@ -2,7 +2,7 @@
 <div class="container mx-auto px-4 py-16">
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold text-center mb-8">
-            Custom Packaging Quote Calculator
+            Custom Packaging Quote Request
         </h1>
 
         <!-- Progress Steps -->
@@ -121,8 +121,13 @@
                             >
                                 <option value="">Select Package Type</option>
                                 {% if request.args.get('package_type') %}
-                                <option value="{{ request.args.get('package_type') }}" selected>
-                                    {{ request.args.get('package_type')|replace('_', ' ')|title }}
+                                <option
+                                    value="{{ request.args.get('package_type') }}"
+                                    selected
+                                >
+                                    {{
+                                    request.args.get('package_type')|replace('_',
+                                    ' ')|title }}
                                 </option>
                                 {% endif %}
                                 <option
@@ -163,35 +168,66 @@
 
                         <!-- Email Address -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                            <label
+                                class="block text-sm font-medium text-gray-600 mb-2"
+                            >
                                 Email Address
-                                <span class="text-wood-brown ml-1" title="We'll send your quote to this email">
+                                <span
+                                    class="text-wood-brown ml-1"
+                                    title="We'll send your quote to this email"
+                                >
                                     <i class="fas fa-question-circle"></i>
                                 </span>
                             </label>
-                            <input type="email" name="email" class="w-full rounded-md border-gray-300" required placeholder="your@email.com">
+                            <input
+                                type="email"
+                                name="email"
+                                class="w-full rounded-md border-gray-300"
+                                required
+                                placeholder="your@email.com"
+                            />
                         </div>
 
                         <!-- Name Field -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                            <label
+                                class="block text-sm font-medium text-gray-600 mb-2"
+                            >
                                 Name
-                                <span class="text-wood-brown ml-1" title="Your full name (optional)">
+                                <span
+                                    class="text-wood-brown ml-1"
+                                    title="Your full name (optional)"
+                                >
                                     <i class="fas fa-question-circle"></i>
                                 </span>
                             </label>
-                            <input type="text" name="name" class="w-full rounded-md border-gray-300" placeholder="Your name (optional)">
+                            <input
+                                type="text"
+                                name="name"
+                                class="w-full rounded-md border-gray-300"
+                                placeholder="Your name (optional)"
+                            />
                         </div>
 
                         <!-- Phone Number Field -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-600 mb-2">
+                            <label
+                                class="block text-sm font-medium text-gray-600 mb-2"
+                            >
                                 Phone Number
-                                <span class="text-wood-brown ml-1" title="Your contact number (optional)">
+                                <span
+                                    class="text-wood-brown ml-1"
+                                    title="Your contact number (optional)"
+                                >
                                     <i class="fas fa-question-circle"></i>
                                 </span>
                             </label>
-                            <input type="tel" name="phone" class="w-full rounded-md border-gray-300" placeholder="Your phone number (optional)">
+                            <input
+                                type="tel"
+                                name="phone"
+                                class="w-full rounded-md border-gray-300"
+                                placeholder="Your phone number (optional)"
+                            />
                         </div>
 
                         <!-- Dimensions -->
@@ -340,13 +376,25 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- Special Instructions Field -->
                                 <div class="mt-6 col-span-1 md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-600 mb-2">
+                                    <label
+                                        class="block text-sm font-medium text-gray-600 mb-2"
+                                    >
                                         Special Instructions
-                                        <span class="text-wood-brown ml-1" title="Any additional requirements or notes">
-                                            <i class="fas fa-question-circle"></i>
+                                        <span
+                                            class="text-wood-brown ml-1"
+                                            title="Any additional requirements or notes"
+                                        >
+                                            <i
+                                                class="fas fa-question-circle"
+                                            ></i>
                                         </span>
                                     </label>
-                                    <textarea name="special_instructions" rows="4" class="w-full rounded-md border-gray-300" placeholder="Enter any special requirements or additional notes"></textarea>
+                                    <textarea
+                                        name="special_instructions"
+                                        rows="4"
+                                        class="w-full rounded-md border-gray-300"
+                                        placeholder="Enter any special requirements or additional notes"
+                                    ></textarea>
                                 </div>
                                 <div
                                     class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors"
