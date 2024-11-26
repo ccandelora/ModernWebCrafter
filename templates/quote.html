@@ -110,6 +110,11 @@
                                 data-helper="Select the most appropriate package type for your shipping needs"
                             >
                                 <option value="">Select Package Type</option>
+                                {% if request.args.get('package_type') %}
+                                <option value="{{ request.args.get('package_type') }}" selected>
+                                    {{ request.args.get('package_type')|replace('_', ' ')|title }}
+                                </option>
+                                {% endif %}
                                 <option
                                     value="export_crate"
                                     data-description="Heat-treated and certified for international shipping"

@@ -161,7 +161,7 @@
                         Contact for Quote
                     </p>
                     <a
-                        href="/contact"
+                        href="/quote?package_type={{ product.package_type|default('') }}&name={{ product.name|urlencode }}&description={{ product.description|urlencode }}"
                         class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300"
                         >Request Quote</a
                     >

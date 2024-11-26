@@ -62,6 +62,13 @@ def products():
 
 @public.route('/quote', methods=['GET', 'POST'])
 def quote_calculator():
+    # Pre-fill form data from URL parameters
+    product_data = {
+        'package_type': request.args.get('package_type', ''),
+        'name': request.args.get('name', ''),
+        'description': request.args.get('description', '')
+    }
+    
     if request.method == 'POST':
         # Get form data
         package_type = request.form.get('package_type')
