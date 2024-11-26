@@ -1,4 +1,8 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from models import Product, GalleryProject, Testimonial, TeamMember, Inquiry
 from app import db
 
@@ -101,23 +105,27 @@ def quote_calculator():
                 html_content += f"<li>{requirement_names.get(req, req)}</li>"
             html_content += "</ul>"
 
-        # Configure Mailtrap client
-        from mailtrap import Mail, Sender, Config
+        # Configure email settings
+        smtp_host = "smtp.mailtrap.io"
+        smtp_port = 2525
+        smtp_user = os.environ.get('MAILTRAP_USER')
+        smtp_pass = os.environ.get('MAILTRAP_PASS')
 
-        config = Config(
-            api_token=os.environ['MAILTRAP_API_TOKEN']
-        )
-
-        mail = Mail(
-            sender=Sender(name="Wood Products Unlimited", email="quotes@woodproducts.com"),
-            to=[{"email": "chris.candelora@gmail.com", "name": "Chris Candelora"}],
-            subject="New Quote Request - Wood Products Unlimited",
-            html=html_content,
-            category="quote_request"
-        )
+        # Create message
+        message = MIMEMultipart('alternative')
+        message['Subject'] = "New Quote Request - Wood Products Unlimited"
+        message['From'] = "quotes@woodproducts.com"
+        message['To'] = "chris.candelora@gmail.com"
+        
+        # Add HTML content
+        html_part = MIMEText(html_content, 'html')
+        message.attach(html_part)
 
         try:
-            mail.send(config=config)
+            # Send email through Mailtrap
+            with smtplib.SMTP(smtp_host, smtp_port) as server:
+                server.login(smtp_user, smtp_pass)
+                server.send_message(message)
             flash('Thank you for your quote request! Our team will contact you shortly with pricing details.', 'success')
         except Exception as e:
             current_app.logger.error(f'Error sending email: {str(e)}')
