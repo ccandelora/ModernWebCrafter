@@ -115,6 +115,7 @@ try:
                 'name': "ISPM 15 Certified Export Crates",
                 'description': "International shipping standard compliant crates for export. Features heat treatment certification and proper IPPC marking.",
                 'category': "Export Crates",
+                'package_type': "export_crate",
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0  # Quote based
             }),
@@ -122,6 +123,7 @@ try:
                 'name': "Cushioned Crates",
                 'description': "Custom-engineered crates with integrated cushioning systems for sensitive equipment protection.",
                 'category': "Protective Packaging",
+                'package_type': "cushioned_crate",
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0
             }),
@@ -129,6 +131,7 @@ try:
                 'name': "Export Skidmates",
                 'description': "Specialized skid systems designed for international shipping with integrated protection.",
                 'category': "Export Solutions",
+                'package_type': "skidmate",
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0
             }),
@@ -136,6 +139,7 @@ try:
                 'name': "Cushion Skids with Ramp",
                 'description': "Heavy-duty skids with built-in ramp system and cushioning for easy loading and protection.",
                 'category': "Industrial Skids",
+                'package_type': "cushion_skid",
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0
             }),
@@ -143,6 +147,7 @@ try:
                 'name': "Oversize Crates",
                 'description': "Custom-built oversized crating solutions for large industrial equipment and machinery.",
                 'category': "Specialty Solutions",
+                'package_type': "oversize",
                 'image_url': "/static/images/workshop.jpg",
                 'price': 0.0
             })
