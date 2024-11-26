@@ -72,6 +72,8 @@ def quote_calculator():
         requirements = request.form.getlist('requirements[]')
         shipping_type = request.form.get('shipping_type', 'domestic')
         email = request.form.get('email', '')
+        name = request.form.get('name', '')
+        phone = request.form.get('phone', '')
         special_instructions = request.form.get('special_instructions', '')
 
         # Create email content
@@ -95,6 +97,8 @@ def quote_calculator():
         <h3>Contact Information:</h3>
         <ul>
             <li><strong>Email:</strong> {email}</li>
+            {f'<li><strong>Name:</strong> {name}</li>' if name else ''}
+            {f'<li><strong>Phone:</strong> {phone}</li>' if phone else ''}
         </ul>
         <h3>Package Details:</h3>
         <ul>
