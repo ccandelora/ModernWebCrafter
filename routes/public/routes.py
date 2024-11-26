@@ -71,6 +71,8 @@ def quote_calculator():
         weight = request.form.get('weight', '0')
         requirements = request.form.getlist('requirements[]')
         shipping_type = request.form.get('shipping_type', 'domestic')
+        email = request.form.get('email', '')
+        special_instructions = request.form.get('special_instructions', '')
 
         # Create email content
         package_types = {
@@ -90,6 +92,10 @@ def quote_calculator():
 
         html_content = f"""
         <h2>New Quote Request</h2>
+        <h3>Contact Information:</h3>
+        <ul>
+            <li><strong>Email:</strong> {email}</li>
+        </ul>
         <h3>Package Details:</h3>
         <ul>
             <li><strong>Package Type:</strong> {package_types.get(package_type, 'Standard Crate')}</li>
@@ -104,18 +110,27 @@ def quote_calculator():
             for req in requirements:
                 html_content += f"<li>{requirement_names.get(req, req)}</li>"
             html_content += "</ul>"
+        
+        if special_instructions:
+            html_content += f"<h3>Special Instructions:</h3><p>{special_instructions}</p>"
 
         # Configure email settings
         smtp_host = "smtp.mailtrap.io"
         smtp_port = 2525
-        smtp_user = os.environ.get('MAILTRAP_USER')
-        smtp_pass = os.environ.get('MAILTRAP_PASS')
+        smtp_user = os.environ.get('MAILTRAP_USER', '')
+        smtp_pass = os.environ.get('MAILTRAP_PASS', '')
+
+        # Validate SMTP credentials
+        if not smtp_user or not smtp_pass:
+            current_app.logger.error('Missing SMTP credentials')
+            flash('Error sending email: Missing SMTP credentials', 'error')
+            return redirect(url_for('public.quote_calculator'))
 
         # Create message
         message = MIMEMultipart('alternative')
         message['Subject'] = "New Quote Request - Wood Products Unlimited"
         message['From'] = "quotes@woodproducts.com"
-        message['To'] = "chris.candelora@gmail.com"
+        message['To'] = email if email else "chris.candelora@gmail.com"
         
         # Add HTML content
         html_part = MIMEText(html_content, 'html')
