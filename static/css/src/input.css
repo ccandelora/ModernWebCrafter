@@ -2,15 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
+/* Theme variables */
 @layer base {
+  :root {
+    /* Light theme (default) */
+    --color-wood-brown: #8B4513;
+    --color-wood-light: #DEB887;
+    --color-wood-dark: #3E2723;
+    --color-wood-accent: #D7CCC8;
+    --color-text: #1a1a1a;
+    --color-bg: #ffffff;
+    --color-primary: #8B4513;
+    --color-secondary: #DEB887;
+  }
+
+  [data-theme="dark"] {
+    --color-wood-brown: #A0522D;
+    --color-wood-light: #F5DEB3;
+    --color-wood-dark: #2D1B18;
+    --color-wood-accent: #E8E1DE;
+    --color-text: #E8E1DE;
+    --color-bg: #2D1B18;
+    --color-primary: #A0522D;
+    --color-secondary: #F5DEB3;
+  }
+
   body {
-    @apply font-['Roboto'];
+    @apply font-['Roboto'] bg-theme-bg text-theme-text transition-theme duration-500;
+  }
+
+  /* Smooth transitions for theme changes */
+  *, *::before, *::after {
+    @apply transition-theme duration-500;
   }
 }
 
 @layer components {
   .btn-wood {
-    @apply bg-wood-brown text-white hover:bg-wood-dark hover:text-wood-light transition-colors duration-300;
+    @apply bg-wood-brown text-white hover:bg-wood-dark hover:text-wood-light transition-theme duration-300;
+  }
+
+  .theme-switch {
+    @apply inline-flex items-center p-2 rounded-lg cursor-pointer hover:bg-wood-accent/20 transition-theme duration-300;
+  }
+
+  .theme-switch-icon {
+    @apply w-6 h-6 text-wood-light transition-theme duration-300;
+  }
+
+  .theme-light {
+    @apply bg-theme-bg text-theme-text;
+  }
+
+  .theme-dark {
+    @apply bg-theme-bg text-theme-text;
   }
 }
