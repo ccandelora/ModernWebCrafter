@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-16">
+    <h1 class="text-3xl font-bold mb-12">Style Guide</h1>
+    
+    <!-- Color System -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold mb-6">Color System</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Wood Brown -->
+            <div class="p-6 rounded-lg shadow-lg">
+                <div class="w-full h-32 bg-wood-brown rounded-lg mb-4"></div>
+                <h3 class="font-semibold mb-2">Wood Brown</h3>
+                <p class="text-sm text-gray-600 mb-2">Primary Brand Color</p>
+                <code class="text-sm bg-gray-100 px-2 py-1 rounded">#8B4513</code>
+                <p class="mt-4 text-sm text-gray-600">Usage: Primary buttons, important headings, and key interactive elements</p>
+            </div>
+            
+            <!-- Wood Light -->
+            <div class="p-6 rounded-lg shadow-lg">
+                <div class="w-full h-32 bg-wood-light rounded-lg mb-4"></div>
+                <h3 class="font-semibold mb-2">Wood Light</h3>
+                <p class="text-sm text-gray-600 mb-2">Secondary Brand Color</p>
+                <code class="text-sm bg-gray-100 px-2 py-1 rounded">#DEB887</code>
+                <p class="mt-4 text-sm text-gray-600">Usage: Subtle backgrounds, secondary elements, and hover states</p>
+            </div>
+            
+            <!-- Wood Dark -->
+            <div class="p-6 rounded-lg shadow-lg">
+                <div class="w-full h-32 bg-wood-dark rounded-lg mb-4"></div>
+                <h3 class="font-semibold mb-2">Wood Dark</h3>
+                <p class="text-sm text-gray-600 mb-2">Dark Accent Color</p>
+                <code class="text-sm bg-gray-100 px-2 py-1 rounded">#3E2723</code>
+                <p class="mt-4 text-sm text-gray-600">Usage: Dark backgrounds, text contrast, and emphasis elements</p>
+            </div>
+            
+            <!-- Wood Accent -->
+            <div class="p-6 rounded-lg shadow-lg">
+                <div class="w-full h-32 bg-wood-accent rounded-lg mb-4"></div>
+                <h3 class="font-semibold mb-2">Wood Accent</h3>
+                <p class="text-sm text-gray-600 mb-2">Light Accent Color</p>
+                <code class="text-sm bg-gray-100 px-2 py-1 rounded">#D7CCC8</code>
+                <p class="mt-4 text-sm text-gray-600">Usage: Subtle backgrounds, borders, and decorative elements</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Button Examples -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold mb-6">Button Styles</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="font-semibold mb-4">Primary Buttons</h3>
+                <div class="space-y-4">
+                    <button class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Primary Button
+                    </button>
+                    <div class="mt-4">
+                        <code class="text-sm bg-gray-100 px-2 py-1 rounded block">
+                            class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-2 px-4 rounded transition duration-300"
+                        </code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 bg-white rounded-lg shadow-lg">
+                <h3 class="font-semibold mb-4">Secondary Buttons</h3>
+                <div class="space-y-4">
+                    <button class="border-2 border-wood-brown text-wood-brown hover:bg-wood-brown hover:text-white font-bold py-2 px-4 rounded transition duration-300">
+                        Secondary Button
+                    </button>
+                    <div class="mt-4">
+                        <code class="text-sm bg-gray-100 px-2 py-1 rounded block">
+                            class="border-2 border-wood-brown text-wood-brown hover:bg-wood-brown hover:text-white font-bold py-2 px-4 rounded transition duration-300"
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Typography -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold mb-6">Typography</h2>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="space-y-6">
+                <div>
+                    <h1 class="text-4xl font-bold text-wood-dark mb-2">Heading 1</h1>
+                    <code class="text-sm bg-gray-100 px-2 py-1 rounded">class="text-4xl font-bold text-wood-dark"</code>
+                </div>
+                
+                <div>
+                    <h2 class="text-3xl font-semibold text-wood-dark mb-2">Heading 2</h2>
+                    <code class="text-sm bg-gray-100 px-2 py-1 rounded">class="text-3xl font-semibold text-wood-dark"</code>
+                </div>
+                
+                <div>
+                    <h3 class="text-2xl font-medium text-wood-dark mb-2">Heading 3</h3>
+                    <code class="text-sm bg-gray-100 px-2 py-1 rounded">class="text-2xl font-medium text-wood-dark"</code>
+                </div>
+                
+                <div>
+                    <p class="text-base text-gray-600 mb-2">Body Text - Regular paragraph text with good readability</p>
+                    <code class="text-sm bg-gray-100 px-2 py-1 rounded">class="text-base text-gray-600"</code>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Card Components -->
+    <section class="mb-16">
+        <h2 class="text-2xl font-semibold mb-6">Card Components</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="font-semibold mb-4">Basic Card</h3>
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h4 class="text-xl font-semibold mb-2">Card Title</h4>
+                        <p class="text-gray-600">Card content with standard padding and shadow.</p>
+                    </div>
+                    <div class="mt-4">
+                        <code class="text-sm bg-gray-100 px-2 py-1 rounded block">
+                            class="bg-white rounded-lg shadow-lg p-6"
+                        </code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="font-semibold mb-4">Hover Card</h3>
+                    <div class="bg-white rounded-lg shadow-lg p-6 transform hover:-translate-y-1 transition-all duration-300">
+                        <h4 class="text-xl font-semibold mb-2">Interactive Card</h4>
+                        <p class="text-gray-600">Card with hover effect and transition.</p>
+                    </div>
+                    <div class="mt-4">
+                        <code class="text-sm bg-gray-100 px-2 py-1 rounded block">
+                            class="bg-white rounded-lg shadow-lg p-6 transform hover:-translate-y-1 transition-all duration-300"
+                        </code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

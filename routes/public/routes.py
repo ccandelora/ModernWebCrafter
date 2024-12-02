@@ -210,3 +210,8 @@ def contact():
               'success')
         return redirect(url_for('public.contact'))
     return render_template('contact.html')
+
+@public.route('/styleguide')
+def styleguide():
+    """Style guide page showcasing design system components."""
+    return render_template('styleguide.html')
