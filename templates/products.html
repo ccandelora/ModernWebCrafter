@@ -13,12 +13,12 @@
         <div class="md:col-span-1">
             <h2 class="text-xl font-semibold mb-4">Categories</h2>
             <div class="space-y-2">
-                <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent  text-white hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                     All Products
                 </a>
                 {% for category in categories %}
                 <a href="/products?category={{ category[0] }}" 
-                   class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                   class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent text-white hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                     {{ category[0] }}
                 </a>
                 {% endfor %}

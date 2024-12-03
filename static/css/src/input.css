@@ -28,18 +28,18 @@
   }
 
   [data-theme="industrial"] {
-    --color-wood-brown: var(--industrial-primary, #f90d0e);
+    --color-wood-brown: var(--industrial-primary, #db0c0c);
     --color-wood-light: var(--industrial-accent-light, #fd9e9e);
     --color-wood-dark: var(--industrial-primary-dark, #330101);
-    --color-wood-accent: var(--industrial-secondary, #4152e4);
+    --color-wood-accent: var(--industrial-secondary, #0c1edb);
     --color-text: #1a1a1a;
     --color-bg: #ffffff;
-    --color-primary: var(--industrial-primary, #f90d0e);
-    --color-secondary: var(--industrial-secondary, #4152e4);
-    --industrial-primary: #f90d0e;
+    --color-primary: var(--industrial-primary, #db0c0c);
+    --color-secondary: var(--industrial-secondary, #0c1edb);
+    --industrial-primary: #db0c0c;
     --industrial-primary-light: #fd9e9e;
     --industrial-primary-dark: #330101;
-    --industrial-secondary: #4152e4;
+    --industrial-secondary: #0c1edb;
     --industrial-secondary-light: #8c96ef;
     --industrial-secondary-dark: #162399;
   }

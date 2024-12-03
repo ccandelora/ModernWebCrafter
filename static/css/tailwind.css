@@ -578,18 +578,18 @@ video {
 }
 
 [data-theme="industrial"] {
-  --color-wood-brown: var(--industrial-primary, #f90d0e);
+  --color-wood-brown: var(--industrial-primary, #db0c0c);
   --color-wood-light: var(--industrial-accent-light, #fd9e9e);
   --color-wood-dark: var(--industrial-primary-dark, #330101);
-  --color-wood-accent: var(--industrial-secondary, #4152e4);
+  --color-wood-accent: var(--industrial-secondary, #0c1edb);
   --color-text: #1a1a1a;
   --color-bg: #ffffff;
-  --color-primary: var(--industrial-primary, #f90d0e);
-  --color-secondary: var(--industrial-secondary, #4152e4);
-  --industrial-primary: #f90d0e;
+  --color-primary: var(--industrial-primary, #db0c0c);
+  --color-secondary: var(--industrial-secondary, #0c1edb);
+  --industrial-primary: #db0c0c;
   --industrial-primary-light: #fd9e9e;
   --industrial-primary-dark: #330101;
-  --industrial-secondary: #4152e4;
+  --industrial-secondary: #0c1edb;
   --industrial-secondary-light: #8c96ef;
   --industrial-secondary-dark: #162399;
 }
@@ -705,7 +705,7 @@ video {
 
 .theme-industrial .btn-wood {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 13 14 / var(--tw-bg-opacity, 1));
+  background-color: rgb(219 12 12 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   transition-property: all;
@@ -715,14 +715,14 @@ video {
 
 .theme-industrial .btn-wood:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(65 82 228 / var(--tw-bg-opacity, 1));
+  background-color: rgb(12 30 219 / var(--tw-bg-opacity, 1));
 }
 
 .theme-industrial .theme-switch select {
   --tw-border-opacity: 1;
-  border-color: rgb(65 82 228 / var(--tw-border-opacity, 1));
+  border-color: rgb(12 30 219 / var(--tw-border-opacity, 1));
   --tw-text-opacity: 1;
-  color: rgb(249 13 14 / var(--tw-text-opacity, 1));
+  color: rgb(219 12 12 / var(--tw-text-opacity, 1));
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -730,17 +730,17 @@ video {
 
 .theme-industrial .theme-switch select:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(249 13 14 / var(--tw-border-opacity, 1));
+  border-color: rgb(219 12 12 / var(--tw-border-opacity, 1));
 }
 
 .theme-industrial .theme-switch select:focus {
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(65 82 228 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: rgb(12 30 219 / var(--tw-ring-opacity, 1));
 }
 
 .theme-industrial nav {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 13 14 / var(--tw-bg-opacity, 1));
+  background-color: rgb(219 12 12 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   transition-property: all;
@@ -763,7 +763,7 @@ video {
 
 .theme-industrial footer {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 13 14 / var(--tw-bg-opacity, 1));
+  background-color: rgb(219 12 12 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   transition-property: all;
@@ -786,7 +786,7 @@ video {
 
 .theme-industrial .card {
   --tw-border-opacity: 1;
-  border-color: rgb(249 13 14 / var(--tw-border-opacity, 1));
+  border-color: rgb(219 12 12 / var(--tw-border-opacity, 1));
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -797,7 +797,7 @@ video {
 
 .theme-industrial .card:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(65 82 228 / var(--tw-border-opacity, 1));
+  border-color: rgb(12 30 219 / var(--tw-border-opacity, 1));
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
@@ -805,7 +805,7 @@ video {
 
 .theme-industrial .section-header {
   --tw-text-opacity: 1;
-  color: rgb(249 13 14 / var(--tw-text-opacity, 1));
+  color: rgb(219 12 12 / var(--tw-text-opacity, 1));
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -815,7 +815,7 @@ video {
 
 .theme-industrial .btn-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 13 14 / var(--tw-bg-opacity, 1));
+  background-color: rgb(219 12 12 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -836,7 +836,7 @@ video {
 
 .theme-industrial .btn-secondary {
   --tw-bg-opacity: 1;
-  background-color: rgb(65 82 228 / var(--tw-bg-opacity, 1));
+  background-color: rgb(12 30 219 / var(--tw-bg-opacity, 1));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -857,7 +857,7 @@ video {
 
 .theme-industrial .link-accent {
   --tw-text-opacity: 1;
-  color: rgb(65 82 228 / var(--tw-text-opacity, 1));
+  color: rgb(12 30 219 / var(--tw-text-opacity, 1));
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -870,7 +870,7 @@ video {
 
 .theme-industrial .input {
   --tw-border-opacity: 1;
-  border-color: rgb(249 13 14 / var(--tw-border-opacity, 1));
+  border-color: rgb(219 12 12 / var(--tw-border-opacity, 1));
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -878,9 +878,9 @@ video {
 
 .theme-industrial .input:focus {
   --tw-border-opacity: 1;
-  border-color: rgb(65 82 228 / var(--tw-border-opacity, 1));
+  border-color: rgb(12 30 219 / var(--tw-border-opacity, 1));
   --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(65 82 228 / var(--tw-ring-opacity, 1));
+  --tw-ring-color: rgb(12 30 219 / var(--tw-ring-opacity, 1));
 }
 
 .theme-industrial .card-hover {
@@ -891,14 +891,14 @@ video {
 
 .theme-industrial .card-hover:hover {
   --tw-border-opacity: 1;
-  border-color: rgb(65 82 228 / var(--tw-border-opacity, 1));
-  --tw-shadow-color: rgb(65 82 228 / 0.2);
+  border-color: rgb(12 30 219 / var(--tw-border-opacity, 1));
+  --tw-shadow-color: rgb(12 30 219 / 0.2);
   --tw-shadow: var(--tw-shadow-colored);
 }
 
 .theme-industrial .section-title {
   --tw-text-opacity: 1;
-  color: rgb(249 13 14 / var(--tw-text-opacity, 1));
+  color: rgb(219 12 12 / var(--tw-text-opacity, 1));
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 300ms;
@@ -907,7 +907,7 @@ video {
 .theme-industrial .section-title::after {
   content: var(--tw-content);
   --tw-bg-opacity: 1;
-  background-color: rgb(65 82 228 / var(--tw-bg-opacity, 1));
+  background-color: rgb(12 30 219 / var(--tw-bg-opacity, 1));
 }
 
 .sr-only {
@@ -1436,12 +1436,12 @@ video {
 
 .bg-industrial-blue {
   --tw-bg-opacity: 1;
-  background-color: rgb(65 82 228 / var(--tw-bg-opacity, 1));
+  background-color: rgb(12 30 219 / var(--tw-bg-opacity, 1));
 }
 
 .bg-industrial-red {
   --tw-bg-opacity: 1;
-  background-color: rgb(249 13 14 / var(--tw-bg-opacity, 1));
+  background-color: rgb(219 12 12 / var(--tw-bg-opacity, 1));
 }
 
 .bg-industrial-red-light {

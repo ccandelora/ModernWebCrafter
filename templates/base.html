@@ -47,6 +47,7 @@
             href="{{ url_for('static', filename='css/custom.css') }}"
             rel="stylesheet"
         />
+        <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <script
             src="https://kit.fontawesome.com/your-code.js"
             crossorigin="anonymous"
@@ -97,7 +98,7 @@
                 "@type": "Organization",
                 "name": "Wood Products Unlimited",
                 "url": "{{ request.url_root }}",
-                "logo": "{{ url_for('static', filename='images/logo.svg', _external=True) }}",
+                "logo": "{{ url_for('static', filename='images/wpulogo3.png', _external=True) }}",
                 "sameAs": [],
                 "contactPoint": {
                     "@type": "ContactPoint",
@@ -109,12 +110,12 @@
         </script>
     </head>
     <body class="flex flex-col min-h-screen bg-white text-wood-dark">
-        <nav class="bg-wood-dark">
+        <nav class="inset-0 bg-opacity-80 bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[100px] relative overflow-hidden"></div>
             <div class="container mx-auto px-4">
                 <div class="flex justify-between items-center h-16">
                     <a href="/" class="flex items-center text-wood-light">
                         <img
-                            src="{{ url_for('static', filename='images/logo.svg') }}"
+                            src="{{ url_for('static', filename='images/wpulogo3.png') }}"
                             class="h-8 w-8 mr-2"
                             alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
                             loading="eager"
@@ -264,6 +265,13 @@
                             Location: Lawrence, Massachusetts<br />
                             Phone: (978) 687-7449<br />
                             Email: info@woodproductsunlimited.com
+                            <img src="{{ url_for('static', filename='images/wpulogo3.png') }}"
+                                class="h-auto max-w-xs mt-4"
+                                alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="sync"
+                        />
                         </p>
                     </div>
                     <div>

@@ -17,19 +17,19 @@
                     </div>
                     <span class="text-sm font-medium">Package Details</span>
                 </div>
-                <div class="w-1/3 text-center">
+                <div class="w-1/3 text-center text-white">
                     <div
                         id="step2-indicator"
-                        class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2"
+                        class="w-8 h-8 mx-auto bg-wood-accent rounded-full flex items-center justify-center mb-2"
                     >
                         2
                     </div>
                     <span class="text-sm font-medium">Specifications</span>
                 </div>
-                <div class="w-1/3 text-center">
+                <div class="w-1/3 text-center text-white">
                     <div
                         id="step3-indicator"
-                        class="w-8 h-8 mx-auto bg-wood-accent text-wood-dark rounded-full flex items-center justify-center mb-2"
+                        class="w-8 h-8 mx-auto bg-wood-accent rounded-full flex items-center justify-center mb-2"
                     >
                         3
                     </div>
@@ -51,14 +51,14 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <!-- Quote Guidelines -->
             <div class="mb-8 p-4 bg-wood-accent bg-opacity-10 rounded-lg">
-                <h2 class="text-lg font-semibold mb-2 flex items-center">
-                    <i class="fas fa-info-circle mr-2 text-wood-brown"></i>
+                <h2 class="text-lg font-semibold mb-2 flex items-center text-white">
+                    <i class="fas fa-info-circle mr-2"></i>
                     Quick Guide
                 </h2>
-                <ul class="space-y-2 text-sm text-gray-600">
+                <ul class="space-y-2 text-sm text-white">
                     <li class="flex items-start">
                         <i
-                            class="fas fa-check-circle text-wood-brown mt-1 mr-2"
+                            class="fas fa-check-circle mt-1 mr-2"
                         ></i>
                         <span
                             >Enter accurate dimensions in inches for the most
@@ -67,7 +67,7 @@
                     </li>
                     <li class="flex items-start">
                         <i
-                            class="fas fa-check-circle text-wood-brown mt-1 mr-2"
+                            class="fas fa-check-circle text-white mt-1 mr-2"
                         ></i>
                         <span
                             >Include all special requirements that apply to your
@@ -76,7 +76,7 @@
                     </li>
                     <li class="flex items-start">
                         <i
-                            class="fas fa-check-circle text-wood-brown mt-1 mr-2"
+                            class="fas fa-check-circle text-black mt-1 mr-2"
                         ></i>
                         <span
                             >For items over 50,000 lbs or very large dimensions,
@@ -557,7 +557,7 @@
                     Estimated Quote Range
                 </h3>
                 <div class="bg-wood-accent bg-opacity-10 rounded-lg p-6">
-                    <p class="text-3xl font-bold text-wood-dark mb-2">
+                    <p class="text-3xl font-bold text-white mb-2">
                         ${{ estimated_quote.min }} - ${{ estimated_quote.max }}
                     </p>
                     <div class="space-y-4">
@@ -621,18 +621,18 @@
                 if (i < stepNumber) {
                     indicator.classList.remove(
                         "bg-wood-accent",
-                        "text-wood-dark",
+                        "text-white",
                     );
                     indicator.classList.add("bg-wood-brown", "text-white");
                 } else if (i === stepNumber) {
                     indicator.classList.remove(
                         "bg-wood-accent",
-                        "text-wood-dark",
+                        "text-white",
                     );
                     indicator.classList.add("bg-wood-brown", "text-white");
                 } else {
                     indicator.classList.remove("bg-wood-brown", "text-white");
-                    indicator.classList.add("bg-wood-accent", "text-wood-dark");
+                    indicator.classList.add("bg-wood-accent", "text-white");
                 }
             }
 

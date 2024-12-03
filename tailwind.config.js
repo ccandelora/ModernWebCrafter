@@ -18,12 +18,12 @@ module.exports = {
         'theme-secondary': 'var(--color-secondary)',
         'industrial': {
           red: {
-            DEFAULT: '#f90d0e',
+            DEFAULT: '#db0c0c',
             light: '#fd9e9e',
             dark: '#330101'
           },
           blue: {
-            DEFAULT: '#4152e4',
+            DEFAULT: '#0c1edb',
             light: '#8c96ef',
             dark: '#162399'
           }
