@@ -2,32 +2,25 @@
 document.addEventListener('DOMContentLoaded', function() {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
     const savedTheme = localStorage.getItem('theme');
+    const themes = ['light', 'dark', 'industrial'];
     
     // Function to update theme
     function updateTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        document.body.classList.remove('theme-light', 'theme-dark');
+        document.body.classList.remove('theme-light', 'theme-dark', 'theme-industrial');
         document.body.classList.add(`theme-${theme}`);
         
-        // Update switch state
+        // Update select element
         const themeSwitch = document.getElementById('theme-switch');
         if (themeSwitch) {
-            themeSwitch.checked = theme === 'dark';
-        }
-        
-        // Update icons
-        const moonIcon = document.getElementById('theme-switch-moon');
-        const sunIcon = document.getElementById('theme-switch-sun');
-        if (moonIcon && sunIcon) {
-            moonIcon.classList.toggle('hidden', theme === 'light');
-            sunIcon.classList.toggle('hidden', theme === 'dark');
+            themeSwitch.value = theme;
         }
         
         localStorage.setItem('theme', theme);
     }
     
     // Set initial theme
-    if (savedTheme) {
+    if (savedTheme && themes.includes(savedTheme)) {
         updateTheme(savedTheme);
     } else {
         updateTheme(prefersDark.matches ? 'dark' : 'light');
@@ -36,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for theme switch changes
     const themeSwitch = document.getElementById('theme-switch');
     themeSwitch?.addEventListener('change', function(e) {
-        updateTheme(e.target.checked ? 'dark' : 'light');
+        updateTheme(e.target.value);
     });
     
     // Listen for system theme changes

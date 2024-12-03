@@ -27,34 +27,122 @@
     --color-secondary: #F5DEB3;
   }
 
-  body {
-    @apply font-['Roboto'] bg-theme-bg text-theme-text transition-theme duration-500;
-  }
-
-  /* Smooth transitions for theme changes */
-  *, *::before, *::after {
-    @apply transition-theme duration-500;
+  [data-theme="industrial"] {
+    --color-wood-brown: var(--industrial-primary, #f90d0e);
+    --color-wood-light: var(--industrial-accent-light, #fd9e9e);
+    --color-wood-dark: var(--industrial-primary-dark, #330101);
+    --color-wood-accent: var(--industrial-secondary, #4152e4);
+    --color-text: #1a1a1a;
+    --color-bg: #ffffff;
+    --color-primary: var(--industrial-primary, #f90d0e);
+    --color-secondary: var(--industrial-secondary, #4152e4);
+    --industrial-primary: #f90d0e;
+    --industrial-primary-light: #fd9e9e;
+    --industrial-primary-dark: #330101;
+    --industrial-secondary: #4152e4;
+    --industrial-secondary-light: #8c96ef;
+    --industrial-secondary-dark: #162399;
   }
 }
 
 @layer components {
+  /* Base button styles */
   .btn-wood {
-    @apply bg-wood-brown text-white hover:bg-wood-dark hover:text-wood-light transition-theme duration-300;
+    @apply bg-wood-brown text-white hover:bg-wood-dark transition-all duration-300 ease-in-out;
   }
 
+  /* Theme switcher styles */
   .theme-switch {
-    @apply inline-flex items-center p-2 rounded-lg cursor-pointer hover:bg-wood-accent/20 transition-theme duration-300;
+    @apply inline-flex items-center p-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
   }
 
-  .theme-switch-icon {
-    @apply w-6 h-6 text-wood-light transition-theme duration-300;
+  .theme-switch select {
+    @apply bg-transparent border border-wood-light rounded px-2 py-1 text-wood-light focus:outline-none focus:ring-2 focus:ring-wood-accent transition-all duration-300 ease-in-out;
   }
 
+  /* Theme-specific styles */
   .theme-light {
-    @apply bg-theme-bg text-theme-text;
+    @apply bg-white text-gray-900;
   }
 
   .theme-dark {
-    @apply bg-theme-bg text-theme-text;
+    @apply bg-wood-dark text-wood-light;
   }
+
+  .theme-industrial {
+    @apply bg-white text-gray-900;
+  }
+
+  /* Industrial theme overrides */
+  .theme-industrial .btn-wood {
+    @apply bg-industrial-red text-white hover:bg-industrial-blue transition-all duration-300;
+  }
+
+  .theme-industrial .theme-switch select {
+    @apply border-industrial-blue text-industrial-red hover:border-industrial-red focus:ring-industrial-blue transition-all duration-300;
+  }
+
+  .theme-industrial nav {
+    @apply bg-industrial-red text-white transition-all duration-300;
+  }
+
+  .theme-industrial nav a {
+    @apply text-white hover:text-industrial-blue-light transition-colors duration-300;
+  }
+
+  .theme-industrial footer {
+    @apply bg-industrial-red text-white transition-all duration-300;
+  }
+
+  .theme-industrial footer a {
+    @apply hover:text-industrial-blue-light transition-colors duration-300;
+  }
+
+  /* Card and section styles for industrial theme */
+  .theme-industrial .card {
+    @apply border-industrial-red hover:border-industrial-blue shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .theme-industrial .section-header {
+    @apply text-industrial-red transition-colors duration-300;
+  }
+  
+  /* Additional industrial theme elements */
+  .theme-industrial .btn-primary {
+    @apply bg-industrial-red hover:bg-industrial-red-dark text-white shadow-md hover:shadow-lg transition-all duration-300;
+  }
+  
+  .theme-industrial .btn-secondary {
+    @apply bg-industrial-blue hover:bg-industrial-blue-dark text-white shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-industrial .link-accent {
+    @apply text-industrial-blue hover:text-industrial-blue-dark transition-colors duration-300;
+  }
+
+  .theme-industrial .input {
+    @apply border-industrial-red focus:border-industrial-blue focus:ring-industrial-blue transition-all duration-300;
+  }
+
+  .theme-industrial .card-hover {
+    @apply hover:border-industrial-blue hover:shadow-industrial-blue/20 transition-all duration-300;
+  }
+
+  .theme-industrial .section-title {
+    @apply text-industrial-red after:bg-industrial-blue transition-colors duration-300;
+  }
+}
+
+/* Global transitions */
+* {
+  @apply transition-colors duration-300 ease-in-out;
+}
+
+/* Smooth theme transitions */
+html {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+body {
+  @apply transition-all duration-300 ease-in-out;
 }
