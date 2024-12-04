@@ -8,6 +8,7 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_assets import Environment, Bundle
 from subprocess import run
+from utils.requirements_manager import update_requirements
 
 
 class Base(DeclarativeBase):
@@ -317,6 +318,9 @@ try:
 except Exception as e:
     app.logger.error(f'Failed to initialize database: {str(e)}')
     raise
+# Update requirements.txt on startup
+update_requirements()
+
 
 def compile_tailwind():
     """Compile Tailwind CSS"""
