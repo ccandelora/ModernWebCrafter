@@ -6,6 +6,8 @@ from datetime import date
 import json
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_assets import Environment, Bundle
+from subprocess import run
 
 
 class Base(DeclarativeBase):
@@ -315,3 +317,21 @@ try:
 except Exception as e:
     app.logger.error(f'Failed to initialize database: {str(e)}')
     raise
+
+def compile_tailwind():
+    """Compile Tailwind CSS"""
+    print("Compiling Tailwind CSS...")
+    result = run([
+        'tailwindcss',
+        '-i', './static/src/input.css',
+        '-o', './static/css/tailwind.css',
+        '--minify'
+    ], capture_output=True, text=True)
+    
+    if result.returncode != 0:
+        print("Error compiling Tailwind CSS:", result.stderr)
+    else:
+        print("Tailwind CSS compiled successfully!")
+
+# Call this when starting your app
+compile_tailwind()

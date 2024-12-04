@@ -43,6 +43,80 @@
     --industrial-secondary-light: #8c96ef;
     --industrial-secondary-dark: #162399;
   }
+
+  [data-theme="industrial-dark"] {
+    --color-wood-brown: var(--industrial-primary, #0519C4);
+    --color-wood-light: var(--industrial-accent-light, #ffffff);
+    --color-wood-dark: var(--industrial-primary-dark, #DD0B0D);
+    --color-wood-accent: var(--industrial-secondary, #9A989C);
+    --color-text: #1a1a1a;
+    --color-bg: #ffffff;
+    --color-primary: var(--industrial-primary, #0519C4);
+    --color-secondary: var(--industrial-secondary, #DD0B0D);
+    --industrial-primary: #0519C4;
+    --industrial-primary-light: #fd9e9e;
+    --industrial-primary-dark: #DD0B0D;
+    --industrial-secondary: #9A989C;
+    --industrial-secondary-light: #9A989C;
+    --industrial-secondary-dark: #3D12AB;
+  }
+
+  [data-theme="corporate"] {
+    --color-wood-brown: var(--corporate-primary, #0519C4);
+    --color-wood-light: var(--corporate-light, #F5F7FA);
+    --color-wood-dark: var(--corporate-dark, #2D3748);
+    --color-wood-accent: var(--corporate-secondary, #DD0B0D);
+    --color-text: #2D3748;
+    --color-bg: #F5F7FA;
+    --color-primary: var(--corporate-primary, #0519C4);
+    --color-secondary: var(--corporate-secondary, #DD0B0D);
+    --corporate-primary: #0519C4;
+    --corporate-primary-light: #4051B5;
+    --corporate-primary-dark: #2D3748;
+    --corporate-secondary: #DD0B0D;
+    --corporate-secondary-light: #F5F7FA;
+    --corporate-secondary-dark: #B91C1C;
+  }
+
+  [data-theme="executive"] {
+    --color-wood-brown: var(--executive-primary, #1E293B);
+    --color-wood-light: var(--executive-light, #F8FAFC);
+    --color-wood-dark: var(--executive-dark, #0F172A);
+    --color-wood-accent: var(--executive-accent, #38BDF8);
+    --color-text: #1E293B;
+    --color-bg: #F8FAFC;
+    --color-primary: var(--executive-primary, #1E293B);
+    --color-secondary: var(--executive-secondary, #38BDF8);
+    --executive-primary: #1E293B;      /* Rich Navy */
+    --executive-primary-light: #334155; /* Lighter Navy */
+    --executive-primary-dark: #0F172A;  /* Dark Navy */
+    --executive-secondary: #38BDF8;     /* Sky Blue */
+    --executive-accent: #0EA5E9;        /* Bright Blue */
+    --executive-gray: #94A3B8;          /* Slate Gray */
+    --executive-light: #F8FAFC;         /* Off White */
+    --executive-success: #10B981;       /* Emerald */
+  }
+
+  [data-theme="wpu"] {
+    --color-wood-brown: var(--wpu-primary, #0F19BA);
+    --color-wood-light: var(--wpu-light, #FFFFFF);
+    --color-wood-dark: var(--wpu-dark, #0A1187);
+    --color-wood-accent: var(--wpu-accent, #D80F14);
+    --color-text: #1E293B;
+    --color-bg: #FFFFFF;
+    --color-primary: var(--wpu-primary, #0F19BA);
+    --color-secondary: var(--wpu-secondary, #D80F14);
+    --wpu-primary: #0F19BA;        /* Logo Blue */
+    --wpu-primary-light: #3D44C9;  /* Lighter Blue */
+    --wpu-primary-dark: #0A1187;   /* Darker Blue */
+    --wpu-secondary: #D80F14;      /* Logo Red */
+    --wpu-secondary-light: #E63E42;/* Lighter Red */
+    --wpu-secondary-dark: #B00C10; /* Darker Red */
+    --wpu-gray: #A5A3A8;          /* Logo Gray */
+    --wpu-gray-light: #D4D3D5;    /* Lighter Gray */
+    --wpu-gray-dark: #6B696E;     /* Darker Gray */
+  }
+
 }
 
 @layer components {
@@ -131,6 +205,93 @@
   .theme-industrial .section-title {
     @apply text-industrial-red after:bg-industrial-blue transition-colors duration-300;
   }
+
+  /* Add corporate theme styles */
+  .theme-corporate {
+    @apply bg-[#F5F7FA] text-[#2D3748];
+  }
+
+  .theme-corporate .btn-wood {
+    @apply bg-[#0519C4] text-white hover:bg-[#4051B5] transition-all duration-300;
+  }
+
+  .theme-corporate .card {
+    @apply border-[#0519C4] hover:border-[#DD0B0D] shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+
+  .theme-corporate .link-accent {
+    @apply text-[#0519C4] hover:text-[#DD0B0D] transition-colors duration-300;
+  }
+
+  /* Add executive theme styles */
+  .theme-executive {
+    @apply bg-[#F8FAFC] text-[#1E293B];
+  }
+
+  .theme-executive .btn-wood {
+    @apply bg-[#1E293B] text-white hover:bg-[#334155] hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-executive .card {
+    @apply bg-white border-[#E2E8F0] hover:border-[#38BDF8] shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-executive .link-accent {
+    @apply text-[#38BDF8] hover:text-[#0EA5E9] transition-colors duration-300;
+  }
+
+  .theme-executive .section-header {
+    @apply text-[#1E293B] font-semibold;
+  }
+
+  .theme-executive .btn-primary {
+    @apply bg-[#38BDF8] hover:bg-[#0EA5E9] text-white shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-executive .btn-secondary {
+    @apply bg-[#1E293B] hover:bg-[#334155] text-white shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-executive .success-button {
+    @apply bg-[#10B981] hover:bg-[#059669] text-white shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  /* Add WPU theme styles */
+  .theme-wpu {
+    @apply bg-white text-[#1E293B];
+  }
+
+  .theme-wpu .btn-primary {
+    @apply bg-[#0F19BA] text-white hover:bg-[#3D44C9] shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-wpu .btn-secondary {
+    @apply bg-[#D80F14] text-white hover:bg-[#E63E42] shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-wpu .btn-neutral {
+    @apply bg-[#A5A3A8] text-white hover:bg-[#6B696E] shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-wpu .card {
+    @apply bg-white border-[#A5A3A8] hover:border-[#0F19BA] shadow-md hover:shadow-lg transition-all duration-300;
+  }
+
+  .theme-wpu .link-accent {
+    @apply text-[#0F19BA] hover:text-[#D80F14] transition-colors duration-300;
+  }
+
+  .theme-wpu .section-header {
+    @apply text-[#0F19BA] font-semibold;
+  }
+
+  .theme-wpu .nav-item {
+    @apply text-[#1E293B] hover:text-[#D80F14] transition-colors duration-300;
+  }
+
+  .theme-wpu .footer {
+    @apply bg-[#0F19BA] text-white;
+  }
 }
 
 /* Global transitions */
@@ -145,4 +306,10 @@ html {
 
 body {
   @apply transition-all duration-300 ease-in-out;
+}
+
+@layer utilities {
+  .shadow-industrial-blue\/20 {
+    box-shadow: 0 4px 6px -1px rgba(var(--industrial-secondary), 0.2);
+  }
 }
