@@ -61,15 +61,20 @@
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             {% if product.image_url %}
-                            <div class="relative w-full h-[300px] bg-gray-100 mb-4 rounded-lg overflow-hidden">
+                            <div class="relative w-full h-[250px] bg-gray-100 rounded-lg overflow-hidden">
                                 <img src="{{ product.image_url }}" 
                                      alt="{{ product.name }}"
-                                     class="absolute inset-0 w-full h-full object-contain bg-white p-4">
+                                     class="absolute inset-0 w-full h-full object-contain bg-white p-4"
+                                     loading="lazy"
+                                     decoding="async">
                             </div>
+                            <div class="mt-4"></div>
                             {% endif %}
-                            <h3 class="text-lg font-semibold">{{ product.name }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">Category: {{ product.category }}</p>
-                            <p class="text-gray-600">{{ product.description }}</p>
+                            <div class="mt-4">
+                                <h3 class="text-lg font-semibold mb-2">{{ product.name }}</h3>
+                                <p class="text-sm text-gray-600 mb-2">Category: {{ product.category }}</p>
+                                <p class="text-gray-600">{{ product.description }}</p>
+                            </div>
                         </div>
                         <div class="flex space-x-2">
                             <a href="{{ url_for('admin.admin_products.edit_product', id=product.id) }}" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
