@@ -50,18 +50,25 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
 
     # Validate image dimensions and format using PIL
     try:
-        img = Image.open(io.BytesIO(file_content))
-        width, height = img.size
+        # Create a copy of the file content for validation
+        img_copy = io.BytesIO(file_content)
+        img = Image.open(img_copy)
         
+        # Convert to RGB if needed
+        if img.mode in ('RGBA', 'LA', 'P'):
+            img = img.convert('RGB')
+            
+        width, height = img.size
         if width > max_dimension or height > max_dimension:
             logging.warning(f"Image dimensions too large: {width}x{height}")
             raise ValueError(f'Image dimensions exceed {max_dimension}x{max_dimension} pixels limit')
             
-        # Verify it's a valid image format
-        img.verify()
+    except (IOError, OSError) as e:
+        logging.warning(f"Invalid image file format: {str(e)}")
+        raise ValueError('Invalid image format. Please upload a JPG, PNG, or WebP file.')
     except Exception as e:
-        logging.warning(f"Invalid image file: {str(e)}")
-        raise ValueError('Invalid image file. Please upload a valid image.')
+        logging.warning(f"Error processing image file: {str(e)}")
+        raise ValueError('Error processing image. Please try again with a different file.')
 
     # Reset file pointer after validation
     file.seek(0)
