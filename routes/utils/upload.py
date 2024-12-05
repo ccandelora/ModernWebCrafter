@@ -1,6 +1,6 @@
 import os
 import logging
-from PIL import Image, ImageFilter
+from PIL import Image, ImageFilter, ImageOps
 import io
 from werkzeug.utils import secure_filename
 
