@@ -211,20 +211,45 @@ body {
   }
 }
 
-/* CSS Custom Properties - Light Theme Colors */
+/* CSS Custom Properties - Enhanced Light Theme Colors with Accessibility */
 :root {
-  --primary-brown: #8B4513;
+  /* Primary Colors - Ensuring WCAG 2.1 AA compliance */
+  --primary-brown: #8B4513; /* Main brand color */
+  --primary-brown-dark: #6B3410; /* Darker variant for better contrast */
+  --primary-brown-light: #A65D1E; /* Lighter variant for hover states */
+  
+  /* Secondary Colors with Enhanced Contrast */
   --secondary-brown: #C68642;
-  --dark-brown: #3E2723;
+  --dark-brown: #3E2723; /* Text color with high contrast */
+  
+  /* Background Colors */
   --background-white: #FFFFFF;
+  --background-off-white: #FAFAFA; /* Subtle background variation */
   --light-gray: #F5F5F4;
   --neutral-gray: #E7E5E4;
+  
+  /* Accent Colors */
   --warm-beige: #DEB887;
   --soft-taupe: #D7CCC8;
-  --success-green: #10B981;
-  --error-red: #EF4444;
-  --warning-yellow: #F59E0B;
-  --info-blue: #3B82F6;
+  
+  /* Semantic Colors with Enhanced Contrast */
+  --success-green: #0D9488; /* Improved contrast from previous */
+  --error-red: #DC2626; /* Enhanced for better visibility */
+  --warning-yellow: #D97706; /* Adjusted for better contrast */
+  --info-blue: #2563EB; /* Modified for WCAG compliance */
+  
+  /* Focus States */
+  --focus-ring: #2563EB;
+  --focus-ring-offset: #FFFFFF;
+  
+  /* Interactive States */
+  --hover-overlay: rgba(0, 0, 0, 0.05);
+  --active-overlay: rgba(0, 0, 0, 0.1);
+  
+  /* Text Colors */
+  --text-primary: #1F1F1F; /* High contrast for main text */
+  --text-secondary: #4B4B4B; /* For less emphasized text */
+  --text-disabled: #6B7280; /* For disabled states */
 }
 
 /* Base styles using Light theme */
@@ -311,6 +336,102 @@ body {
   /* Page breaks */
   h1, h2, h3 {
     page-break-after: avoid;
+/* Accessibility Enhancements */
+/* Base accessibility styles */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced focus styles */
+*:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip to main content link */
+.skip-to-main-content {
+  background: var(--background-white);
+  color: var(--text-primary);
+  left: 50%;
+  padding: 8px;
+  position: absolute;
+  transform: translateY(-100%);
+  transition: transform 0.3s;
+}
+
+.skip-to-main-content:focus {
+  transform: translateY(0%);
+}
+
+/* Improved text contrast classes */
+.text-high-contrast {
+  color: var(--text-primary);
+}
+
+.text-secondary-contrast {
+  color: var(--text-secondary);
+}
+
+/* Interactive element enhancements */
+button, 
+[role="button"],
+.btn {
+  cursor: pointer;
+  font-weight: 500;
+  position: relative;
+  transition: background-color 0.2s;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"],
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Link underlines for better visibility */
+a:not(.btn):not(.nav-link) {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Screen reader utilities */
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: normal;
+  width: auto;
+}
     page-break-inside: avoid;
   }
 

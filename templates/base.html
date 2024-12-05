@@ -140,8 +140,13 @@
         </script>
     </head>
     <body class="flex flex-col min-h-screen bg-white text-wood-dark">
+        <!-- Skip to main content link -->
+        <a href="#main-content" class="skip-to-main-content">
+            Skip to main content
+        </a>
+        
         <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay">
+        <div id="loadingOverlay" class="loading-overlay" role="alert" aria-busy="true" aria-label="Loading content">
             <div class="loading-spinner"></div>
         </div>
         <nav class="inset-0 bg-opacity-90 bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[100px] relative overflow-hidden shadow-lg">
@@ -253,12 +258,14 @@
             </div>
         </nav>
 
+        <main id="main-content">
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %}
         <div class="container mx-auto px-4 mt-4">
             <div
                 class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
                 role="alert"
+                aria-live="polite"
             >
                 {{ message }}
                 <button
