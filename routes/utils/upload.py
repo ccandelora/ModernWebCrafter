@@ -111,36 +111,56 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
             
         # Calculate new dimensions optimized for product cards
         width, height = img.size
-        target_width = 800  # Base width for product cards
-        target_height = 600  # Base height for product cards
-        
-        # Calculate aspect ratio
+        is_vertical = height > width
         aspect_ratio = width / height
-        
-        if aspect_ratio > 1:  # Landscape
-            new_width = min(width, target_width)
-            new_height = int(new_width / aspect_ratio)
-            if new_height > target_height:
-                new_height = target_height
-                new_width = int(new_height * aspect_ratio)
-        else:  # Portrait
+
+        if is_vertical:
+            target_height = 800  # Taller height for vertical images
+            target_width = 600   # Narrower width for vertical images
+        else:
+            target_width = 800   # Base width for horizontal images
+            target_height = 600  # Base height for horizontal images
+
+        # Calculate new dimensions while preserving aspect ratio
+        if is_vertical:
             new_height = min(height, target_height)
             new_width = int(new_height * aspect_ratio)
+            # If width is too wide, scale down proportionally
             if new_width > target_width:
+                scale_factor = target_width / new_width
                 new_width = target_width
-                new_height = int(new_width / aspect_ratio)
+                new_height = int(new_height * scale_factor)
+        else:
+            new_width = min(width, target_width)
+            new_height = int(new_width / aspect_ratio)
+            # If height is too tall, scale down proportionally
+            if new_height > target_height:
+                scale_factor = target_height / new_height
+                new_height = target_height
+                new_width = int(new_width * scale_factor)
         
         img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
         logging.info(f"Resized image to {new_width}x{new_height} (aspect ratio: {aspect_ratio:.2f})")
         
-        # Create a white background image with consistent dimensions
-        background = Image.new('RGB', (target_width, target_height), 'white')
+        # Create a background with dimensions based on orientation
+        if is_vertical:
+            canvas_width = target_width
+            canvas_height = target_height
+        else:
+            canvas_width = target_width
+            canvas_height = target_height
+            
+        background = Image.new('RGB', (canvas_width, canvas_height), 'white')
+        
         # Calculate position to center the image
-        x = (target_width - new_width) // 2
-        y = (target_height - new_height) // 2
+        x = (canvas_width - new_width) // 2
+        y = (canvas_height - new_height) // 2
+        
         # Paste the resized image onto the background
         background.paste(img, (x, y))
         img = background
+        
+        logging.info(f"Final image dimensions: {img.size} (Original aspect ratio: {aspect_ratio:.2f}, Vertical: {is_vertical})")
         
         # Apply subtle sharpening after resize
         img = img.filter(ImageFilter.SHARPEN)
