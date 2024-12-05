@@ -28,7 +28,8 @@ def products():
 
             if image and image.filename:
                 try:
-                    image_path = handle_file_upload(image)
+                    image_paths = handle_file_upload(image)
+                    image_path = image_paths['original']  # Use the original image URL
                 except ValueError as e:
                     flash(str(e), 'error')
                     return redirect(url_for('admin.products'))
@@ -40,7 +41,7 @@ def products():
             product.name = name
             product.category = category
             product.description = description
-            product.image_url = image_path
+            product.image_url = image_path  # Store only the original image URL
 
             try:
                 # Handle price field
@@ -79,8 +80,8 @@ def edit_product(id):
         image = request.files.get('image')
         if image and image.filename:
             try:
-                new_image_path = handle_file_upload(image, old_file_path=product.image_url)
-                product.image_url = new_image_path
+                new_image_paths = handle_file_upload(image, old_file_path=product.image_url)
+                product.image_url = new_image_paths['original']  # Use the original image URL
             except ValueError as e:
                 flash(str(e), 'error')
                 return redirect(url_for('admin.products'))
