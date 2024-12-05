@@ -65,13 +65,17 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         logging.info(f"Original dimensions: {width}x{height}, Vertical: {is_vertical}, Aspect ratio: {aspect_ratio:.2f}")
         
         # Set standard dimensions for all images
-        standard_size = (800, 800)  # Fixed square size
+        standard_size = (1000, 1000)  # Larger fixed square size for better quality
         
         # Create a new white background image
         new_img = Image.new('RGB', standard_size, 'white')
         
-        # Calculate scaling to fit within standard size while preserving aspect ratio
-        scale = min(standard_size[0] / width, standard_size[1] / height)
+        # Add padding (10% of the standard size)
+        padding = int(standard_size[0] * 0.1)
+        max_content_size = (standard_size[0] - 2 * padding, standard_size[1] - 2 * padding)
+        
+        # Calculate scaling to fit within padded area while preserving aspect ratio
+        scale = min(max_content_size[0] / width, max_content_size[1] / height)
         new_width = int(width * scale)
         new_height = int(height * scale)
         
@@ -85,6 +89,9 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         # Paste the resized image onto the white background
         new_img.paste(img, (left, top))
         img = new_img
+        
+        # Add a subtle border
+        img = ImageOps.expand(img, border=2, fill='#f0f0f0')
         
         logging.info(f"Standardized to {standard_size[0]}x{standard_size[1]}, maintained aspect ratio with padding")
             
