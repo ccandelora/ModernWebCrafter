@@ -64,22 +64,27 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         
         logging.info(f"Original dimensions: {width}x{height}, Vertical: {is_vertical}, Aspect ratio: {aspect_ratio:.2f}")
         
-        # Set target dimensions based on orientation
-        if is_vertical:
-            if aspect_ratio > 1.5:  # Very tall image
-                target_height = 900
-                target_width = int(target_height / aspect_ratio)
+        # Calculate target dimensions while preserving original orientation
+        max_size = 1200  # Maximum dimension for any side
+        if width > height:  # Horizontal image
+            if width > max_size:
+                target_width = max_size
+                target_height = int(height * (max_size / width))
             else:
-                target_height = 800
-                target_width = int(target_height / aspect_ratio)
-        else:
-            target_width = 800
-            target_height = int(target_width / aspect_ratio)
-        
-        # Apply resize while maintaining aspect ratio
+                target_width = width
+                target_height = height
+        else:  # Vertical image
+            if height > max_size:
+                target_height = max_size
+                target_width = int(width * (max_size / height))
+            else:
+                target_width = width
+                target_height = height
+                
+        # Apply resize while maintaining original aspect ratio
         if width > target_width or height > target_height:
             img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
-            logging.info(f"Resized to: {target_width}x{target_height}")
+            logging.info(f"Resized to: {target_width}x{target_height}, maintaining original orientation")
             
     except (IOError, OSError) as e:
         logging.warning(f"Invalid image file format: {str(e)}")
@@ -105,24 +110,33 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         img.save(full_path, 'WEBP', quality=85, method=6)
         
         # Generate variants with proper aspect ratio preservation
-        variant_sizes = {
-            'large': (800, 1200),  # Larger size for vertical images
-            'medium': (600, 900),   # Medium size
-            'small': (400, 600),    # Smaller size
-            'thumbnail': (200, 300)  # Thumbnail size
+        # Define maximum dimensions for variants while maintaining aspect ratio
+        variant_max_sizes = {
+            'large': 1200,
+            'medium': 800,
+            'small': 400,
+            'thumbnail': 200
         }
         
         variant_paths = {}
-        for size_name, (base_width, base_height) in variant_sizes.items():
+        for size_name, max_dimension in variant_max_sizes.items():
             variant = img.copy()
             
-            # Calculate dimensions based on orientation
-            if is_vertical:
-                var_height = min(base_height, height)
-                var_width = int(var_height / aspect_ratio)
-            else:
-                var_width = min(base_width, width)
-                var_height = int(var_width * aspect_ratio)
+            # Calculate dimensions while preserving aspect ratio
+            if width > height:  # Horizontal image
+                if width > max_dimension:
+                    var_width = max_dimension
+                    var_height = int(height * (max_dimension / width))
+                else:
+                    var_width = width
+                    var_height = height
+            else:  # Vertical image
+                if height > max_dimension:
+                    var_height = max_dimension
+                    var_width = int(width * (max_dimension / height))
+                else:
+                    var_width = width
+                    var_height = height
                 
             # Resize variant
             variant = variant.resize((var_width, var_height), Image.Resampling.LANCZOS)
