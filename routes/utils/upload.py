@@ -26,7 +26,7 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         max_size_mb: Maximum file size in MB (default 5MB)
         max_dimension: Maximum image dimension (width/height) in pixels
     Returns:
-        str: URL path to the saved file (with leading slash)
+        dict: Dictionary containing paths to original and variant images
     Raises:
         ValueError: If file validation or saving fails
     """
@@ -48,7 +48,6 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         logging.warning(f"Invalid file format: {file.filename}")
         raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
 
-    # Validate image format and basic processing
     try:
         # Create a copy of the file content for validation
         img_copy = io.BytesIO(file_content)
@@ -58,17 +57,29 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         if img.mode in ('RGBA', 'LA', 'P'):
             img = img.convert('RGB')
             
-        # Get original dimensions for logging
-        orig_width, orig_height = img.size
-        logging.info(f"Original image dimensions: {orig_width}x{orig_height}")
+        # Get original dimensions and orientation
+        width, height = img.size
+        is_vertical = height > width
+        aspect_ratio = height / width if is_vertical else width / height
         
-        # Resize if dimensions exceed max_dimension while maintaining aspect ratio
-        if orig_width > max_dimension or orig_height > max_dimension:
-            ratio = min(max_dimension/orig_width, max_dimension/orig_height)
-            new_width = int(orig_width * ratio)
-            new_height = int(orig_height * ratio)
-            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            logging.info(f"Resized image to {new_width}x{new_height}")
+        logging.info(f"Original dimensions: {width}x{height}, Vertical: {is_vertical}, Aspect ratio: {aspect_ratio:.2f}")
+        
+        # Set target dimensions based on orientation
+        if is_vertical:
+            if aspect_ratio > 1.5:  # Very tall image
+                target_height = 900
+                target_width = int(target_height / aspect_ratio)
+            else:
+                target_height = 800
+                target_width = int(target_height / aspect_ratio)
+        else:
+            target_width = 800
+            target_height = int(target_width / aspect_ratio)
+        
+        # Apply resize while maintaining aspect ratio
+        if width > target_width or height > target_height:
+            img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
+            logging.info(f"Resized to: {target_width}x{target_height}")
             
     except (IOError, OSError) as e:
         logging.warning(f"Invalid image file format: {str(e)}")
@@ -77,168 +88,74 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         logging.warning(f"Error processing image file: {str(e)}")
         raise ValueError('Error processing image. Please try again with a different file.')
 
-    # Reset file pointer after validation
-    file.seek(0)
-
     # Ensure upload directory exists
     upload_dir = ensure_upload_dir()
-    logging.info(f"Using upload directory: {upload_dir}")
-
-    # Create secure filename and construct proper paths
-    secure_name = secure_filename(file.filename)
-    base_name, ext = os.path.splitext(secure_name)
-    webp_name = f"{base_name}.webp"
-    relative_path = os.path.join('static', 'images', 'uploads', webp_name)
-    full_path = os.path.join('.', relative_path)
+    variants_dir = os.path.join(upload_dir, 'variants')
+    os.makedirs(variants_dir, exist_ok=True)
 
     try:
-        # Open and process the image using PIL
-        img = Image.open(file)
-        
-        # Strip EXIF data for privacy and size reduction
-        data = list(img.getdata())
-        image_without_exif = Image.new(img.mode, img.size)
-        image_without_exif.putdata(data)
-        img = image_without_exif
-        
-        # Convert color mode if needed
-        if img.mode in ('RGBA', 'LA'):
-            background = Image.new(img.mode[:-1], img.size, (255, 255, 255))
-            background.paste(img, img.split()[-1])
-            img = background
-        elif img.mode != 'RGB':
-            img = img.convert('RGB')
-            
-        # Calculate new dimensions optimized for product cards
-        width, height = img.size
-        is_vertical = height > width
-        aspect_ratio = width / height
+        # Create secure filename
+        secure_name = secure_filename(file.filename)
+        base_name, ext = os.path.splitext(secure_name)
+        webp_name = f"{base_name}.webp"
+        relative_path = os.path.join('static', 'images', 'uploads', webp_name)
+        full_path = os.path.join('.', relative_path)
 
-        if is_vertical:
-            target_height = 800  # Taller height for vertical images
-            target_width = 600   # Narrower width for vertical images
-        else:
-            target_width = 800   # Base width for horizontal images
-            target_height = 600  # Base height for horizontal images
-
-        # Calculate new dimensions while preserving aspect ratio
-        if is_vertical:
-            new_height = min(height, target_height)
-            new_width = int(new_height * aspect_ratio)
-            # If width is too wide, scale down proportionally
-            if new_width > target_width:
-                scale_factor = target_width / new_width
-                new_width = target_width
-                new_height = int(new_height * scale_factor)
-        else:
-            new_width = min(width, target_width)
-            new_height = int(new_width / aspect_ratio)
-            # If height is too tall, scale down proportionally
-            if new_height > target_height:
-                scale_factor = target_height / new_height
-                new_height = target_height
-                new_width = int(new_width * scale_factor)
+        # Save the original optimized image
+        img.save(full_path, 'WEBP', quality=85, method=6)
         
-        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-        logging.info(f"Resized image to {new_width}x{new_height} (aspect ratio: {aspect_ratio:.2f})")
-        
-        # Create a background with dimensions based on orientation
-        if is_vertical:
-            canvas_width = target_width
-            canvas_height = target_height
-        else:
-            canvas_width = target_width
-            canvas_height = target_height
-            
-        background = Image.new('RGB', (canvas_width, canvas_height), 'white')
-        
-        # Calculate position to center the image
-        x = (canvas_width - new_width) // 2
-        y = (canvas_height - new_height) // 2
-        
-        # Paste the resized image onto the background
-        background.paste(img, (x, y))
-        img = background
-        
-        logging.info(f"Final image dimensions: {img.size} (Original aspect ratio: {aspect_ratio:.2f}, Vertical: {is_vertical})")
-        
-        # Apply subtle sharpening after resize
-        img = img.filter(ImageFilter.SHARPEN)
-        
-        # Generate multiple resolution variants
-        resolutions = {
-            'large': (1200, 900),
-            'medium': (800, 600),
-            'small': (400, 300),
-            'thumbnail': (200, 150)
+        # Generate variants with proper aspect ratio preservation
+        variant_sizes = {
+            'large': (800, 1200),  # Larger size for vertical images
+            'medium': (600, 900),   # Medium size
+            'small': (400, 600),    # Smaller size
+            'thumbnail': (200, 300)  # Thumbnail size
         }
         
-        # Create directory for variants if it doesn't exist
-        variants_dir = os.path.join(os.path.dirname(full_path), 'variants')
-        os.makedirs(variants_dir, exist_ok=True)
-        
-        # Save original WebP version
-        webp_path = full_path
-        img.save(webp_path, 'WEBP', quality=85, method=6, lossless=False)
-        
-        # Generate variants
-        base_name = os.path.splitext(os.path.basename(webp_path))[0]
         variant_paths = {}
-        
-        for size_name, (width, height) in resolutions.items():
-            variant_img = img.copy()
-            variant_img.thumbnail((width, height), Image.Resampling.LANCZOS)
+        for size_name, (base_width, base_height) in variant_sizes.items():
+            variant = img.copy()
             
-            # Calculate position to center the image
-            x = (width - variant_img.width) // 2
-            y = (height - variant_img.height) // 2
+            # Calculate dimensions based on orientation
+            if is_vertical:
+                var_height = min(base_height, height)
+                var_width = int(var_height / aspect_ratio)
+            else:
+                var_width = min(base_width, width)
+                var_height = int(var_width * aspect_ratio)
+                
+            # Resize variant
+            variant = variant.resize((var_width, var_height), Image.Resampling.LANCZOS)
             
-            # Create a white background image
-            bg = Image.new('RGB', (width, height), 'white')
-            bg.paste(variant_img, (x, y))
-            
-            variant_path = os.path.join(variants_dir, f"{base_name}_{size_name}.webp")
-            bg.save(variant_path, 'WEBP', quality=85, method=6, lossless=False)
-            variant_paths[size_name] = '/' + os.path.relpath(variant_path, '.')
+            # Save WebP variant
+            variant_filename = f"{base_name}_{size_name}.webp"
+            variant_path = os.path.join(variants_dir, variant_filename)
+            variant.save(variant_path, 'WEBP', quality=85, method=6)
             
             # Save JPEG fallback
-            jpeg_path = os.path.join(variants_dir, f"{base_name}_{size_name}.jpg")
-            bg.save(jpeg_path, 'JPEG', quality=85, optimize=True)
+            jpeg_filename = f"{base_name}_{size_name}.jpg"
+            jpeg_path = os.path.join(variants_dir, jpeg_filename)
+            variant.save(jpeg_path, 'JPEG', quality=85, optimize=True)
             
-        # If original size is too large, gradually reduce quality
-        if os.path.getsize(webp_path) > max_size_mb * 1024 * 1024:
-            for quality in [75, 65, 55]:
-                img.save(webp_path, 'WEBP', quality=quality, method=6, lossless=False)
-                if os.path.getsize(webp_path) <= max_size_mb * 1024 * 1024:
-                    break
-        
-        # Save fallback version in JPEG format
-        fallback_name = f"{base_name}.jpg"
-        fallback_path = os.path.join('.', 'static', 'images', 'uploads', fallback_name)
-        img.save(fallback_path, 'JPEG', quality=85, optimize=True)
-        
-        if not os.path.exists(full_path):
-            logging.error(f"Failed to save file to {full_path}")
-            raise ValueError("Failed to save the file")
-            
-        logging.info(f"Successfully saved compressed file to {full_path}")
+            # Store relative path for variant
+            variant_paths[size_name] = '/' + os.path.relpath(variant_path, '.')
 
-        # Handle old file removal if exists
-        if old_file_path and 'avatar-placeholder.svg' not in old_file_path:
+        # Clean up old file if it exists
+        if old_file_path and 'placeholder' not in old_file_path:
             try:
                 old_full_path = os.path.join('.', old_file_path.lstrip('/'))
                 if os.path.exists(old_full_path):
                     os.remove(old_full_path)
                     logging.info(f"Removed old file: {old_full_path}")
             except Exception as e:
-                logging.warning(f"Failed to remove old file {old_full_path}: {str(e)}")
+                logging.warning(f"Failed to remove old file: {str(e)}")
 
-        # Return a dictionary containing all image paths
-        image_paths = {
+        # Return paths dictionary
+        return {
             'original': '/' + relative_path,
             'variants': variant_paths
         }
-        return image_paths
+
     except Exception as e:
         logging.error(f"Error saving file {secure_name}: {str(e)}")
         raise ValueError(f'Error saving file: {str(e)}')
