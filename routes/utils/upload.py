@@ -48,7 +48,7 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         logging.warning(f"Invalid file format: {file.filename}")
         raise ValueError('Invalid file format. Please use PNG, JPG, JPEG or GIF')
 
-    # Validate image dimensions and format using PIL
+    # Validate image format and basic processing
     try:
         # Create a copy of the file content for validation
         img_copy = io.BytesIO(file_content)
@@ -58,10 +58,17 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         if img.mode in ('RGBA', 'LA', 'P'):
             img = img.convert('RGB')
             
-        width, height = img.size
-        if width > max_dimension or height > max_dimension:
-            logging.warning(f"Image dimensions too large: {width}x{height}")
-            raise ValueError(f'Image dimensions exceed {max_dimension}x{max_dimension} pixels limit')
+        # Get original dimensions for logging
+        orig_width, orig_height = img.size
+        logging.info(f"Original image dimensions: {orig_width}x{orig_height}")
+        
+        # Resize if dimensions exceed max_dimension while maintaining aspect ratio
+        if orig_width > max_dimension or orig_height > max_dimension:
+            ratio = min(max_dimension/orig_width, max_dimension/orig_height)
+            new_width = int(orig_width * ratio)
+            new_height = int(orig_height * ratio)
+            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+            logging.info(f"Resized image to {new_width}x{new_height}")
             
     except (IOError, OSError) as e:
         logging.warning(f"Invalid image file format: {str(e)}")

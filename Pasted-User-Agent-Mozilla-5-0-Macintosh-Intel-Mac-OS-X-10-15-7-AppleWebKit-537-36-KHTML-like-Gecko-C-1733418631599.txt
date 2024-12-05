@@ -1,0 +1,20 @@
+User Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: Make (271) - type: string (2) Tag Location: 22 - Data Location: 146 - value: b'Apple\x00'
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: Model (272) - type: string (2) Tag Location: 34 - Data Location: 152 - value: b'iPhone 8 Plus\x00'
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: Orientation (274) - type: short (3) - value: b'\x00\x06'
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: XResolution (282) - type: rational (5) Tag Location: 58 - Data Location: 166 - value: b'\x00\x00\x00H\x00\x00\x00\x01'
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: YResolution (283) - type: rational (5) Tag Location: 70 - Data Location: 174 - value: b'\x00\x00\x00H\x00\x00\x00\x01'
+2024-12-05 17:08:17,966 - PIL.TiffImagePlugin - DEBUG - tag: ResolutionUnit (296) - type: short (3) - value: b'\x00\x02'
+2024-12-05 17:08:17,967 - PIL.TiffImagePlugin - DEBUG - tag: Software (305) - type: string (2) Tag Location: 94 - Data Location: 182 - value: b'14.6\x00'
+2024-12-05 17:08:17,967 - PIL.TiffImagePlugin - DEBUG - tag: DateTime (306) - type: string (2) Tag Location: 106 - Data Location: 188 - value: b'2021:07:20 10:48:42\x00'
+2024-12-05 17:08:17,967 - PIL.TiffImagePlugin - DEBUG - tag: HostComputer (316) - type: string (2) Tag Location: 118 - Data Location: 208 - value: b'iPhone 8 Plus\x00'
+2024-12-05 17:08:17,967 - PIL.TiffImagePlugin - DEBUG - tag: YCbCrPositioning (531) - type: short (3) - value: b'\x00\x01'
+2024-12-05 17:08:17,967 - PIL.TiffImagePlugin - DEBUG - tag: ExifIFD (34665) - type: long (4) - value: b'\x00\x00\x00\xde'
+2024-12-05 17:08:17,967 - root - WARNING - Image dimensions too large: 4032x3024
+2024-12-05 17:08:17,967 - root - WARNING - Error processing image file: Image dimensions exceed 2000x2000 pixels limit
+2024-12-05 17:08:17,968 - werkzeug - INFO - 172.31.196.48 - - [05/Dec/2024 17:08:17] "POST /admin/products/ HTTP/1.1" 302 -
+2024-12-05 17:08:18,215 - app - DEBUG - Admin Route Request:
+Path: /admin/products
+Method: GET
+User: admin
+IP: 172.31.196.48
