@@ -1,10 +1,10 @@
 import os
 import logging
-from PIL import Image
+from PIL import Image, ImageFilter
 import io
 from werkzeug.utils import secure_filename
 
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 
 def allowed_file(filename):
@@ -19,7 +19,7 @@ def ensure_upload_dir():
 
 def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=2000):
     """
-    Handle file upload with proper path handling, size and dimension verification
+    Handle file upload with advanced image optimization
     Args:
         file: FileStorage object from request.files
         old_file_path: Optional path to old file that should be removed
@@ -72,15 +72,27 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
 
     # Create secure filename and construct proper paths
     secure_name = secure_filename(file.filename)
-    relative_path = os.path.join('static', 'images', 'uploads', secure_name)
+    base_name, ext = os.path.splitext(secure_name)
+    webp_name = f"{base_name}.webp"
+    relative_path = os.path.join('static', 'images', 'uploads', webp_name)
     full_path = os.path.join('.', relative_path)
 
     try:
-        # Open and compress the image using PIL
+        # Open and process the image using PIL
         img = Image.open(file)
         
-        # Convert to RGB if image is in RGBA mode
-        if img.mode == 'RGBA':
+        # Strip EXIF data for privacy and size reduction
+        data = list(img.getdata())
+        image_without_exif = Image.new(img.mode, img.size)
+        image_without_exif.putdata(data)
+        img = image_without_exif
+        
+        # Convert color mode if needed
+        if img.mode in ('RGBA', 'LA'):
+            background = Image.new(img.mode[:-1], img.size, (255, 255, 255))
+            background.paste(img, img.split()[-1])
+            img = background
+        elif img.mode != 'RGB':
             img = img.convert('RGB')
             
         # Calculate new dimensions while maintaining aspect ratio
@@ -94,11 +106,21 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
             else:
                 new_height = max_size
                 new_width = int((width / height) * max_size)
-            img = img.resize((new_width, new_height), Image.LANCZOS)
+            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
             logging.info(f"Resized image to {new_width}x{new_height}")
-            
-        # Save with compression
-        img.save(full_path, optimize=True, quality=85)
+        
+        # Apply subtle sharpening after resize
+        img = img.filter(ImageFilter.SHARPEN)
+        
+        # Save as WebP with optimized settings
+        img.save(full_path, 'WEBP', quality=85, method=6, lossless=False)
+        
+        # If file size is still too large, gradually reduce quality
+        if os.path.getsize(full_path) > max_size_mb * 1024 * 1024:
+            for quality in [75, 65, 55]:
+                img.save(full_path, 'WEBP', quality=quality, method=6, lossless=False)
+                if os.path.getsize(full_path) <= max_size_mb * 1024 * 1024:
+                    break
         
         if not os.path.exists(full_path):
             logging.error(f"Failed to save file to {full_path}")
