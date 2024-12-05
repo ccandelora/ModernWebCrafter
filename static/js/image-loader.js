@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const wrapper = document.createElement('div');
         wrapper.className = 'lazy-image-wrapper';
-        wrapper.style.paddingBottom = '75%'; // 4:3 aspect ratio by default
+        wrapper.style.paddingBottom = '100%'; // 1:1 aspect ratio container
 
         // Create blur placeholder
         const placeholder = document.createElement('div');
@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', function() {
         img.style.left = '0';
         img.style.width = '100%';
         img.style.height = '100%';
-        img.style.objectFit = 'cover';
+        img.style.objectFit = 'contain';
+        img.style.backgroundColor = 'white';
+        img.style.padding = '0.5rem';
 
         // Wrap image
         img.parentNode.insertBefore(wrapper, img);
