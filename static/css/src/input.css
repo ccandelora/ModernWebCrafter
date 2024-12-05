@@ -351,24 +351,26 @@ body {
   border-radius: 2px;
 }
 
-/* Skip to main content link - More visible styling */
+/* Skip to main content link - Only visible on focus */
 .skip-to-main-content {
   background: #FFFFFF;
   color: #3E2723;
   left: 50%;
   padding: 16px 24px;
   position: absolute;
-  transform: translateY(-100%);
+  transform: translateY(-200%);
   transition: transform 0.3s;
   border: 2px solid #8B4513;
   border-radius: 4px;
   font-weight: bold;
   z-index: 9999;
   text-decoration: none;
+  opacity: 0;
 }
 
 .skip-to-main-content:focus {
-  transform: translateY(0%);
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /* Improved text contrast classes */
