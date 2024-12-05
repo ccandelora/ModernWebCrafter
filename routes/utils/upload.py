@@ -95,19 +95,38 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         elif img.mode != 'RGB':
             img = img.convert('RGB')
             
-        # Calculate new dimensions while maintaining aspect ratio
+        # Calculate new dimensions optimized for product cards
         width, height = img.size
-        max_size = 1200  # Maximum dimension for compressed images
+        target_width = 800  # Base width for product cards
+        target_height = 600  # Base height for product cards
         
-        if width > max_size or height > max_size:
-            if width > height:
-                new_width = max_size
-                new_height = int((height / width) * max_size)
-            else:
-                new_height = max_size
-                new_width = int((width / height) * max_size)
-            img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-            logging.info(f"Resized image to {new_width}x{new_height}")
+        # Calculate aspect ratio
+        aspect_ratio = width / height
+        
+        if aspect_ratio > 1:  # Landscape
+            new_width = min(width, target_width)
+            new_height = int(new_width / aspect_ratio)
+            if new_height > target_height:
+                new_height = target_height
+                new_width = int(new_height * aspect_ratio)
+        else:  # Portrait
+            new_height = min(height, target_height)
+            new_width = int(new_height * aspect_ratio)
+            if new_width > target_width:
+                new_width = target_width
+                new_height = int(new_width / aspect_ratio)
+        
+        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        logging.info(f"Resized image to {new_width}x{new_height} (aspect ratio: {aspect_ratio:.2f})")
+        
+        # Create a white background image with consistent dimensions
+        background = Image.new('RGB', (target_width, target_height), 'white')
+        # Calculate position to center the image
+        x = (target_width - new_width) // 2
+        y = (target_height - new_height) // 2
+        # Paste the resized image onto the background
+        background.paste(img, (x, y))
+        img = background
         
         # Apply subtle sharpening after resize
         img = img.filter(ImageFilter.SHARPEN)
