@@ -4,40 +4,38 @@
 <div class="container mx-auto px-4 py-16">
     <h1 class="text-3xl font-bold mb-12">Style Guide</h1>
     
-    <!-- Theme System -->
+    <!-- Color System -->
     <section class="mb-16">
-        <h2 class="text-2xl font-semibold mb-6">Theme System</h2>
+        <h2 class="text-2xl font-semibold mb-6">Color System</h2>
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-            <h3 class="text-xl font-semibold mb-4">Theme Switcher</h3>
-            <p class="mb-4">The website supports multiple themes: Light, Dark, Industrial, and Industrial Dark.</p>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="theme-light p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Light Theme</h4>
-                    <p>Default wood theme</p>
+            <h3 class="text-xl font-semibold mb-4">Wood Theme Colors</h3>
+            <p class="mb-4">Our website uses a warm, wood-inspired color palette that reflects our brand and products.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-lg border">
+                    <h4 class="font-semibold mb-2">Primary Colors</h4>
+                    <div class="space-y-2">
+                        <div class="p-4 rounded-lg" style="background-color: #8B4513">
+                            <p class="text-white">Wood Brown</p>
+                            <code class="text-sm bg-black/20 px-2 py-1 rounded">#8B4513</code>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background-color: #DEB887">
+                            <p>Wood Light</p>
+                            <code class="text-sm bg-black/20 px-2 py-1 rounded">#DEB887</code>
+                        </div>
+                    </div>
                 </div>
-                <div class="theme-dark p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Dark Theme</h4>
-                    <p>Dark wood theme</p>
-                </div>
-                <div class="theme-industrial p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Industrial Theme</h4>
-                    <p>Modern industrial look</p>
-                </div>
-                <div data-theme="industrial-dark" class="p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Industrial Dark</h4>
-                    <p>Dark industrial look</p>
-                </div>
-                <div data-theme="corporate" class="p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Corporate Theme</h4>
-                    <p>Professional business look</p>
-                </div>
-                <div data-theme="executive" class="p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">Executive Theme</h4>
-                    <p>Premium business aesthetic</p>
-                </div>
-                <div data-theme="wpu" class="p-4 rounded-lg border">
-                    <h4 class="font-semibold mb-2">WPU Theme</h4>
-                    <p>Official brand aesthetic</p>
+                <div class="p-4 rounded-lg border">
+                    <h4 class="font-semibold mb-2">Secondary Colors</h4>
+                    <div class="space-y-2">
+                        <div class="p-4 rounded-lg" style="background-color: #3E2723">
+                            <p class="text-white">Wood Dark</p>
+                            <code class="text-sm bg-black/20 px-2 py-1 rounded">#3E2723</code>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background-color: #D7CCC8">
+                            <p>Wood Accent</p>
+                            <code class="text-sm bg-black/20 px-2 py-1 rounded">#D7CCC8</code>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -216,100 +214,23 @@
         </div>
     </section>
     
-    <!-- Components in Different Themes -->
+    <!-- Components -->
     <section class="mb-16">
-        <h2 class="text-2xl font-semibold mb-6">Components by Theme</h2>
+        <h2 class="text-2xl font-semibold mb-6">Components</h2>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <!-- Light Theme Components -->
-            <div class="space-y-4">
-                <h4 class="font-semibold">Light Theme</h4>
-                <div class="p-4 rounded-lg border">
-                    <button class="btn-wood mb-2">Wood Button</button>
-                    <div class="card p-4 border rounded-lg mb-2">Card Example</div>
-                    <a href="#" class="link-accent">Link Example</a>
-                </div>
-            </div>
-
-            <!-- Dark Theme Components -->
-            <div class="theme-dark space-y-4">
-                <h4 class="font-semibold">Dark Theme</h4>
-                <div class="p-4 rounded-lg border">
-                    <button class="btn-wood mb-2">Wood Button</button>
-                    <div class="card p-4 border rounded-lg mb-2">Card Example</div>
-                    <a href="#" class="link-accent">Link Example</a>
-                </div>
-            </div>
-
-            <!-- Industrial Theme Components -->
-            <div class="theme-industrial space-y-4">
-                <h4 class="font-semibold">Industrial Theme</h4>
-                <div class="p-4 rounded-lg border">
-                    <button class="btn-wood mb-2">Wood Button</button>
-                    <div class="card p-4 border rounded-lg mb-2">Card Example</div>
-                    <a href="#" class="link-accent">Link Example</a>
-                </div>
-            </div>
-
-            <!-- Industrial Dark Theme Components -->
-            <div data-theme="industrial-dark" class="space-y-4">
-                <h4 class="font-semibold">Industrial Dark Theme</h4>
-                <div class="p-4 rounded-lg border">
-                    <button class="btn-wood mb-2">Wood Button</button>
-                    <div class="card p-4 border rounded-lg mb-2">Card Example</div>
-                    <a href="#" class="link-accent">Link Example</a>
-                </div>
-            </div>
-
-            <!-- Corporate Theme Components -->
-            <div data-theme="corporate" class="space-y-4">
-                <h4 class="font-semibold">Corporate Theme</h4>
-                <div class="p-4 rounded-lg border">
-                    <button class="btn-wood mb-2">Wood Button</button>
-                    <div class="card p-4 border rounded-lg mb-2">Card Example</div>
-                    <a href="#" class="link-accent">Link Example</a>
-                </div>
-            </div>
-
-            <!-- Executive Theme Components -->
-            <div data-theme="executive" class="space-y-4">
-                <h4 class="font-semibold">Executive Theme</h4>
-                <div class="p-6 rounded-lg border bg-[#F8FAFC]">
-                    <div class="space-y-4">
-                        <div class="space-x-2">
-                            <button class="btn-primary px-4 py-2 rounded">Primary</button>
-                            <button class="btn-secondary px-4 py-2 rounded">Secondary</button>
-                            <button class="success-button px-4 py-2 rounded">Success</button>
-                        </div>
-                        <div class="card p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2">Card Example</h5>
-                            <p class="text-sm text-[#64748B]">Sample content with <a href="#" class="link-accent">accent link</a></p>
-                        </div>
-                        <div class="section-header">Section Header Example</div>
+        <div class="space-y-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h4 class="font-semibold mb-4">Interactive Elements</h4>
+                <div class="space-y-4">
+                    <div class="space-x-2">
+                        <button class="btn-wood px-4 py-2 rounded">Primary Button</button>
+                        <button class="bg-wood-light text-wood-dark px-4 py-2 rounded">Secondary Button</button>
                     </div>
-                </div>
-            </div>
-
-            <!-- WPU Theme Components -->
-            <div data-theme="wpu" class="space-y-4">
-                <h4 class="font-semibold">WPU Theme Components</h4>
-                <div class="p-6 rounded-lg border bg-white">
-                    <div class="space-y-4">
-                        <div class="space-x-2">
-                            <button class="btn-primary px-4 py-2 rounded">Primary</button>
-                            <button class="btn-secondary px-4 py-2 rounded">Secondary</button>
-                            <button class="btn-neutral px-4 py-2 rounded">Neutral</button>
-                        </div>
-                        <div class="card p-4 rounded-lg">
-                            <h5 class="font-semibold mb-2">Card Example</h5>
-                            <p class="text-sm text-[#6B696E]">Sample content with <a href="#" class="link-accent">accent link</a></p>
-                        </div>
-                        <div class="section-header">Section Header Example</div>
-                        <nav class="space-x-4">
-                            <a href="#" class="nav-item">Navigation Item</a>
-                            <a href="#" class="nav-item">Navigation Item</a>
-                        </nav>
+                    <div class="card p-4 border rounded-lg">
+                        <h5 class="font-semibold mb-2">Card Example</h5>
+                        <p class="text-sm">Sample content with <a href="#" class="text-wood-brown hover:text-wood-dark">accent link</a></p>
                     </div>
+                    <div class="section-header text-wood-brown font-semibold">Section Header Example</div>
                 </div>
             </div>
         </div>
