@@ -131,11 +131,47 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         # Apply subtle sharpening after resize
         img = img.filter(ImageFilter.SHARPEN)
         
-        # Save main WebP version
+        # Generate multiple resolution variants
+        resolutions = {
+            'large': (1200, 900),
+            'medium': (800, 600),
+            'small': (400, 300),
+            'thumbnail': (200, 150)
+        }
+        
+        # Create directory for variants if it doesn't exist
+        variants_dir = os.path.join(os.path.dirname(full_path), 'variants')
+        os.makedirs(variants_dir, exist_ok=True)
+        
+        # Save original WebP version
         webp_path = full_path
         img.save(webp_path, 'WEBP', quality=85, method=6, lossless=False)
         
-        # If file size is too large, gradually reduce quality for WebP
+        # Generate variants
+        base_name = os.path.splitext(os.path.basename(webp_path))[0]
+        variant_paths = {}
+        
+        for size_name, (width, height) in resolutions.items():
+            variant_img = img.copy()
+            variant_img.thumbnail((width, height), Image.Resampling.LANCZOS)
+            
+            # Calculate position to center the image
+            x = (width - variant_img.width) // 2
+            y = (height - variant_img.height) // 2
+            
+            # Create a white background image
+            bg = Image.new('RGB', (width, height), 'white')
+            bg.paste(variant_img, (x, y))
+            
+            variant_path = os.path.join(variants_dir, f"{base_name}_{size_name}.webp")
+            bg.save(variant_path, 'WEBP', quality=85, method=6, lossless=False)
+            variant_paths[size_name] = '/' + os.path.relpath(variant_path, '.')
+            
+            # Save JPEG fallback
+            jpeg_path = os.path.join(variants_dir, f"{base_name}_{size_name}.jpg")
+            bg.save(jpeg_path, 'JPEG', quality=85, optimize=True)
+            
+        # If original size is too large, gradually reduce quality
         if os.path.getsize(webp_path) > max_size_mb * 1024 * 1024:
             for quality in [75, 65, 55]:
                 img.save(webp_path, 'WEBP', quality=quality, method=6, lossless=False)
@@ -163,8 +199,12 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
             except Exception as e:
                 logging.warning(f"Failed to remove old file {old_full_path}: {str(e)}")
 
-        # Return the path relative to static folder, with leading slash
-        return '/' + relative_path
+        # Return a dictionary containing all image paths
+        image_paths = {
+            'original': '/' + relative_path,
+            'variants': variant_paths
+        }
+        return image_paths
     except Exception as e:
         logging.error(f"Error saving file {secure_name}: {str(e)}")
         raise ValueError(f'Error saving file: {str(e)}')
