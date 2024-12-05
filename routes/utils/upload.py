@@ -64,27 +64,22 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         
         logging.info(f"Original dimensions: {width}x{height}, Vertical: {is_vertical}, Aspect ratio: {aspect_ratio:.2f}")
         
-        # Calculate target dimensions while preserving original orientation
-        max_size = 1200  # Maximum dimension for any side
-        if width > height:  # Horizontal image
-            if width > max_size:
-                target_width = max_size
-                target_height = int(height * (max_size / width))
-            else:
-                target_width = width
-                target_height = height
-        else:  # Vertical image
-            if height > max_size:
-                target_height = max_size
-                target_width = int(width * (max_size / height))
-            else:
-                target_width = width
-                target_height = height
-                
-        # Apply resize while maintaining original aspect ratio
-        if width > target_width or height > target_height:
+        # Calculate target dimensions while preserving original orientation and aspect ratio
+        max_dimension = 2000  # Maximum dimension for any side
+        
+        # Calculate scaling factor if image exceeds max dimension
+        scale = 1.0
+        if width > max_dimension or height > max_dimension:
+            scale = max_dimension / max(width, height)
+            
+        # Calculate new dimensions maintaining aspect ratio
+        target_width = int(width * scale)
+        target_height = int(height * scale)
+        
+        # Apply resize only if scaling is needed
+        if scale < 1.0:
             img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
-            logging.info(f"Resized to: {target_width}x{target_height}, maintaining original orientation")
+            logging.info(f"Resized to: {target_width}x{target_height}, original aspect ratio: {width/height:.2f}, new aspect ratio: {target_width/target_height:.2f}")
             
     except (IOError, OSError) as e:
         logging.warning(f"Invalid image file format: {str(e)}")
@@ -122,21 +117,14 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         for size_name, max_dimension in variant_max_sizes.items():
             variant = img.copy()
             
-            # Calculate dimensions while preserving aspect ratio
-            if width > height:  # Horizontal image
-                if width > max_dimension:
-                    var_width = max_dimension
-                    var_height = int(height * (max_dimension / width))
-                else:
-                    var_width = width
-                    var_height = height
-            else:  # Vertical image
-                if height > max_dimension:
-                    var_height = max_dimension
-                    var_width = int(width * (max_dimension / height))
-                else:
-                    var_width = width
-                    var_height = height
+            # Calculate scaling factor for variant while preserving aspect ratio
+            scale = 1.0
+            if width > max_dimension or height > max_dimension:
+                scale = max_dimension / max(width, height)
+            
+            # Calculate variant dimensions
+            var_width = int(width * scale)
+            var_height = int(height * scale)
                 
             # Resize variant
             variant = variant.resize((var_width, var_height), Image.Resampling.LANCZOS)
