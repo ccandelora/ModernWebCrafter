@@ -61,10 +61,10 @@
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             {% if product.image_url %}
-                            <div class="relative w-48 h-48 bg-gray-100 rounded-lg overflow-hidden">
+                            <div class="relative w-24 h-24 bg-gray-100 rounded-lg overflow-hidden">
                                 <img src="{{ product.image_url.variants.thumbnail if product.image_url is mapping else product.image_url }}" 
                                      alt="{{ product.name }}"
-                                     class="absolute inset-0 w-full h-full object-contain bg-white p-2"
+                                     class="absolute inset-0 w-full h-full object-contain bg-white p-1"
                                      loading="lazy"
                                      decoding="async">
                             </div>
