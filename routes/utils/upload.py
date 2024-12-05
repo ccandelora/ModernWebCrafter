@@ -64,22 +64,29 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         
         logging.info(f"Original dimensions: {width}x{height}, Vertical: {is_vertical}, Aspect ratio: {aspect_ratio:.2f}")
         
-        # Calculate target dimensions while preserving original orientation and aspect ratio
-        max_dimension = 2000  # Maximum dimension for any side
+        # Set standard dimensions for all images
+        standard_size = (800, 800)  # Fixed square size
         
-        # Calculate scaling factor if image exceeds max dimension
-        scale = 1.0
-        if width > max_dimension or height > max_dimension:
-            scale = max_dimension / max(width, height)
-            
-        # Calculate new dimensions maintaining aspect ratio
-        target_width = int(width * scale)
-        target_height = int(height * scale)
+        # Create a new white background image
+        new_img = Image.new('RGB', standard_size, 'white')
         
-        # Apply resize only if scaling is needed
-        if scale < 1.0:
-            img = img.resize((target_width, target_height), Image.Resampling.LANCZOS)
-            logging.info(f"Resized to: {target_width}x{target_height}, original aspect ratio: {width/height:.2f}, new aspect ratio: {target_width/target_height:.2f}")
+        # Calculate scaling to fit within standard size while preserving aspect ratio
+        scale = min(standard_size[0] / width, standard_size[1] / height)
+        new_width = int(width * scale)
+        new_height = int(height * scale)
+        
+        # Resize original image
+        img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
+        
+        # Calculate position to center the image
+        left = (standard_size[0] - new_width) // 2
+        top = (standard_size[1] - new_height) // 2
+        
+        # Paste the resized image onto the white background
+        new_img.paste(img, (left, top))
+        img = new_img
+        
+        logging.info(f"Standardized to {standard_size[0]}x{standard_size[1]}, maintained aspect ratio with padding")
             
     except (IOError, OSError) as e:
         logging.warning(f"Invalid image file format: {str(e)}")
