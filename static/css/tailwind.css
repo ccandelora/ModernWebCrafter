@@ -608,6 +608,7 @@ video {
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--primary-brown);
 }
 
 .btn-wood:hover {
@@ -640,6 +641,7 @@ video {
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  color: var(--background-white);
 }
 
 @media print {
@@ -669,6 +671,8 @@ video {
 .theme-dark {
   background-color: var(--color-wood-dark);
   color: var(--color-wood-light);
+  background-color: var(--dark-brown);
+  color: var(--background-white);
 }
 
 @media print {
@@ -2132,6 +2136,11 @@ video {
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
 }
 
+.text-gray-900 {
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity, 1));
+}
+
 .text-green-700 {
   --tw-text-opacity: 1;
   color: rgb(21 128 61 / var(--tw-text-opacity, 1));
@@ -2294,6 +2303,50 @@ body {
   transition-property: all;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* CSS Custom Properties - Light Theme Colors */
+
+:root {
+  --primary-brown: #8B4513;
+  --secondary-brown: #C68642;
+  --dark-brown: #3E2723;
+  --background-white: #FFFFFF;
+  --light-gray: #F5F5F4;
+  --neutral-gray: #E7E5E4;
+  --warm-beige: #DEB887;
+  --soft-taupe: #D7CCC8;
+  --success-green: #10B981;
+  --error-red: #EF4444;
+  --warning-yellow: #F59E0B;
+  --info-blue: #3B82F6;
+}
+
+/* Base styles using Light theme */
+
+body {
+  background-color: var(--background-white);
+  color: var(--dark-brown);
+}
+
+.bg-wood-dark {
+  background-color: var(--dark-brown);
+}
+
+.bg-wood-brown {
+  background-color: var(--primary-brown);
+}
+
+.text-wood-dark {
+  color: var(--dark-brown);
+}
+
+.text-wood-light {
+  color: var(--background-white);
+}
+
+.text-wood-accent {
+  color: var(--warm-beige);
 }
 
 /* Print styles */
