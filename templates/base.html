@@ -114,14 +114,17 @@
             <div class="container mx-auto px-8 py-4">
                 <div class="flex justify-between items-center">
                     <a href="/" class="flex items-center text-wood-light">
-                        <img
-                            src="{{ url_for('static', filename='images/wpulogo50.png') }}"
-                            class="h-16 w-auto mr-3"
-                            alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
-                            loading="eager"
-                            fetchpriority="high"
-                            decoding="sync"
-                        />
+                        <picture>
+                            <source srcset="{{ url_for('static', filename='images/wpulogo50.webp') }}" type="image/webp">
+                            <img
+                                src="{{ url_for('static', filename='images/wpulogo50.png') }}"
+                                class="h-16 w-auto mr-3"
+                                alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
+                                loading="eager"
+                                fetchpriority="high"
+                                decoding="sync"
+                            />
+                        </picture>
                         <span class="text-xl font-semibold"
                             >Wood Products Unlimited</span
                         >
@@ -264,13 +267,16 @@
             <div class="container mx-auto px-4">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div>
-                        <img src="{{ url_for('static', filename='images/wpulogo350.png') }}"
+                        <picture>
+                            <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
+                            <img src="{{ url_for('static', filename='images/wpulogo350.png') }}"
                                 class="max-w-24 mt-4"
                                 alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
                                 loading="eager"
                                 fetchpriority="high"
                                 decoding="sync"
-                        />
+                            />
+                        </picture>
                     </div>
                     <div>
                         <h2 class="text-lg font-semibold mb-4">Contact Us</h2>

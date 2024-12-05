@@ -131,15 +131,21 @@ def handle_file_upload(file, old_file_path=None, max_size_mb=5, max_dimension=20
         # Apply subtle sharpening after resize
         img = img.filter(ImageFilter.SHARPEN)
         
-        # Save as WebP with optimized settings
-        img.save(full_path, 'WEBP', quality=85, method=6, lossless=False)
+        # Save main WebP version
+        webp_path = full_path
+        img.save(webp_path, 'WEBP', quality=85, method=6, lossless=False)
         
-        # If file size is still too large, gradually reduce quality
-        if os.path.getsize(full_path) > max_size_mb * 1024 * 1024:
+        # If file size is too large, gradually reduce quality for WebP
+        if os.path.getsize(webp_path) > max_size_mb * 1024 * 1024:
             for quality in [75, 65, 55]:
-                img.save(full_path, 'WEBP', quality=quality, method=6, lossless=False)
-                if os.path.getsize(full_path) <= max_size_mb * 1024 * 1024:
+                img.save(webp_path, 'WEBP', quality=quality, method=6, lossless=False)
+                if os.path.getsize(webp_path) <= max_size_mb * 1024 * 1024:
                     break
+        
+        # Save fallback version in JPEG format
+        fallback_name = f"{base_name}.jpg"
+        fallback_path = os.path.join('.', 'static', 'images', 'uploads', fallback_name)
+        img.save(fallback_path, 'JPEG', quality=85, optimize=True)
         
         if not os.path.exists(full_path):
             logging.error(f"Failed to save file to {full_path}")
