@@ -210,3 +210,87 @@ body {
     box-shadow: 0 4px 6px -1px rgba(var(--industrial-secondary), 0.2);
   }
 }
+
+/* Print styles */
+@media print {
+  /* Hide non-essential elements */
+  nav,
+  footer,
+  .btn-wood,
+  #mobile-menu,
+  .loading-overlay {
+    display: none !important;
+  }
+
+  /* Optimize colors and backgrounds */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+
+  /* Remove shadows and animations */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure all text is visible */
+  .text-wood-light,
+  .text-wood-dark,
+  .text-wood-accent {
+    color: black !important;
+  }
+
+  /* Adjust links */
+  a {
+    text-decoration: underline;
+    color: black !important;
+  }
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 90%;
+  }
+
+  /* Image optimization */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Layout adjustments */
+  .container {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0.5cm !important;
+  }
+
+  /* Page breaks */
+  h1, h2, h3 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
+
+  /* Blockquotes and pre elements */
+  blockquote, pre {
+    page-break-inside: avoid;
+    border-left: 3px solid #ccc;
+    padding-left: 1cm;
+  }
+
+  /* Tables */
+  table {
+    border-collapse: collapse !important;
+  }
+  
+  table td,
+  table th {
+    background-color: white !important;
+    border: 1px solid #999 !important;
+  }
+}
