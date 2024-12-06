@@ -10,12 +10,14 @@
 <div class="container mx-auto px-4 py-16">
     <h1 class="text-3xl font-bold text-center mb-8">Industrial Packaging Solutions</h1>
     <div class="flex flex-col md:flex-row gap-8">
-        <!-- Sidebar -->
+        <!-- Left Sidebar with Categories and Certifications -->
         <div class="md:w-1/4">
             <div class="sticky top-4">
+                <!-- Categories Section -->
                 <h2 class="text-xl font-semibold mb-4">Categories</h2>
-                <div class="space-y-2">
-                    <a href="/products" class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent text-black hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                <div class="space-y-2 mb-8">
+                    <a href="/products" 
+                       class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent text-black hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
                         All Products
                     </a>
                     {% for category in categories %}
@@ -26,23 +28,22 @@
                     {% endfor %}
                 </div>
 
-                <div class="mt-8">
-                    <h2 class="text-xl font-semibold mb-4">Certifications</h2>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-white rounded-lg shadow">
-                            <h3 class="font-semibold mb-2">NELMA Certified</h3>
-                            <p class="text-sm text-gray-600">Northeastern Lumber Manufacturers Association certified manufacturing processes.</p>
-                        </div>
-                        <div class="p-4 bg-white rounded-lg shadow">
-                            <h3 class="font-semibold mb-2">ISPM 15 Compliant</h3>
-                            <p class="text-sm text-gray-600">International shipping standards for wood packaging materials.</p>
-                        </div>
+                <!-- Certifications Section -->
+                <h2 class="text-xl font-semibold mb-4">Certifications</h2>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">NELMA Certified</h3>
+                        <p class="text-sm text-gray-600">Northeastern Lumber Manufacturers Association certified manufacturing processes.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow">
+                        <h3 class="font-semibold mb-2">ISPM 15 Compliant</h3>
+                        <p class="text-sm text-gray-600">International shipping standards for wood packaging materials.</p>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Products Grid -->
+        <!-- Right Side Products Grid -->
         <div class="md:w-3/4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {% for product in products %}
