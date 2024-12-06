@@ -460,6 +460,57 @@ a:not(.btn):not(.nav-link) {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+/* High Contrast Mode */
+.high-contrast {
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --background-primary: #ffffff;
+  --background-secondary: #ffffff;
+  --border-color: #000000;
+  --link-color: #0000EE;
+  --link-hover: #551A8B;
+}
+
+.high-contrast * {
+  border-color: var(--border-color) !important;
+}
+
+.high-contrast a {
+  color: var(--link-color) !important;
+  text-decoration: underline !important;
+}
+
+.high-contrast a:hover {
+  color: var(--link-hover) !important;
+}
+
+.high-contrast button,
+.high-contrast .btn {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #000000 !important;
+}
+
+.high-contrast img {
+  border: 2px solid #000000;
+}
+
+.high-contrast .text-wood-light,
+.high-contrast .text-wood-dark,
+.high-contrast .text-wood-brown {
+  color: var(--text-primary) !important;
+}
+
+.high-contrast .bg-wood-dark,
+.high-contrast .bg-wood-brown {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.high-contrast .bg-wood-light {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
 }
 /* Screen reader utilities */
 .sr-only {

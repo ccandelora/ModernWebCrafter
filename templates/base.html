@@ -166,6 +166,14 @@
                         >
                     </a>
                     <div class="hidden md:flex space-x-16 items-center text-lg" role="menubar">
+                        <button
+                            id="high-contrast-toggle"
+                            class="text-wood-light hover:text-wood-accent px-4"
+                            role="button"
+                            aria-pressed="false"
+                            aria-label="Toggle high contrast mode"
+                            onclick="toggleHighContrast()"
+                        >High Contrast</button>
                         <a
                             href="/"
                             class="text-wood-light hover:text-wood-accent px-4"
@@ -395,5 +403,6 @@
         <!-- Core scripts -->
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         <script src="{{ url_for('static', filename='js/image-loader.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/high-contrast.js') }}" defer></script>
     </body>
 </html>
