@@ -344,11 +344,30 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Enhanced focus styles */
+/* Enhanced focus styles for better keyboard navigation */
+:root {
+  --focus-ring: #8B4513;
+  --focus-ring-offset: #FFFFFF;
+}
+
 *:focus-visible {
   outline: 3px solid var(--focus-ring);
-  outline-offset: 2px;
-  border-radius: 2px;
+  outline-offset: 3px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px var(--focus-ring-offset);
+  transition: outline-offset 0.2s ease;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible,
+.btn:focus-visible {
+  outline-width: 4px;
+  outline-offset: 4px;
+}
+
+a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 
@@ -384,7 +403,21 @@ button,
   cursor: pointer;
   font-weight: 500;
   position: relative;
-  transition: background-color 0.2s;
+  transition: all 0.2s ease;
+  position: relative;
+  outline-offset: 2px;
+}
+
+/* Enhanced touch targets for mobile */
+@media (hover: none) and (pointer: coarse) {
+  button,
+  [role="button"],
+  .btn,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 0.5rem 1rem;
+  }
 }
 
 button:disabled,
