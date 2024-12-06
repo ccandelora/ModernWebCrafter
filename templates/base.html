@@ -169,51 +169,31 @@
                             Wood Products<br class="md:hidden"> Unlimited
                         </div>
                     </div>
-                    <div class="hidden md:flex space-x-8 lg:space-x-12 items-center text-lg" role="menubar">
-                        
-                        <a
-                            href="/"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/' %}page{% endif %}"
-                            >Home</a
-                        >
-                        <a
-                            href="/about"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/about' %}page{% endif %}"
-                            >About</a
-                        >
-                        
-                        <a
-                            href="/products"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/products' %}page{% endif %}"
-                            >Products</a
-                        >
-                        <a
-                            href="/quote"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/quote' %}page{% endif %}"
-                            >Quote</a
-                        >
-                        <a
-                            href="/gallery"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/gallery' %}page{% endif %}"
-                            >Gallery</a
-                        >
-                        <a
-                            href="/contact"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="menuitem"
-                            aria-current="{% if request.path == '/contact' %}page{% endif %}"
-                            >Contact</a
-                        >
+                    <div class="hidden md:flex space-x-4 lg:space-x-6 items-center text-lg ml-auto" role="menubar">
+                        <a href="/" 
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/' %}page{% endif %}">Home</a>
+                        <a href="/about"
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/about' %}page{% endif %}">About</a>
+                        <a href="/products"
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/products' %}page{% endif %}">Products</a>
+                        <a href="/quote"
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/quote' %}page{% endif %}">Quote</a>
+                        <a href="/gallery"
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/gallery' %}page{% endif %}">Gallery</a>
+                        <a href="/contact"
+                           class="text-wood-light hover:text-wood-accent px-3"
+                           role="menuitem"
+                           aria-current="{% if request.path == '/contact' %}page{% endif %}">Contact</a>
                     </div>
                     <button
                         class="md:hidden text-wood-light"
@@ -223,20 +203,8 @@
                         aria-controls="mobile-menu"
                         aria-haspopup="true"
                     >
-                        <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            role="img"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M4 6h16M4 12h16m-16 6h16"
-                            ></path>
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true" role="img">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-16 6h16"></path>
                         </svg>
                     </button>
                 </div>
@@ -246,37 +214,19 @@
                  role="navigation" 
                  aria-label="Mobile navigation menu">
                 <div class="px-2 pt-2 pb-3 space-y-1">
-                    <a
-                        href="/"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        aria-current="{% if request.path == '/' %}page{% endif %}"
-                        >Home</a
-                    >
-                    <a
-                        href="/about"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        >About</a
-                    >
-                    <a
-                        href="/products"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        >Products</a
-                    >
-                    <a
-                        href="/quote"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        >Quote Calculator</a
-                    >
-                    <a
-                        href="/gallery"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        >Gallery</a
-                    >
-                    <a
-                        href="/contact"
-                        class="block px-4 py-3 text-wood-light hover:text-wood-accent"
-                        >Contact</a
-                    >
+                    <a href="/"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent"
+                       aria-current="{% if request.path == '/' %}page{% endif %}">Home</a>
+                    <a href="/about"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">About</a>
+                    <a href="/products"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">Products</a>
+                    <a href="/quote"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">Quote</a>
+                    <a href="/gallery"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">Gallery</a>
+                    <a href="/contact"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">Contact</a>
                 </div>
             </div>
         </nav>
