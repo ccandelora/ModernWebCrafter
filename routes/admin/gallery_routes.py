@@ -103,7 +103,12 @@ def edit_gallery_project(id):
         if image and image.filename:
             try:
                 image_path = handle_file_upload(image)
-                project.image_url = image_path
+                if isinstance(image_path, dict):
+                    # If image_path is a dictionary, use the original path
+                    project.image_url = image_path.get('original', '')
+                else:
+                    # If it's a string, use it directly
+                    project.image_url = image_path
             except ValueError as e:
                 flash(str(e), 'error')
                 return redirect(url_for('admin.admin_gallery.gallery'))
