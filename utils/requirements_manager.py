@@ -1,11 +1,11 @@
-import pkg_resources
 import subprocess
 import os
 from datetime import datetime
+from importlib.metadata import distributions
 
 def get_installed_packages():
     """Get a list of all installed packages and their versions."""
-    return {pkg.key: pkg.version for pkg in pkg_resources.working_set}
+    return {pkg.metadata['Name']: pkg.version for pkg in distributions()}
 
 def write_requirements(packages):
     """Write packages to requirements.txt file."""

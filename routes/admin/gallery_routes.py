@@ -98,14 +98,10 @@ def edit_gallery_project(id):
         project.ispm_compliant = bool(request.form.get('ispm_compliant'))
         project.is_featured = bool(request.form.get('is_featured'))
 
-        image = request.files.get('image')
-        if image and image.filename:
-            try:
-                new_image_path = handle_file_upload(image, old_file_path=project.image_url)
-                project.image_url = new_image_path
-            except Exception as e:
-                flash(str(e), 'error')
-                return redirect(url_for('admin.admin_gallery.gallery'))
+        image_data = request.form.get('image_data')
+        if image_data:
+            image_url = image_data['original']
+            project.image_url = image_url
 
         db.session.commit()
         flash('Project updated successfully', 'success')

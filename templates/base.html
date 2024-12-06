@@ -79,7 +79,7 @@
         </style>
         <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
         <script
-            src="https://kit.fontawesome.com/your-code.js"
+            src="https://kit.fontawesome.com/6ed2e7be30.js"
             crossorigin="anonymous"
         ></script>
 
@@ -128,7 +128,7 @@
                 "@type": "Organization",
                 "name": "Wood Products Unlimited",
                 "url": "{{ request.url_root }}",
-                "logo": "{{ url_for('static', filename='images/wpulogo3.png', _external=True) }}",
+                "logo": "{{ url_for('static', filename='images/wpulogo50.png', _external=True) }}",
                 "sameAs": [],
                 "contactPoint": {
                     "@type": "ContactPoint",
@@ -154,10 +154,10 @@
                 <div class="flex justify-between items-center">
                     <a href="/" class="flex items-center text-wood-light">
                         <picture>
-                            <source srcset="{{ url_for('static', filename='images/wpulogo50.webp') }}" type="image/webp">
+                            <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
                             <img
-                                src="{{ url_for('static', filename='images/wpulogo50.png') }}"
-                                class="h-16 w-auto mr-3"
+                                src="{{ url_for('static', filename='images/wpulog350.png') }}"
+                                class="h-16 w-16 mr-3"
                                 alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
                                 loading="eager"
                                 fetchpriority="high"
@@ -311,7 +311,9 @@
                     <div>
                         <h2 class="text-lg font-semibold mb-4">Contact Us</h2>
                         <p>
-                            Location: Lawrence, Massachusetts<br />
+                            Location: <br />
+                            179 Wardhill Ave <br />
+                            Haverhill, Massachusetts 01835<br />
                             Phone: (978) 687-7449<br />
                             Email: info@woodproductsunlimited.com
                             

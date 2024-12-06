@@ -51,11 +51,11 @@
         <div class="bg-white rounded-lg shadow-lg p-6">
             <!-- Quote Guidelines -->
             <div class="mb-8 p-4 bg-wood-accent bg-opacity-10 rounded-lg">
-                <h2 class="text-lg font-semibold mb-2 flex items-center text-white">
+                <h2 class="text-lg font-semibold mb-2 flex items-center text-black">
                     <i class="fas fa-info-circle mr-2"></i>
                     Quick Guide
                 </h2>
-                <ul class="space-y-2 text-sm text-white">
+                <ul class="space-y-2 text-sm text-black">
                     <li class="flex items-start">
                         <i
                             class="fas fa-check-circle mt-1 mr-2"
@@ -71,18 +71,9 @@
                         ></i>
                         <span
                             >Include all special requirements that apply to your
-                            shipment</span
-                        >
+                            shipment</span>
                     </li>
-                    <li class="flex items-start">
-                        <i
-                            class="fas fa-check-circle text-black mt-1 mr-2"
-                        ></i>
-                        <span
-                            >For items over 50,000 lbs or very large dimensions,
-                            please contact us directly</span
-                        >
-                    </li>
+                    
                 </ul>
             </div>
 
@@ -350,9 +341,6 @@
                                     lbs
                                 </div>
                             </div>
-                            <p class="mt-1 text-sm text-gray-500">
-                                Standard weight limit is 50,000 lbs
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -362,22 +350,11 @@
                     <div class="space-y-6">
                         <!-- Special Requirements -->
                         <div class="space-y-4">
-                            <label
-                                class="block text-sm font-medium text-gray-600"
-                            >
-                                Special Requirements
-                                <span
-                                    class="text-wood-brown ml-1"
-                                    title="Select any additional protection needed"
-                                >
-                                    <i class="fas fa-question-circle"></i>
-                                </span>
-                            </label>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <!-- Special Instructions Field -->
                                 <div class="mt-6 col-span-1 md:col-span-2">
                                     <label
-                                        class="block text-sm font-medium text-gray-600 mb-2"
+                                        class="block text-lg font-medium text-gray-600 mb-2"
                                     >
                                         Special Instructions
                                         <span
@@ -395,29 +372,6 @@
                                         class="w-full rounded-md border-gray-300"
                                         placeholder="Enter any special requirements or additional notes"
                                     ></textarea>
-                                </div>
-                                <div
-                                    class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors"
-                                >
-                                    <label
-                                        class="flex items-start cursor-pointer"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            name="requirements[]"
-                                            value="moisture_barrier"
-                                            class="rounded border-gray-300 text-wood-brown mt-1"
-                                        />
-                                        <div class="ml-2">
-                                            <span class="font-medium"
-                                                >Moisture Barrier</span
-                                            >
-                                            <p class="text-sm text-gray-500">
-                                                Protection against humidity and
-                                                water damage
-                                            </p>
-                                        </div>
-                                    </label>
                                 </div>
                                 <div
                                     class="bg-white p-4 rounded-lg border border-gray-200 hover:border-wood-brown transition-colors"
@@ -496,7 +450,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-600 mb-2"
                             >
-                                Shipping Destination
+                            All of our crates are expertly crafted to comply with international shipping standards, ensuring reliability and global compatibility.
                                 <span
                                     class="text-wood-brown ml-1"
                                     title="Select your shipping destination type"
@@ -509,9 +463,6 @@
                                 class="w-full rounded-md border-gray-300"
                                 required
                             >
-                                <option value="domestic">
-                                    Domestic (United States)
-                                </option>
                                 <option value="international">
                                     International (ISPM 15 Certified)
                                 </option>

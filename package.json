@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "A comprehensive web platform for a wood products business featuring a product catalog, inquiry system, and project gallery. Built with Flask, Tailwind CSS, and modern web technologies.",
   "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "postcss-cli": "^11.0.0",

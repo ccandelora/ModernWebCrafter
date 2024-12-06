@@ -327,7 +327,7 @@ def compile_tailwind():
     print("Compiling Tailwind CSS...")
     result = run([
         'tailwindcss',
-        '-i', './static/src/input.css',
+        '-i', './static/css/src/input.css',
         '-o', './static/css/tailwind.css',
         '--minify'
     ], capture_output=True, text=True)
