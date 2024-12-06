@@ -149,24 +149,26 @@
         <nav class="inset-0 bg-opacity-90 bg-gradient-to-r from-wood-dark to-wood-brown text-white shadow-lg" role="navigation" aria-label="Main navigation">
             <div class="container mx-auto px-4 lg:px-8">
                 <div class="flex justify-between items-center py-3">
-                    <a href="/" class="flex items-center text-wood-light" aria-label="Home - Wood Products Unlimited">
-                        <div class="w-12 h-12 mr-3">
-                            <picture>
-                                <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
-                                <img
-                                    src="{{ url_for('static', filename='images/wpulog350.png') }}"
-                                    class="w-full h-full object-contain"
-                                    alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
-                                    loading="eager"
-                                    fetchpriority="high"
-                                    decoding="sync"
-                                />
-                            </picture>
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-16 h-16">
+                            <a href="/" aria-label="Home">
+                                <picture>
+                                    <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
+                                    <img
+                                        src="{{ url_for('static', filename='images/wpulog350.png') }}"
+                                        class="w-full h-full object-contain"
+                                        alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
+                                        loading="eager"
+                                        fetchpriority="high"
+                                        decoding="sync"
+                                    />
+                                </picture>
+                            </a>
                         </div>
-                        <span class="text-lg font-semibold whitespace-nowrap" role="heading" aria-level="1"
-                            >Wood Products Unlimited</span
-                        >
-                    </a>
+                        <div class="ml-4 text-lg font-semibold text-wood-light" role="heading" aria-level="1">
+                            Wood Products<br class="md:hidden"> Unlimited
+                        </div>
+                    </div>
                     <div class="hidden md:flex space-x-8 lg:space-x-12 items-center text-lg" role="menubar">
                         
                         <a
@@ -395,9 +397,20 @@
             </div>
         </footer>
 
+        <!-- High Contrast Toggle -->
+        <button id="high-contrast-toggle" 
+                class="high-contrast-toggle"
+                aria-label="Toggle high contrast mode"
+                aria-pressed="false"
+                onclick="toggleHighContrast()">
+            <span class="sr-only">High Contrast</span>
+            <i class="fas fa-adjust" aria-hidden="true"></i>
+        </button>
+
         <!-- Core scripts -->
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         <script src="{{ url_for('static', filename='js/image-loader.js') }}" defer></script>
+        <script src="{{ url_for('static', filename='js/high-contrast.js') }}"></script>
         
     </body>
 </html>

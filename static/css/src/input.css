@@ -213,7 +213,7 @@ body {
 
 /* CSS Custom Properties - Enhanced Light Theme Colors with Accessibility */
 :root {
-  /* Primary Colors - Ensuring WCAG 2.1 AA compliance */
+  /* Primary Colors - Ensuring WCAG 2.1 AAA compliance */
   --primary-brown: #8B4513; /* Main brand color */
   --primary-brown-dark: #6B3410; /* Darker variant for better contrast */
   --primary-brown-light: #A65D1E; /* Lighter variant for hover states */
@@ -237,6 +237,18 @@ body {
   --error-red: #DC2626; /* Enhanced for better visibility */
   --warning-yellow: #D97706; /* Adjusted for better contrast */
   --info-blue: #2563EB; /* Modified for WCAG compliance */
+  
+  /* High Contrast Mode Colors - WCAG 2.1 AAA compliant */
+  --high-contrast-text: #000000; /* Pure black text */
+  --high-contrast-background: #FFFFFF; /* Pure white background */
+  --high-contrast-primary: #000000; /* Black for primary elements */
+  --high-contrast-secondary: #1F1F1F; /* Very dark gray for secondary elements */
+  --high-contrast-border: #000000; /* Black borders */
+  --high-contrast-focus: #0000FF; /* Pure blue for focus indicators */
+  --high-contrast-link: #0000EE; /* Traditional blue for links */
+  --high-contrast-link-visited: #551A8B; /* Traditional purple for visited links */
+  --high-contrast-error: #D50000; /* Vivid red for errors */
+  --high-contrast-success: #006400; /* Dark green for success */
   
   /* Focus States */
   --focus-ring: #2563EB;
@@ -426,6 +438,131 @@ button,
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
   }
+/* High Contrast Mode Styles */
+.high-contrast {
+  /* Text colors */
+  --color-text: var(--high-contrast-text);
+  --color-text-secondary: var(--high-contrast-secondary);
+  
+  /* Background colors */
+  --color-bg: var(--high-contrast-background);
+  
+  /* Border colors */
+  --color-border: var(--high-contrast-border);
+  
+  /* Interactive elements */
+  --color-link: var(--high-contrast-link);
+  --color-link-visited: var(--high-contrast-link-visited);
+  --color-focus: var(--high-contrast-focus);
+  
+  /* Status colors */
+  --color-error: var(--high-contrast-error);
+  --color-success: var(--high-contrast-success);
+}
+
+/* High Contrast Mode Element Styles */
+.high-contrast {
+  /* Enhanced focus indicators */
+  *:focus {
+    outline: 3px solid var(--high-contrast-focus) !important;
+    outline-offset: 3px !important;
+  }
+  
+  /* Text elements */
+  h1, h2, h3, h4, h5, h6, p, span {
+    color: var(--high-contrast-text);
+  }
+  
+  /* Links */
+  a:not(.btn) {
+    color: var(--high-contrast-link);
+    text-decoration: underline;
+  }
+  
+  a:not(.btn):visited {
+    color: var(--high-contrast-link-visited);
+  }
+  
+  /* Buttons */
+  .btn-wood {
+    background-color: var(--high-contrast-text);
+    color: var(--high-contrast-background);
+    border: 2px solid var(--high-contrast-text);
+  }
+  
+  .btn-wood:hover {
+    background-color: var(--high-contrast-background);
+    color: var(--high-contrast-text);
+  }
+  
+  /* Form elements */
+  input, select, textarea {
+    border: 2px solid var(--high-contrast-text);
+    color: var(--high-contrast-text);
+    background-color: var(--high-contrast-background);
+  }
+  
+  /* Navigation */
+  nav.high-contrast {
+    background: var(--high-contrast-background);
+    border-bottom: 2px solid var(--high-contrast-text);
+  }
+  
+  nav.high-contrast a {
+    color: var(--high-contrast-text);
+  }
+  
+  /* Cards and containers */
+  .card.high-contrast {
+    border: 2px solid var(--high-contrast-text);
+    background-color: var(--high-contrast-background);
+  }
+  
+  /* Status messages */
+  .error.high-contrast {
+    color: var(--high-contrast-error);
+    border-color: var(--high-contrast-error);
+  }
+  
+  .success.high-contrast {
+    color: var(--high-contrast-success);
+    border-color: var(--high-contrast-success);
+  }
+}
+
+/* High contrast toggle button */
+.high-contrast-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  z-index: 50;
+}
+
+.high-contrast-toggle:hover {
+  opacity: 0.9;
+}
+
+/* Skip to high contrast content link */
+.skip-to-high-contrast {
+  position: absolute;
+  left: -9999px;
+  z-index: 999;
+  padding: 1em;
+  background-color: var(--high-contrast-background);
+  color: var(--high-contrast-text);
+  text-decoration: none;
+}
+
+.skip-to-high-contrast:focus {
+  left: 50%;
+  transform: translateX(-50%);
+}
 }
 
 /* Reduced motion preference */

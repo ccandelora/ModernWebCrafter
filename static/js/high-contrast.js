@@ -9,6 +9,12 @@ function toggleHighContrast() {
     // Save preference
     localStorage.setItem('highContrast', isHighContrast);
     
+    // Update navigation and other elements
+    const nav = document.querySelector('nav');
+    if (nav) {
+        nav.classList.toggle('high-contrast', isHighContrast);
+    }
+    
     // Announce change to screen readers
     const message = isHighContrast ? 'High contrast mode enabled' : 'High contrast mode disabled';
     announceToScreenReader(message);
@@ -34,6 +40,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (savedPreference === 'true') {
         document.documentElement.classList.add('high-contrast');
-        button.setAttribute('aria-pressed', 'true');
+        document.querySelector('nav')?.classList.add('high-contrast');
+        button?.setAttribute('aria-pressed', 'true');
     }
+    
+    // Add keyboard shortcut for high contrast toggle (Alt + H)
+    document.addEventListener('keydown', function(e) {
+        if (e.altKey && e.key.toLowerCase() === 'h') {
+            e.preventDefault();
+            toggleHighContrast();
+        }
+    });
 });
