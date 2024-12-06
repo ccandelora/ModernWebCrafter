@@ -413,10 +413,28 @@ button,
   button,
   [role="button"],
   .btn,
-  a {
+  a,
+  input,
+  select {
     min-height: 44px;
     min-width: 44px;
     padding: 0.5rem 1rem;
+  }
+  
+  /* Increase spacing between interactive elements */
+  .space-y-1 > * {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -442,6 +460,29 @@ a:not(.btn):not(.nav-link) {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+/* Screen reader utilities */
+.sr-only {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: normal;
+  width: auto;
 }
 
 /* Screen reader utilities */
