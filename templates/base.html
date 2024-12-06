@@ -154,7 +154,7 @@
                             <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
                             <img
                                 src="{{ url_for('static', filename='images/wpulog350.png') }}"
-                                class="h-16 w-16 mr-3"
+                                class="h-[64px] w-[64px] min-w-[64px] min-h-[64px] mr-3"
                                 alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
                                 loading="eager"
                                 fetchpriority="high"
@@ -166,14 +166,7 @@
                         >
                     </a>
                     <div class="hidden md:flex space-x-16 items-center text-lg" role="menubar">
-                        <button
-                            id="high-contrast-toggle"
-                            class="text-wood-light hover:text-wood-accent px-4"
-                            role="button"
-                            aria-pressed="false"
-                            aria-label="Toggle high contrast mode"
-                            onclick="toggleHighContrast()"
-                        >High Contrast</button>
+                        
                         <a
                             href="/"
                             class="text-wood-light hover:text-wood-accent px-4"
@@ -403,6 +396,6 @@
         <!-- Core scripts -->
         <script src="{{ url_for('static', filename='js/main.js') }}"></script>
         <script src="{{ url_for('static', filename='js/image-loader.js') }}" defer></script>
-        <script src="{{ url_for('static', filename='js/high-contrast.js') }}" defer></script>
+        
     </body>
 </html>
