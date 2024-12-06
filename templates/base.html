@@ -146,26 +146,26 @@
         <div id="loadingOverlay" class="loading-overlay" role="alert" aria-busy="true" aria-label="Loading content">
             <div class="loading-spinner"></div>
         </div>
-        <nav class="inset-0 bg-opacity-90 bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[100px] relative overflow-hidden shadow-lg" role="navigation" aria-label="Main navigation">
-            <div class="container mx-auto px-8 py-4">
-                <div class="flex justify-between items-center">
-                    <a href="/" class="flex items-center text-wood-light" aria-label="Home - Wood Products Unlimited">
-                        <picture>
+        <nav class="inset-0 bg-opacity-90 bg-gradient-to-r from-wood-dark to-wood-brown text-white shadow-lg" role="navigation" aria-label="Main navigation">
+            <div class="container mx-auto px-4 lg:px-8">
+                <div class="flex justify-between items-center h-24">
+                    <a href="/" class="flex items-center text-wood-light shrink-0" aria-label="Home - Wood Products Unlimited">
+                        <picture class="shrink-0">
                             <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
                             <img
                                 src="{{ url_for('static', filename='images/wpulog350.png') }}"
-                                class="h-[64px] w-[64px] min-w-[64px] min-h-[64px] mr-3"
+                                class="w-20 h-20 object-contain"
                                 alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
                                 loading="eager"
                                 fetchpriority="high"
                                 decoding="sync"
                             />
                         </picture>
-                        <span class="text-xl font-semibold" role="heading" aria-level="1"
+                        <span class="text-xl font-semibold ml-4 whitespace-nowrap" role="heading" aria-level="1"
                             >Wood Products Unlimited</span
                         >
                     </a>
-                    <div class="hidden md:flex space-x-16 items-center text-lg" role="menubar">
+                    <div class="hidden md:flex space-x-8 lg:space-x-12 items-center text-lg" role="menubar">
                         
                         <a
                             href="/"
