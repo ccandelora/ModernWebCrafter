@@ -150,18 +150,20 @@
             <div class="container mx-auto px-4 lg:px-8">
                 <div class="flex justify-between items-center h-24">
                     <a href="/" class="flex items-center text-wood-light shrink-0" aria-label="Home - Wood Products Unlimited">
-                        <picture class="shrink-0">
-                            <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
-                            <img
-                                src="{{ url_for('static', filename='images/wpulog350.png') }}"
-                                class="w-20 h-20 object-contain"
-                                alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
-                                loading="eager"
-                                fetchpriority="high"
-                                decoding="sync"
-                            />
-                        </picture>
-                        <span class="text-xl font-semibold ml-4 whitespace-nowrap" role="heading" aria-level="1"
+                        <div class="w-[80px] h-[80px] flex-shrink-0">
+                            <picture>
+                                <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
+                                <img
+                                    src="{{ url_for('static', filename='images/wpulog350.png') }}"
+                                    class="w-full h-full object-contain"
+                                    alt="Wood Products Unlimited Logo - Custom Industrial Wood Packaging Solutions"
+                                    loading="eager"
+                                    fetchpriority="high"
+                                    decoding="sync"
+                                />
+                            </picture>
+                        </div>
+                        <span class="text-xl font-semibold ml-4 whitespace-nowrap hidden md:block" role="heading" aria-level="1"
                             >Wood Products Unlimited</span
                         >
                     </a>
