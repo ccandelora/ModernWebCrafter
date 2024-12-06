@@ -149,7 +149,7 @@
         <nav class="inset-0 bg-opacity-90 bg-gradient-to-r from-wood-dark to-wood-brown text-white min-h-[100px] relative overflow-hidden shadow-lg" role="navigation" aria-label="Main navigation">
             <div class="container mx-auto px-8 py-4">
                 <div class="flex justify-between items-center">
-                    <a href="/" class="flex items-center text-wood-light">
+                    <a href="/" class="flex items-center text-wood-light" aria-label="Home - Wood Products Unlimited">
                         <picture>
                             <source srcset="{{ url_for('static', filename='images/wpulogo350.webp') }}" type="image/webp">
                             <img
@@ -161,40 +161,52 @@
                                 decoding="sync"
                             />
                         </picture>
-                        <span class="text-xl font-semibold"
+                        <span class="text-xl font-semibold" role="heading" aria-level="1"
                             >Wood Products Unlimited</span
                         >
                     </a>
-                    <div class="hidden md:flex space-x-16 items-center text-lg">
+                    <div class="hidden md:flex space-x-16 items-center text-lg" role="menubar">
                         <a
                             href="/"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/' %}page{% endif %}"
                             >Home</a
                         >
                         <a
                             href="/about"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/about' %}page{% endif %}"
                             >About</a
                         >
                         
                         <a
                             href="/products"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/products' %}page{% endif %}"
                             >Products</a
                         >
                         <a
                             href="/quote"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/quote' %}page{% endif %}"
                             >Quote</a
                         >
                         <a
                             href="/gallery"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/gallery' %}page{% endif %}"
                             >Gallery</a
                         >
                         <a
                             href="/contact"
                             class="text-wood-light hover:text-wood-accent px-4"
+                            role="menuitem"
+                            aria-current="{% if request.path == '/contact' %}page{% endif %}"
                             >Contact</a
                         >
                     </div>
