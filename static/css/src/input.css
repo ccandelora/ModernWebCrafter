@@ -351,35 +351,30 @@ body {
   border-radius: 2px;
 }
 
-/* Skip to main content link - Only visible on focus */
-.skip-to-main-content {
-  background: #FFFFFF;
-  color: #3E2723;
-  left: 50%;
-  padding: 16px 24px;
-  position: absolute;
-  transform: translateY(-200%);
-  transition: transform 0.3s;
-  border: 2px solid #8B4513;
-  border-radius: 4px;
-  font-weight: bold;
-  z-index: 9999;
-  text-decoration: none;
-  opacity: 0;
+
+
+/* Enhanced color contrast for accessibility */
+:root {
+  --text-primary: #3E2723;    /* Dark brown - high contrast */
+  --text-secondary: #594A47;  /* Medium brown - meets WCAG AA */
+  --link-color: #8B4513;      /* Accessible brown for links */
+  --link-hover: #3E2723;      /* Darker shade for hover */
 }
 
-.skip-to-main-content:focus {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* Improved text contrast classes */
 .text-high-contrast {
   color: var(--text-primary);
 }
 
 .text-secondary-contrast {
   color: var(--text-secondary);
+}
+
+a:not(.btn):not(.nav-link) {
+  color: var(--link-color);
+}
+
+a:not(.btn):not(.nav-link):hover {
+  color: var(--link-hover);
 }
 
 /* Interactive element enhancements */
