@@ -50,15 +50,22 @@ def about():
 
 @public.route('/products')
 def products():
-    category = request.args.get('category')
-    if category:
-        products = Product.query.filter_by(category=category).all()
-    else:
-        products = Product.query.all()
-    categories = db.session.query(Product.category).distinct()
-    return render_template('products.html',
-                         products=products,
-                         categories=categories)
+    try:
+        # Get all products, sorted alphabetically by name
+        products = Product.query.order_by(Product.name.asc()).all()
+        
+        # Get unique categories while maintaining alphabetical order of products
+        categories = sorted(set(p.category for p in products if p.category))
+        
+        return render_template('products.html', 
+                             products=products,
+                             categories=categories)
+    except Exception as e:
+        print(f"Error in products route: {str(e)}")
+        flash('Error loading products. Please try again later.', 'error')
+        return render_template('products.html', 
+                             products=[],
+                             categories=[])
 
 @public.route('/quote', methods=['GET', 'POST'])
 def quote_calculator():

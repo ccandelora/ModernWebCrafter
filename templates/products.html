@@ -1,69 +1,74 @@
 {% extends "base.html" %}
 
-{% block title %}Industrial Packaging Solutions - Custom Wood Crates & Export Packaging | Wood Products Unlimited{% endblock %}
-
-{% block meta_description %}Premium ISPM 15 certified export crates, custom industrial packaging solutions, and international shipping containers. Explore our comprehensive range of wood packaging products designed for global logistics.{% endblock %}
-
-{% block meta_keywords %}custom wood crates, industrial packaging solutions, ISPM 15 certified export crates, international shipping containers, custom industrial packaging{% endblock %}
-
 {% block content %}
 <div class="container mx-auto px-4 py-16">
-    <h1 class="text-3xl font-bold text-center mb-8">Industrial Packaging Solutions</h1>
+    <h1 class="text-3xl font-bold text-center mb-12">Industrial Packaging Solutions</h1>
+    
     <div class="flex flex-col md:flex-row gap-8">
-        <!-- Left Sidebar with Categories and Certifications -->
-        <div class="md:w-1/4">
+        <!-- Sticky left sidebar -->
+        <div class="w-full md:w-1/4">
             <div class="sticky top-4">
                 <!-- Categories Section -->
-                <h2 class="text-xl font-semibold mb-4">Categories</h2>
-                <div class="space-y-2 mb-8">
-                    <a href="/products" 
-                       class="block px-4 py-2 rounded-lg {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-wood-accent text-black hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
+                <h2 class="text-2xl font-bold mb-4">Categories</h2>
+                <div class="flex flex-col space-y-2 mb-12">
+                    <button class="category-filter text-left px-4 py-3 rounded-md bg-wood-brown text-white hover:bg-wood-dark w-full transition-all" 
+                            data-category="all">
                         All Products
-                    </a>
-                    {% for category in categories %}
-                    <a href="/products?category={{ category[0] }}" 
-                       class="block px-4 py-2 rounded-lg {% if request.args.get('category') == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent text-black hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
-                        {{ category[0] }}
-                    </a>
+                    </button>
+                    {% set categories = [] %}
+                    {% for product in products %}
+                        {% if product.category not in categories %}
+                            {% set _ = categories.append(product.category) %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for category in categories|sort %}
+                    <button class="category-filter text-left px-4 py-3 rounded-md bg-gray-200 hover:bg-wood-brown hover:text-white w-full transition-all" 
+                            data-category="{{ category }}">
+                        {{ category }}
+                    </button>
                     {% endfor %}
                 </div>
 
                 <!-- Certifications Section -->
-                <h2 class="text-xl font-semibold mb-4">Certifications</h2>
-                <div class="space-y-4">
-                    <div class="p-4 bg-white rounded-lg shadow">
-                        <h3 class="font-semibold mb-2">NELMA Certified</h3>
-                        <p class="text-sm text-gray-600">Northeastern Lumber Manufacturers Association certified manufacturing processes.</p>
+                <h2 class="text-2xl font-bold mb-4">Certifications</h2>
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">NELMA Certified</h3>
+                        <p class="text-gray-600">
+                            Northeastern Lumber Manufacturers Association certified manufacturing processes.
+                        </p>
                     </div>
-                    <div class="p-4 bg-white rounded-lg shadow">
-                        <h3 class="font-semibold mb-2">ISPM 15 Compliant</h3>
-                        <p class="text-sm text-gray-600">International shipping standards for wood packaging materials.</p>
+                    <div class="bg-white p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-2">ISPM 15 Compliant</h3>
+                        <p class="text-gray-600">
+                            International shipping standards for wood packaging materials.
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Right Side Products Grid -->
-        <div class="md:w-3/4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+
+        <!-- Products grid -->
+        <div class="w-full md:w-3/4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {% for product in products %}
-                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300" itemscope itemtype="https://schema.org/Product">
-                    <meta itemprop="mpn" content="WPU-{{ product.id }}">
-                    <meta itemprop="sku" content="WPU-{{ product.category|replace(' ', '-')|lower }}-{{ product.id }}">
-                    <img src="{{ product.image_url }}" 
-                         class="w-full h-64 object-cover" 
-                         alt="{{ product.name }} - Custom Industrial Wood Packaging Solution by Wood Products Unlimited" 
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden" 
+                     data-category="{{ product.category }}">
+                    {% if product.image_url %}
+                    <img src="{{ product.image_url.variants.medium if product.image_url is mapping else product.image_url }}" 
+                         alt="{{ product.name }}"
+                         class="w-full h-64 object-cover"
                          loading="lazy"
-                         decoding="async"
-                         itemprop="image">
+                         decoding="async">
+                    {% endif %}
                     <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-3" itemprop="name">{{ product.name }}</h3>
-                        <p class="text-gray-600 mb-4 line-clamp-3" itemprop="description">{{ product.description }}</p>
+                        <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
+                        <p class="text-gray-600 mb-4">{{ product.description }}</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-wood-brown font-bold">Custom Quote</span>
-                            <a href="/quote?package_type={{ product.package_type }}&name={{ product.name|urlencode }}&description={{ product.description|urlencode }}" 
-                               class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">
-                               Request Quote
+                            <div class="text-wood-brown font-medium">Custom Quote</div>
+                            <a href="{{ url_for('public.contact') }}" 
+                               class="bg-wood-brown text-white px-4 py-2 rounded-md hover:bg-wood-dark">
+                                Request Quote
                             </a>
                         </div>
                     </div>
@@ -74,38 +79,97 @@
     </div>
 </div>
 
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    "itemListElement": [
-        {% for product in products %}
-        {
-            "@type": "ListItem",
-            "position": {{ loop.index }},
-            "item": {
-                "@type": "Product",
-                "name": "{{ product.name }}",
-                "description": "{{ product.description }}",
-                "image": "{{ request.url_root }}{{ product.image_url[1:] }}",
-                "brand": {
-                    "@type": "Brand",
-                    "name": "Wood Products Unlimited"
-                },
-                "offers": {
-                    "@type": "Offer",
-                    "availability": "https://schema.org/InStock",
-                    "url": "{{ request.url_root }}products/{{ product.id }}",
-                    "priceSpecification": {
-                        "@type": "PriceSpecification",
-                        "priceCurrency": "USD",
-                        "description": "Custom quote based on specifications"
-                    }
-                }
-            }
-        }{% if not loop.last %},{% endif %}
-        {% endfor %}
-    ]
+<style>
+.category-filter {
+    font-size: 1.125rem;
+    transition: all 0.3s ease;
 }
+
+.category-filter:hover {
+    transform: translateX(5px);
+}
+
+.sticky {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sticky::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.sticky {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filters = document.querySelectorAll('.category-filter');
+    const products = document.querySelectorAll('.product-card');
+    
+    // Function to update products display
+    function updateProductsDisplay(selectedCategory) {
+        // Update active filter button
+        filters.forEach(f => {
+            const isSelected = f.dataset.category.trim().toLowerCase() === selectedCategory.toLowerCase();
+            f.classList.remove('bg-wood-brown', 'text-white', 'bg-gray-200', 'text-gray-700');
+            f.classList.add(isSelected ? 'bg-wood-brown' : 'bg-gray-200');
+            f.classList.add(isSelected ? 'text-white' : 'text-gray-700');
+        });
+        
+        // Filter products
+        products.forEach(product => {
+            const productCategory = product.dataset.category.trim();
+            console.log('Product:', {
+                name: product.querySelector('h3').textContent,
+                productCategory,
+                selectedCategory,
+                matches: selectedCategory.toLowerCase() === 'all' || 
+                        productCategory.toLowerCase() === selectedCategory.toLowerCase()
+            });
+            
+            if (selectedCategory.toLowerCase() === 'all') {
+                product.style.display = 'block';
+            } else {
+                product.style.display = productCategory.toLowerCase() === selectedCategory.toLowerCase()
+                    ? 'block' 
+                    : 'none';
+            }
+        });
+    }
+
+    // Handle initial category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('category') || 'all';
+    updateProductsDisplay(initialCategory);
+    
+    // Add click handlers
+    filters.forEach(filter => {
+        filter.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent any default button behavior
+            const category = this.dataset.category;
+            
+            // Update URL without reloading
+            const url = new URL(window.location);
+            url.searchParams.set('category', category);
+            window.history.pushState({}, '', url);
+            
+            updateProductsDisplay(category);
+        });
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category') || 'all';
+        updateProductsDisplay(category);
+    });
+});
 </script>
 {% endblock %}

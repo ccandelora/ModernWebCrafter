@@ -65,15 +65,6 @@ def dashboard():
         return render_template('errors/500.html'), 500
 
 
-@admin.route('/products')
-@login_required
-@log_route_access('admin_products')
-@handle_exceptions
-def products():
-    products = Product.query.all()
-    return render_template('admin/products.html', products=products)
-
-
 @admin.route('/gallery')
 @login_required
 @log_route_access('admin_gallery')
