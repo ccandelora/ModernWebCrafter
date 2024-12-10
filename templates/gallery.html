@@ -1,154 +1,311 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-16">
-    <h1 class="text-3xl font-bold text-center mb-8">Industrial Packaging Projects</h1>
-    
-    <!-- Filters Section -->
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 class="text-xl font-semibold mb-4">Filter Projects</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Category Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Project Type</label>
-                <div class="space-y-2">
+<div class="container mx-auto px-4 py-8">
+    <!-- Breadcrumb Navigation -->
+    <nav class="text-sm mb-8" aria-label="Breadcrumb">
+        <ol class="list-none p-0 flex flex-wrap items-center">
+            <li class="flex items-center">
+                <a href="{{ url_for('public.index') }}" class="text-wood-brown hover:text-wood-dark">Home</a>
+                <svg class="w-3 h-3 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                </svg>
+            </li>
+            <li class="flex items-center">
+                <span class="text-gray-600">Gallery</span>
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Project Gallery</h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+            Explore our custom industrial packaging solutions across various industries and applications
+        </p>
+    </div>
+
+    <!-- Active Filters Display -->
+    <div class="mb-8">
+        <div class="flex flex-wrap gap-2 items-center">
+            {% if selected_category or selected_industry or selected_size %}
+                <span class="text-gray-600 mr-2">Active Filters:</span>
+                {% if selected_category %}
                     <a href="{{ url_for('public.gallery', industry=selected_industry, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_category %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown text-white hover:text-white{% endif %} transition duration-300">
-                        All Categories
+                       class="inline-flex items-center px-3 py-1 rounded-full bg-wood-brown text-white hover:bg-wood-dark">
+                        {{ selected_category }}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </a>
-                    {% for category in categories %}
-                    <a href="{{ url_for('public.gallery', category=category[0], industry=selected_industry, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_category == category[0] %}bg-wood-brown text-white{% else %}bg-wood-accent text-white hover:bg-wood-brown hover:text-white{% endif %} transition duration-300">
-                        {{ category[0] }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <!-- Industry Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Industry Served</label>
-                <div class="space-y-2">
+                {% endif %}
+                {% if selected_industry %}
                     <a href="{{ url_for('public.gallery', category=selected_category, size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_industry %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown text-white hover:text-white{% endif %} transition duration-300">
-                        All Industries
+                       class="inline-flex items-center px-3 py-1 rounded-full bg-wood-brown text-white hover:bg-wood-dark">
+                        {{ selected_industry }}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </a>
-                    {% for industry in industries %}
-                    {% if industry[0] %}
-                    <a href="{{ url_for('public.gallery', category=selected_category, industry=industry[0], size=selected_size) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_industry == industry[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown text-white hover:text-white{% endif %} transition duration-300">
-                        {{ industry[0] }}
-                    </a>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            
-            <!-- Size Filter -->
-            <div>
-                <label class="block text-sm font-medium text-gray-600 mb-2">Size Category</label>
-                <div class="space-y-2">
+                {% endif %}
+                {% if selected_size %}
                     <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry) }}" 
-                       class="block px-4 py-2 rounded-lg {% if not selected_size %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown text-white hover:text-white{% endif %} transition duration-300">
-                        All Sizes
+                       class="inline-flex items-center px-3 py-1 rounded-full bg-wood-brown text-white hover:bg-wood-dark">
+                        {{ selected_size }}
+                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                     </a>
-                    {% for size in sizes %}
-                    {% if size[0] %}
-                    <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry, size=size[0]) }}" 
-                       class="block px-4 py-2 rounded-lg {% if selected_size == size[0] %}bg-wood-brown text-white{% else %}bg-wood-accent hover:bg-wood-brown text-white hover:text-white{% endif %} transition duration-300">
-                        {{ size[0] }}
-                    </a>
-                    {% endif %}
-                    {% endfor %}
-                </div>
-            </div>
+                {% endif %}
+                <a href="{{ url_for('public.gallery') }}" 
+                   class="text-wood-brown hover:text-wood-dark ml-4">
+                    Clear All Filters
+                </a>
+            {% endif %}
         </div>
     </div>
 
-    <!-- Gallery Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for project in projects %}
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
-            <div class="relative w-full h-80 bg-gray-100">
-                <img src="{{ project.image_url }}" 
-                     alt="{{ project.title }}" 
-                     class="absolute inset-0 w-full h-full object-contain bg-white p-4"
-                     decoding="async">
-                {% if project.is_featured %}
-                <span class="absolute top-4 right-4 bg-wood-brown text-white px-3 py-1 rounded-full text-sm">Featured</span>
-                {% endif %}
-                {% if project.ispm_compliant %}
-                <span class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">ISPM 15 Certified</span>
-                {% endif %}
-            </div>
-            <div class="p-6 mt-4">
-                <h3 class="text-xl font-semibold mb-2">{{ project.title }}</h3>
-                <p class="text-gray-600 mb-4">{{ project.description }}</p>
-                
-                <!-- Project Details -->
-                <div class="space-y-4">
-                    <!-- Specifications -->
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold mb-2">Specifications</h4>
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                                <span class="text-gray-500">Weight Capacity:</span>
-                                <p class="font-medium">{{ project.weight_capacity }}</p>
-                            </div>
-                            <div>
-                                <span class="text-gray-500">Size Category:</span>
-                                <p class="font-medium">{{ project.size_category }}</p>
-                            </div>
-                            <div>
-                                <span class="text-gray-500">Completion Time:</span>
-                                <p class="font-medium">{{ project.completion_time }} days</p>
-                            </div>
-                            <div>
-                                <span class="text-gray-500">Industry:</span>
-                                <p class="font-medium">{{ project.industry_served }}</p>
-                            </div>
-                        </div>
+    <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sticky left sidebar filters -->
+        <div class="w-full md:w-1/4">
+            <div class="sticky top-4 bg-white rounded-lg shadow-lg p-6">
+                <div class="mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
+                        <i class="fas fa-filter mr-2 text-wood-brown"></i>
+                        Filters
+                    </h2>
+                    <p class="text-gray-600 text-sm mb-4">Refine your search using the filters below</p>
+                </div>
+
+                <!-- Project Type Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-boxes mr-2 text-wood-brown"></i>
+                        Project Type
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="{{ url_for('public.gallery', industry=selected_industry, size=selected_size) }}" 
+                           class="filter-link {% if not selected_category %}active{% endif %}">
+                            <span class="flex-1">All Types</span>
+                            <span class="text-sm text-gray-500">({{ categories|length }})</span>
+                        </a>
+                        {% for category, count in categories %}
+                        <a href="{{ url_for('public.gallery', category=category, industry=selected_industry, size=selected_size) }}" 
+                           class="filter-link {% if selected_category == category %}active{% endif %}">
+                            <span class="flex-1">{{ category }}</span>
+                            <span class="text-sm text-gray-500">({{ count }})</span>
+                        </a>
+                        {% endfor %}
                     </div>
-                    
-                    <!-- Special Features -->
-                    {% if project.special_features %}
-                    {% set features = project.special_features|parse_json %}
-                    <div class="border-t pt-4">
-                        <h4 class="font-semibold mb-2">Special Features</h4>
-                        <ul class="space-y-2 text-sm">
-                            {% for key, value in features.items() %}
-                            <li class="flex items-start">
-                                <i class="fas fa-check-circle text-wood-brown mr-2 mt-1"></i>
-                                <span><strong class="text-gray-700">{{ key|replace('_', ' ')|title }}:</strong> {{ value }}</span>
-                            </li>
-                            {% endfor %}
-                        </ul>
+                </div>
+
+                <!-- Industry Section -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-industry mr-2 text-wood-brown"></i>
+                        Industry
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="{{ url_for('public.gallery', category=selected_category, size=selected_size) }}" 
+                           class="filter-link {% if not selected_industry %}active{% endif %}">
+                            <span class="flex-1">All Industries</span>
+                            <span class="text-sm text-gray-500">({{ industries|length }})</span>
+                        </a>
+                        {% for industry, count in industries %}
+                        {% if industry %}
+                        <a href="{{ url_for('public.gallery', category=selected_category, industry=industry, size=selected_size) }}" 
+                           class="filter-link {% if selected_industry == industry %}active{% endif %}">
+                            <span class="flex-1">{{ industry }}</span>
+                            <span class="text-sm text-gray-500">({{ count }})</span>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
                     </div>
-                    {% endif %}
-                    
-                    <!-- Project Info -->
-                    <div class="border-t pt-4">
-                        <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-                            <span class="flex items-center">
-                                <i class="fas fa-calendar mr-2"></i>
-                                {{ project.completion_date.strftime('%B %Y') }}
-                            </span>
-                            {% if project.client %}
-                            <span class="flex items-center">
-                                <i class="fas fa-building mr-2"></i>
-                                {{ project.client }}
-                            </span>
-                            {% endif %}
-                            <span class="flex items-center">
-                                <i class="fas fa-tag mr-2"></i>
-                                {{ project.category }}
-                            </span>
-                        </div>
+                </div>
+
+                <!-- Size Section -->
+                <div class="mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                        <i class="fas fa-ruler-combined mr-2 text-wood-brown"></i>
+                        Size
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry) }}" 
+                           class="filter-link {% if not selected_size %}active{% endif %}">
+                            <span class="flex-1">All Sizes</span>
+                            <span class="text-sm text-gray-500">({{ sizes|length }})</span>
+                        </a>
+                        {% for size, count in sizes %}
+                        {% if size %}
+                        <a href="{{ url_for('public.gallery', category=selected_category, industry=selected_industry, size=size) }}" 
+                           class="filter-link {% if selected_size == size %}active{% endif %}">
+                            <span class="flex-1">{{ size }}</span>
+                            <span class="text-sm text-gray-500">({{ count }})</span>
+                        </a>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        {% endfor %}
+
+        <!-- Gallery Grid -->
+        <div class="w-full md:w-3/4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for project in projects %}
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition duration-300">
+                    <div class="relative w-full h-80 bg-gray-100">
+                        <img src="{{ project.image_url }}" 
+                             alt="{{ project.title }}" 
+                             class="absolute inset-0 w-full h-full object-contain bg-white p-4"
+                             decoding="async">
+                        {% if project.is_featured %}
+                        <span class="absolute top-4 right-4 bg-wood-brown text-white px-3 py-1 rounded-full text-sm">Featured</span>
+                        {% endif %}
+                        {% if project.ispm_compliant %}
+                        <span class="absolute top-4 left-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm">ISPM 15 Certified</span>
+                        {% endif %}
+                    </div>
+                    <div class="p-6 mt-4">
+                        <h3 class="text-xl font-semibold mb-2">{{ project.title }}</h3>
+                        <p class="text-gray-600 mb-4">{{ project.description }}</p>
+                        
+                        <!-- Project Details -->
+                        <div class="space-y-4">
+                            <!-- Specifications -->
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-2">Specifications</h4>
+                                <div class="grid grid-cols-2 gap-4 text-sm">
+                                    <div>
+                                        <span class="text-gray-500">Weight Capacity:</span>
+                                        <p class="font-medium">{{ project.weight_capacity }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Size Category:</span>
+                                        <p class="font-medium">{{ project.size_category }}</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Completion Time:</span>
+                                        <p class="font-medium">{{ project.completion_time }} days</p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Industry:</span>
+                                        <p class="font-medium">{{ project.industry_served }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Special Features -->
+                            {% if project.special_features %}
+                            {% set features = project.special_features|parse_json %}
+                            <div class="border-t pt-4">
+                                <h4 class="font-semibold mb-2">Special Features</h4>
+                                <ul class="space-y-2 text-sm">
+                                    {% for key, value in features.items() %}
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-wood-brown mr-2 mt-1"></i>
+                                        <span><strong class="text-gray-700">{{ key|replace('_', ' ')|title }}:</strong> {{ value }}</span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Project Info -->
+                            <div class="border-t pt-4">
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                                    <span class="flex items-center">
+                                        <i class="fas fa-calendar mr-2"></i>
+                                        {{ project.completion_date.strftime('%B %Y') }}
+                                    </span>
+                                    {% if project.client %}
+                                    <span class="flex items-center">
+                                        <i class="fas fa-building mr-2"></i>
+                                        {{ project.client }}
+                                    </span>
+                                    {% endif %}
+                                    <span class="flex items-center">
+                                        <i class="fas fa-tag mr-2"></i>
+                                        {{ project.category }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+.sticky {
+    position: sticky;
+    top: 1rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--wood-brown) #f3f4f6;
+}
+
+/* Custom scrollbar styling */
+.sticky::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sticky::-webkit-scrollbar-track {
+    background: #f3f4f6;
+    border-radius: 3px;
+}
+
+.sticky::-webkit-scrollbar-thumb {
+    background-color: var(--wood-brown);
+    border-radius: 3px;
+}
+
+/* Filter link styling */
+.filter-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+    color: #4b5563;
+    background-color: #f3f4f6;
+}
+
+.filter-link:hover {
+    background-color: #e5e7eb;
+    color: #1f2937;
+}
+
+.filter-link.active {
+    background-color: var(--wood-brown);
+    color: white;
+}
+
+.filter-link.active span.text-gray-500 {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Ensure images maintain aspect ratio */
+picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+picture img:hover {
+    transform: scale(1.05);
+}
+</style>
 {% endblock %}

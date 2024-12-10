@@ -65,16 +65,6 @@ def dashboard():
         return render_template('errors/500.html'), 500
 
 
-@admin.route('/gallery')
-@login_required
-@log_route_access('admin_gallery')
-@handle_exceptions
-def gallery():
-    projects = GalleryProject.query.order_by(
-        GalleryProject.completion_date.desc()).all()
-    return render_template('admin/gallery.html', projects=projects)
-
-
 @admin.route('/testimonials')
 @login_required
 @log_route_access('admin_testimonials')

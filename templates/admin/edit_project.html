@@ -5,7 +5,7 @@
     <div class="max-w-4xl mx-auto">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-2xl font-bold">Edit Project</h1>
-            <a href="{{ url_for('admin.gallery') }}" class="text-wood-brown hover:text-wood-dark">Back to Gallery</a>
+            <a href="{{ url_for('admin.gallery.index') }}" class="text-wood-brown hover:text-wood-dark">Back to Gallery</a>
         </div>
 
         <div class="bg-white rounded-lg shadow-lg p-6">
@@ -22,19 +22,57 @@
                         <input type="text" id="client" name="client" value="{{ project.client }}" required
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
-                        <input type="text" id="category" name="category" value="{{ project.category }}" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-600">Category</label>
+                        <div class="mt-1 flex space-x-2">
+                            <select id="category" name="category"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Select or add new...</option>
+                                {% for category in categories %}
+                                <option value="{{ category[0] }}" {% if project.category == category[0] %}selected{% endif %}>
+                                    {{ category[0] }}
+                                </option>
+                                {% endfor %}
+                                {% if project.category and project.category not in categories|map(attribute='0') %}
+                                <option value="{{ project.category }}" selected>{{ project.category }}</option>
+                                {% endif %}
+                            </select>
+                            <button type="button" onclick="toggleNewCategory()"
+                                    class="px-3 py-1 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="newCategoryInput" class="hidden mt-2">
+                            <input type="text" name="new_category" placeholder="Enter new category"
+                                   class="block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
                     </div>
                     
                     <div>
-                        <label for="industry_served" class="block text-sm font-medium text-gray-600">Industry Served</label>
-                        <input type="text" id="industry_served" name="industry_served" value="{{ project.industry_served }}" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-600">Industry Served</label>
+                        <div class="mt-1 flex space-x-2">
+                            <select id="industry_served" name="industry_served"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Select or add new...</option>
+                                {% for industry in industries %}
+                                <option value="{{ industry[0] }}" {% if project.industry_served == industry[0] %}selected{% endif %}>
+                                    {{ industry[0] }}
+                                </option>
+                                {% endfor %}
+                                {% if project.industry_served and project.industry_served not in industries|map(attribute='0') %}
+                                <option value="{{ project.industry_served }}" selected>{{ project.industry_served }}</option>
+                                {% endif %}
+                            </select>
+                            <button type="button" onclick="toggleNewIndustry()"
+                                    class="px-3 py-1 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="newIndustryInput" class="hidden mt-2">
+                            <input type="text" name="new_industry" placeholder="Enter new industry"
+                                   class="block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
                     </div>
                 </div>
 
@@ -47,7 +85,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label for="completion_time" class="block text-sm font-medium text-gray-600">Completion Time (days)</label>
-                        <input type="number" id="completion_time" name="completion_time" value="{{ project.completion_time }}" required
+                        <input type="number" id="completion_time" name="completion_time" value="{{ project.completion_time }}"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
                     
@@ -64,9 +102,86 @@
                     
                     <div>
                         <label for="weight_capacity" class="block text-sm font-medium text-gray-600">Weight Capacity</label>
-                        <input type="text" id="weight_capacity" name="weight_capacity" value="{{ project.weight_capacity }}" required
+                        <input type="text" id="weight_capacity" name="weight_capacity" value="{{ project.weight_capacity }}"
                                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
                     </div>
+                </div>
+
+                <!-- Special Features Section -->
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h3 class="text-lg font-semibold mb-4">Special Features</h3>
+                    <div id="specialFeatures" class="space-y-4">
+                        {% if project.special_features %}
+                            {% for feature_type, description in project.special_features.items() %}
+                            <div class="feature-entry grid grid-cols-1 md:grid-cols-3 gap-4" style="position: relative;">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">Feature Type</label>
+                                    <div class="mt-1 flex space-x-2">
+                                        <select name="feature_type[]" class="feature-type block w-full rounded-md border-gray-300 shadow-sm"
+                                                onchange="handleFeatureTypeChange(this)">
+                                            <option value="">Select or add new...</option>
+                                            <option value="moisture_control" {% if feature_type == 'moisture_control' %}selected{% endif %}>Moisture Control</option>
+                                            <option value="cushioning" {% if feature_type == 'cushioning' %}selected{% endif %}>Cushioning System</option>
+                                            <option value="monitoring" {% if feature_type == 'monitoring' %}selected{% endif %}>Monitoring Equipment</option>
+                                            <option value="bracing" {% if feature_type == 'bracing' %}selected{% endif %}>Special Bracing</option>
+                                            <option value="reusability" {% if feature_type == 'reusability' %}selected{% endif %}>Reusability Features</option>
+                                            <option value="security" {% if feature_type == 'security' %}selected{% endif %}>Security Features</option>
+                                            <option value="custom" {% if feature_type not in ['moisture_control', 'cushioning', 'monitoring', 'bracing', 'reusability', 'security'] %}selected{% endif %}>Add Custom Feature...</option>
+                                        </select>
+                                    </div>
+                                    <div class="custom-feature-input {% if feature_type in ['moisture_control', 'cushioning', 'monitoring', 'bracing', 'reusability', 'security'] %}hidden{% endif %} mt-2">
+                                        <input type="text" name="custom_feature_type[]" placeholder="Enter custom feature type"
+                                               value="{{ feature_type if feature_type not in ['moisture_control', 'cushioning', 'monitoring', 'bracing', 'reusability', 'security'] else '' }}"
+                                               class="block w-full rounded-md border-gray-300 shadow-sm">
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-medium text-gray-600">Feature Description</label>
+                                    <input type="text" name="feature_description[]" value="{{ description }}"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                </div>
+                                {% if not loop.first %}
+                                <button type="button" onclick="this.closest('.feature-entry').remove()"
+                                        class="absolute -right-2 -top-2 text-red-600 hover:text-red-800">
+                                    <i class="fas fa-times-circle text-xl"></i>
+                                </button>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="feature-entry grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-600">Feature Type</label>
+                                    <div class="mt-1 flex space-x-2">
+                                        <select name="feature_type[]" class="feature-type block w-full rounded-md border-gray-300 shadow-sm"
+                                                onchange="handleFeatureTypeChange(this)">
+                                            <option value="">Select or add new...</option>
+                                            <option value="moisture_control">Moisture Control</option>
+                                            <option value="cushioning">Cushioning System</option>
+                                            <option value="monitoring">Monitoring Equipment</option>
+                                            <option value="bracing">Special Bracing</option>
+                                            <option value="reusability">Reusability Features</option>
+                                            <option value="security">Security Features</option>
+                                            <option value="custom">Add Custom Feature...</option>
+                                        </select>
+                                    </div>
+                                    <div class="custom-feature-input hidden mt-2">
+                                        <input type="text" name="custom_feature_type[]" placeholder="Enter custom feature type"
+                                               class="block w-full rounded-md border-gray-300 shadow-sm">
+                                    </div>
+                                </div>
+                                <div class="col-span-2">
+                                    <label class="block text-sm font-medium text-gray-600">Feature Description</label>
+                                    <input type="text" name="feature_description[]" placeholder="Describe the feature"
+                                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button type="button" onclick="addFeatureEntry()"
+                            class="mt-4 px-4 py-2 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                        <i class="fas fa-plus mr-2"></i>Add Another Feature
+                    </button>
                 </div>
 
                 <div>
@@ -97,4 +212,51 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleNewCategory() {
+    const input = document.getElementById('newCategoryInput');
+    input.classList.toggle('hidden');
+}
+
+function toggleNewIndustry() {
+    const input = document.getElementById('newIndustryInput');
+    input.classList.toggle('hidden');
+}
+
+function handleFeatureTypeChange(select) {
+    const customInput = select.closest('.feature-entry').querySelector('.custom-feature-input');
+    if (select.value === 'custom') {
+        customInput.classList.remove('hidden');
+    } else {
+        customInput.classList.add('hidden');
+    }
+}
+
+function addFeatureEntry() {
+    const container = document.getElementById('specialFeatures');
+    const newEntry = container.children[0].cloneNode(true);
+    
+    // Clear input values
+    newEntry.querySelectorAll('input, select').forEach(input => {
+        input.value = '';
+    });
+    
+    // Reset custom feature input visibility
+    newEntry.querySelector('.custom-feature-input').classList.add('hidden');
+    
+    // Add delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.type = 'button';
+    deleteBtn.className = 'absolute -right-2 -top-2 text-red-600 hover:text-red-800';
+    deleteBtn.innerHTML = '<i class="fas fa-times-circle text-xl"></i>';
+    deleteBtn.onclick = function() {
+        this.closest('.feature-entry').remove();
+    };
+    newEntry.style.position = 'relative';
+    newEntry.appendChild(deleteBtn);
+    
+    container.appendChild(newEntry);
+}
+</script>
 {% endblock %}

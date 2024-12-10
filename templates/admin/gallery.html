@@ -21,7 +21,7 @@
         <!-- Add Project Form -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Add New Project</h2>
-            <form method="POST" action="{{ url_for('admin.admin_gallery.gallery') }}" class="space-y-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ url_for('admin.gallery.create') }}" class="space-y-4" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-600">Project Title</label>
@@ -36,16 +36,84 @@
                     </div>
                     
                     <div>
-                        <label for="category" class="block text-sm font-medium text-gray-600">Category</label>
-                        <input type="text" id="category" name="category" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-600">Category</label>
+                        <div class="mt-1 flex space-x-2">
+                            <select id="category" name="category"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Select or add new...</option>
+                                {% for category in categories %}
+                                <option value="{{ category[0] }}">{{ category[0] }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" onclick="toggleNewCategory()"
+                                    class="px-3 py-1 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="newCategoryInput" class="hidden mt-2">
+                            <input type="text" name="new_category" placeholder="Enter new category"
+                                   class="block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
                     </div>
                     
                     <div>
-                        <label for="industry_served" class="block text-sm font-medium text-gray-600">Industry Served</label>
-                        <input type="text" id="industry_served" name="industry_served" required
-                               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                        <label class="block text-sm font-medium text-gray-600">Industry Served</label>
+                        <div class="mt-1 flex space-x-2">
+                            <select id="industry_served" name="industry_served"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm">
+                                <option value="">Select or add new...</option>
+                                {% for industry in industries %}
+                                <option value="{{ industry[0] }}">{{ industry[0] }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" onclick="toggleNewIndustry()"
+                                    class="px-3 py-1 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <div id="newIndustryInput" class="hidden mt-2">
+                            <input type="text" name="new_industry" placeholder="Enter new industry"
+                                   class="block w-full rounded-md border-gray-300 shadow-sm">
+                        </div>
                     </div>
+                </div>
+
+                <!-- Special Features Section -->
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h3 class="text-lg font-semibold mb-4">Special Features</h3>
+                    <div id="specialFeatures" class="space-y-4">
+                        <div class="feature-entry grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-600">Feature Type</label>
+                                <div class="mt-1 flex space-x-2">
+                                    <select name="feature_type[]" class="feature-type block w-full rounded-md border-gray-300 shadow-sm"
+                                            onchange="handleFeatureTypeChange(this)">
+                                        <option value="">Select or add new...</option>
+                                        <option value="moisture_control">Moisture Control</option>
+                                        <option value="cushioning">Cushioning System</option>
+                                        <option value="monitoring">Monitoring Equipment</option>
+                                        <option value="bracing">Special Bracing</option>
+                                        <option value="reusability">Reusability Features</option>
+                                        <option value="security">Security Features</option>
+                                        <option value="custom">Add Custom Feature...</option>
+                                    </select>
+                                </div>
+                                <div class="custom-feature-input hidden mt-2">
+                                    <input type="text" name="custom_feature_type[]" placeholder="Enter custom feature type"
+                                           class="block w-full rounded-md border-gray-300 shadow-sm">
+                                </div>
+                            </div>
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-gray-600">Feature Description</label>
+                                <input type="text" name="feature_description[]" placeholder="Describe the feature"
+                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addFeatureEntry()"
+                            class="mt-4 px-4 py-2 bg-wood-brown text-white rounded-md hover:bg-wood-dark">
+                        <i class="fas fa-plus mr-2"></i>Add Another Feature
+                    </button>
                 </div>
 
                 <div>
@@ -116,8 +184,8 @@
                             <p class="text-gray-600">{{ project.description }}</p>
                         </div>
                         <div class="flex space-x-2">
-                            <a href="{{ url_for('admin.admin_gallery.edit_gallery_project', id=project.id) }}" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
-                            <form method="POST" action="{{ url_for('admin.admin_gallery.delete_project', id=project.id) }}" class="inline">
+                            <a href="{{ url_for('admin.gallery.edit', id=project.id) }}" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
+                            <form method="POST" action="{{ url_for('admin.gallery.delete', id=project.id) }}" class="inline">
                                 <button type="submit" class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700" onclick="return confirm('Are you sure you want to delete this project?')">Delete</button>
                             </form>
                         </div>
@@ -128,4 +196,53 @@
         </div>
     </div>
 </div>
+
+<script>
+function toggleNewCategory() {
+    const input = document.getElementById('newCategoryInput');
+    input.classList.toggle('hidden');
+}
+
+function toggleNewIndustry() {
+    const input = document.getElementById('newIndustryInput');
+    input.classList.toggle('hidden');
+}
+
+function handleFeatureTypeChange(select) {
+    const customInput = select.closest('.feature-entry').querySelector('.custom-feature-input');
+    if (select.value === 'custom') {
+        customInput.classList.remove('hidden');
+    } else {
+        customInput.classList.add('hidden');
+    }
+}
+
+function addFeatureEntry() {
+    const container = document.getElementById('specialFeatures');
+    const newEntry = container.children[0].cloneNode(true);
+    
+    // Clear input values
+    newEntry.querySelectorAll('input, select').forEach(input => {
+        input.value = '';
+    });
+    
+    // Reset custom feature input visibility
+    newEntry.querySelector('.custom-feature-input').classList.add('hidden');
+    
+    // Add delete button if it's not the first entry
+    if (container.children.length > 0) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.type = 'button';
+        deleteBtn.className = 'absolute -right-2 -top-2 text-red-600 hover:text-red-800';
+        deleteBtn.innerHTML = '<i class="fas fa-times-circle text-xl"></i>';
+        deleteBtn.onclick = function() {
+            this.closest('.feature-entry').remove();
+        };
+        newEntry.style.position = 'relative';
+        newEntry.appendChild(deleteBtn);
+    }
+    
+    container.appendChild(newEntry);
+}
+</script>
 {% endblock %}

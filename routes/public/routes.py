@@ -174,8 +174,10 @@ def gallery():
     industry = request.args.get('industry')
     size = request.args.get('size')
 
+    # Base query
     query = GalleryProject.query
 
+    # Apply filters
     if category:
         query = query.filter_by(category=category)
     if industry:
@@ -183,11 +185,35 @@ def gallery():
     if size:
         query = query.filter_by(size_category=size)
 
+    # Get filtered projects
     projects = query.order_by(GalleryProject.completion_date.desc()).all()
 
-    categories = db.session.query(GalleryProject.category).distinct()
-    industries = db.session.query(GalleryProject.industry_served).distinct()
-    sizes = db.session.query(GalleryProject.size_category).distinct()
+    # Get all distinct values and their counts
+    all_projects = GalleryProject.query.all()
+    
+    # Get categories with counts
+    categories_dict = {}
+    for p in all_projects:
+        if p.category:
+            categories_dict[p.category] = categories_dict.get(p.category, 0) + 1
+    categories = [(cat, count) for cat, count in categories_dict.items()]
+    categories.sort(key=lambda x: x[0])  # Sort by category name
+
+    # Get industries with counts
+    industries_dict = {}
+    for p in all_projects:
+        if p.industry_served:
+            industries_dict[p.industry_served] = industries_dict.get(p.industry_served, 0) + 1
+    industries = [(ind, count) for ind, count in industries_dict.items()]
+    industries.sort(key=lambda x: x[0])  # Sort by industry name
+
+    # Get sizes with counts
+    sizes_dict = {}
+    for p in all_projects:
+        if p.size_category:
+            sizes_dict[p.size_category] = sizes_dict.get(p.size_category, 0) + 1
+    sizes = [(size, count) for size, count in sizes_dict.items()]
+    sizes.sort(key=lambda x: x[0])  # Sort by size name
 
     return render_template('gallery.html',
                          projects=projects,
