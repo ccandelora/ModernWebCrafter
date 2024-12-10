@@ -35,6 +35,14 @@
                     <p class="mt-1 text-sm text-gray-500">Current image: {{ product.image_url }}</p>
                 </div>
 
+                <div class="flex items-center">
+                    <input type="checkbox" id="is_featured" name="is_featured" {% if product.is_featured %}checked{% endif %}
+                           class="h-4 w-4 text-wood-brown border-gray-300 rounded">
+                    <label for="is_featured" class="ml-2 block text-sm text-gray-600">
+                        Feature this product on homepage
+                    </label>
+                </div>
+
                 <div class="flex justify-end">
                     <button type="submit" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Update Product</button>
                 </div>

@@ -12,7 +12,7 @@ public = Blueprint('public', __name__, template_folder='templates')
 def index():
     try:
         print("Attempting to render index page")
-        featured_products = Product.query.limit(3).all()
+        featured_products = Product.query.filter_by(is_featured=True).all()
         testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
         print("Attempting to fetch featured products and testimonials...")
         print(f"Found {len(featured_products)} products and {len(testimonials)} testimonials")
@@ -24,6 +24,7 @@ def index():
             print(f"  Description: {product.description}")
             print(f"  Image URL: {product.image_url}")
             print(f"  Category: {product.category}")
+            print(f"  Featured: {product.is_featured}")
             
         # Debug testimonials data
         for idx, testimonial in enumerate(testimonials):

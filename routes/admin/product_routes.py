@@ -41,7 +41,8 @@ def products():
             product.name = name
             product.category = category
             product.description = description
-            product.image_url = image_path  # Store only the original image URL
+            product.image_url = image_path
+            product.is_featured = bool(request.form.get('is_featured'))
 
             try:
                 # Handle price field
@@ -121,6 +122,7 @@ def edit_product(id):
             product.name = request.form.get('name')
             product.category = request.form.get('category')
             product.description = request.form.get('description')
+            product.is_featured = bool(request.form.get('is_featured'))
 
             image = request.files.get('image')
             if image and image.filename:

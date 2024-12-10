@@ -11,6 +11,7 @@ class Product(db.Model):
     package_type = db.Column(db.String(50), nullable=True)  # Added package_type field
     image_url = db.Column(db.String(200), nullable=False)
     price = db.Column(db.Float, nullable=False)
+    is_featured = db.Column(db.Boolean, default=False)  # Added is_featured field
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Inquiry(db.Model):
