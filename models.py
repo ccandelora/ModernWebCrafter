@@ -1,17 +1,17 @@
-from app import db
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from extensions import db
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     category = db.Column(db.String(50), nullable=False)
-    package_type = db.Column(db.String(50), nullable=True)  # Added package_type field
+    package_type = db.Column(db.String(50), nullable=True)
     image_url = db.Column(db.String(200), nullable=False)
     price = db.Column(db.Float, nullable=False)
-    is_featured = db.Column(db.Boolean, default=False)  # Added is_featured field
+    is_featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Inquiry(db.Model):
@@ -39,14 +39,14 @@ class GalleryProject(db.Model):
     description = db.Column(db.Text, nullable=False)
     image_url = db.Column(db.String(200), nullable=False)
     completion_date = db.Column(db.Date, nullable=False)
-    completion_time = db.Column(db.Integer)  # In days
+    completion_time = db.Column(db.Integer)
     client = db.Column(db.String(100))
     category = db.Column(db.String(50), nullable=False)
     industry_served = db.Column(db.String(50))
-    size_category = db.Column(db.String(50))  # Small, Medium, Large, Oversize
-    weight_capacity = db.Column(db.String(50))  # Weight capacity specification
-    ispm_compliant = db.Column(db.Boolean, default=False)  # International shipping compliance
-    special_features = db.Column(db.Text)  # JSON string of special features
+    size_category = db.Column(db.String(50))
+    weight_capacity = db.Column(db.String(50))
+    ispm_compliant = db.Column(db.Boolean, default=False)
+    special_features = db.Column(db.Text)
     is_featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -62,6 +62,7 @@ class Admin(UserMixin, db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
 class TeamMember(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)

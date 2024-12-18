@@ -1,15 +1,21 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
 from flask_login import login_required, current_user
 from models import Product, GalleryProject, Testimonial, Admin, TeamMember
-from app import db
+from extensions import db
 from routes.utils.error_handlers import handle_exceptions, log_route_access
 from routes.admin.product_routes import products_bp
 from routes.admin.gallery_routes import gallery_bp
 from routes.admin.testimonial_routes import testimonials_bp
 from routes.admin.team_routes import team_bp
 
+# Create the admin blueprint
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
+# Register sub-blueprints with unique names
+admin.register_blueprint(products_bp, url_prefix='/products', name='admin_products_bp')
+admin.register_blueprint(gallery_bp, url_prefix='/gallery', name='admin_gallery_bp')
+admin.register_blueprint(testimonials_bp, url_prefix='/testimonials', name='admin_testimonials_bp')
+admin.register_blueprint(team_bp, url_prefix='/team', name='admin_team_bp')
 
 @admin.before_request
 def verify_admin():
@@ -63,17 +69,3 @@ def dashboard():
     except Exception as e:
         current_app.logger.error(f'Dashboard error: {str(e)}')
         return render_template('errors/500.html'), 500
-
-
-@admin.route('/testimonials')
-@login_required
-@log_route_access('admin_testimonials')
-@handle_exceptions
-def testimonials():
-    testimonials = Testimonial.query.order_by(
-        Testimonial.created_at.desc()).all()
-    return render_template('admin/testimonials.html',
-                           testimonials=testimonials)
-
-
-# Team management route moved to team_routes.py
