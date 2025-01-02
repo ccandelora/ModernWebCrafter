@@ -21,7 +21,7 @@ def products():
 
             if not all([name, category, description]):
                 flash('All fields are required', 'error')
-                return redirect(url_for('admin.admin_products.products'))
+                return redirect(url_for('admin.admin_products_bp.products'))
 
             image = request.files.get('image')
             image_path = "/static/images/workshop.jpg"  # Default image
@@ -32,10 +32,10 @@ def products():
                     image_path = image_paths['original']  # Use the original image URL
                 except ValueError as e:
                     flash(str(e), 'error')
-                    return redirect(url_for('admin.admin_products.products'))
+                    return redirect(url_for('admin.admin_products_bp.products'))
                 except Exception as e:
                     flash(f'Error saving image: {str(e)}', 'error')
-                    return redirect(url_for('admin.admin_products.products'))
+                    return redirect(url_for('admin.admin_products_bp.products'))
 
             product = Product()
             product.name = name
@@ -59,7 +59,7 @@ def products():
                 db.session.rollback()
                 flash(f'Error adding product: {str(e)}', 'error')
 
-            return redirect(url_for('admin.admin_products.products'))
+            return redirect(url_for('admin.admin_products_bp.products'))
 
         # GET request handling
         current_app.logger.debug('Fetching all products from database')
@@ -131,21 +131,21 @@ def edit_product(id):
                     product.image_url = new_image_paths['original']  # Use the original image URL
                 except ValueError as e:
                     flash(str(e), 'error')
-                    return redirect(url_for('admin.admin_products.products'))
+                    return redirect(url_for('admin.admin_products_bp.products'))
                 except Exception as e:
                     flash(f'Error saving image: {str(e)}', 'error')
-                    return redirect(url_for('admin.admin_products.products'))
+                    return redirect(url_for('admin.admin_products_bp.products'))
 
             db.session.commit()
             flash('Product updated successfully', 'success')
-            return redirect(url_for('admin.admin_products.products'))
+            return redirect(url_for('admin.admin_products_bp.products'))
 
         return render_template('admin/edit_product.html', product=product)
     except Exception as e:
         current_app.logger.error(f'Error editing product {id}: {str(e)}')
         current_app.logger.exception('Full traceback:')
         flash('Error editing product. Please try again later.', 'error')
-        return redirect(url_for('admin.admin_products.products'))
+        return redirect(url_for('admin.admin_products_bp.products'))
 
 @products_bp.route('/<int:id>/delete', methods=['POST'])
 @login_required
@@ -162,4 +162,4 @@ def delete_product(id):
         current_app.logger.exception('Full traceback:')
         flash('Error deleting product. Please try again later.', 'error')
         db.session.rollback()
-    return redirect(url_for('admin.admin_products.products'))
+    return redirect(url_for('admin.admin_products_bp.products'))

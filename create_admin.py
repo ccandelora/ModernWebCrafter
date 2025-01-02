@@ -12,9 +12,9 @@ def create_admin():
         
         # Create new admin user
         admin = Admin()
-        admin.username = 'admin'
+        admin.username = 'mike'
         admin.email = 'admin@example.com'
-        admin.set_password('centrifugal')
+        admin.set_password('Misty205!')
         db.session.add(admin)
         db.session.commit()
         print("Admin user created successfully!")
