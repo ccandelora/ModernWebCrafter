@@ -21,7 +21,7 @@
         <!-- Add Product Form -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <h2 class="text-xl font-semibold mb-4">Add New Product</h2>
-            <form method="POST" action="{{ url_for('admin.admin_products.products') }}" class="space-y-4" enctype="multipart/form-data">
+            <form method="POST" action="{{ url_for('admin.admin_products_bp.products') }}" class="space-y-4" enctype="multipart/form-data">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-600">Product Name</label>
                     <input type="text" id="name" name="name" required
@@ -94,9 +94,9 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2 ml-4">
-                                <a href="{{ url_for('admin.admin_products.edit_product', id=product.id) }}" 
+                                <a href="{{ url_for('admin.admin_products_bp.edit_product', id=product.id) }}" 
                                    class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
-                                <form method="POST" action="{{ url_for('admin.admin_products.delete_product', id=product.id) }}" class="inline">
+                                <form method="POST" action="{{ url_for('admin.admin_products_bp.delete_product', id=product.id) }}" class="inline">
                                     <button type="submit" 
                                             class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700" 
                                             onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
@@ -139,9 +139,9 @@
                                 </div>
                             </div>
                             <div class="flex space-x-2 ml-4">
-                                <a href="{{ url_for('admin.admin_products.edit_product', id=product.id) }}" 
+                                <a href="{{ url_for('admin.admin_products_bp.edit_product', id=product.id) }}" 
                                    class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
-                                <form method="POST" action="{{ url_for('admin.admin_products.delete_product', id=product.id) }}" class="inline">
+                                <form method="POST" action="{{ url_for('admin.admin_products_bp.delete_product', id=product.id) }}" class="inline">
                                     <button type="submit" 
                                             class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700" 
                                             onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>

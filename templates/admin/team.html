@@ -24,7 +24,7 @@
             <h2 class="text-xl font-semibold mb-4">Add New Team Member</h2>
             <form
                 method="POST"
-                action="{{ url_for('admin.admin_team.manage_team') }}"
+                action="{{ url_for('admin.admin_team_bp.manage_team') }}"
                 class="space-y-4"
                 enctype="multipart/form-data"
             >
@@ -156,13 +156,13 @@
                         </div>
                         <div class="flex space-x-2">
                             <a
-                                href="{{ url_for('admin.admin_team.edit_team_member', id=member.id) }}"
+                                href="{{ url_for('admin.admin_team_bp.edit_team_member', id=member.id) }}"
                                 class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark"
                                 >Edit</a
                             >
                             <form
                                 method="POST"
-                                action="{{ url_for('admin.admin_team.delete_team_member', id=member.id) }}"
+                                action="{{ url_for('admin.admin_team_bp.delete_team_member', id=member.id) }}"
                                 class="inline"
                             >
                                 <button
