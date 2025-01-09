@@ -9,7 +9,7 @@
     
     <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
         <h3 class="text-xl font-semibold mb-4">Add New Testimonial</h3>
-        <form method="POST" action="{{ url_for('admin.admin_testimonials.testimonials') }}" class="space-y-4">
+        <form method="POST" action="{{ url_for('admin.admin_testimonials_bp.testimonials') }}" class="space-y-4">
             <div>
                 <label for="client_name" class="block text-sm font-medium text-gray-600">Client Name</label>
                 <input type="text" id="client_name" name="client_name" required
