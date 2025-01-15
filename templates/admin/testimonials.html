@@ -2,62 +2,83 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-16">
-    <div class="flex justify-between items-center mb-8">
-        <h1 class="text-2xl font-bold">Manage Testimonials</h1>
-        <a href="{{ url_for('admin.dashboard') }}" class="text-wood-brown hover:text-wood-dark">Back to Dashboard</a>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h3 class="text-xl font-semibold mb-4">Add New Testimonial</h3>
-        <form method="POST" action="{{ url_for('admin.admin_testimonials_bp.testimonials') }}" class="space-y-4">
-            <div>
-                <label for="client_name" class="block text-sm font-medium text-gray-600">Client Name</label>
-                <input type="text" id="client_name" name="client_name" required
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-            </div>
-            <div>
-                <label for="rating" class="block text-sm font-medium text-gray-600">Rating (1-5)</label>
-                <input type="number" id="rating" name="rating" min="1" max="5" required
-                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-            </div>
-            <div>
-                <label for="content" class="block text-sm font-medium text-gray-600">Content</label>
-                <textarea id="content" name="content" rows="4" required
-                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
-            </div>
-            <div>
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="is_featured" class="rounded border-gray-300 text-wood-brown shadow-sm">
-                    <span class="ml-2">Featured Testimonial</span>
-                </label>
-            </div>
-            <button type="submit" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Add Testimonial</button>
-        </form>
-    </div>
-    
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <h3 class="text-xl font-semibold mb-4">Existing Testimonials</h3>
-        <div class="space-y-4">
-            {% for testimonial in testimonials %}
-            <div class="border-b border-gray-200 pb-4">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h4 class="font-semibold">{{ testimonial.client_name }}</h4>
-                        <div class="flex">
-                            {% for _ in range(testimonial.rating) %}
-                            <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
-                            {% endfor %}
-                        </div>
-                        <p class="text-gray-600 mt-2">{{ testimonial.content }}</p>
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold">Manage Testimonials</h1>
+            <a href="{{ url_for('admin.dashboard') }}" class="text-wood-brown hover:text-wood-dark">Back to Dashboard</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
                     </div>
-                    <div class="text-sm text-gray-500">
-                        {% if testimonial.is_featured %}
-                        <span class="bg-wood-brown text-white px-2 py-1 rounded">Featured</span>
-                        {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-semibold mb-4">Add New Testimonial</h3>
+            <form method="POST" action="{{ url_for('admin.admin_testimonials_bp.testimonials') }}" class="space-y-4">
+                <div>
+                    <label for="client_name" class="block text-sm font-medium text-gray-600">Client Name</label>
+                    <input type="text" id="client_name" name="client_name" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="rating" class="block text-sm font-medium text-gray-600">Rating (1-5)</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5" required
+                           class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="content" class="block text-sm font-medium text-gray-600">Content</label>
+                    <textarea id="content" name="content" rows="4" required
+                              class="mt-1 block w-full rounded-md border-gray-300 shadow-sm"></textarea>
+                </div>
+                <div>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="is_featured" class="rounded border-gray-300 text-wood-brown shadow-sm">
+                        <span class="ml-2">Featured Testimonial</span>
+                    </label>
+                </div>
+                <button type="submit" class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Add Testimonial</button>
+            </form>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-xl font-semibold mb-4">Existing Testimonials</h3>
+            <div class="space-y-6">
+                {% for testimonial in testimonials %}
+                <div class="border-b border-gray-200 pb-6">
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <h4 class="text-lg font-semibold">{{ testimonial.client_name }}</h4>
+                            <div class="flex items-center space-x-1 mt-1">
+                                {% for _ in range(testimonial.rating) %}
+                                <img src="/static/images/star.svg" alt="star" class="w-4 h-4">
+                                {% endfor %}
+                            </div>
+                            <p class="text-gray-600 mt-2">{{ testimonial.content }}</p>
+                            {% if testimonial.is_featured %}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 mt-2">
+                                Featured Testimonial
+                            </span>
+                            {% endif %}
+                        </div>
+                        <div class="flex space-x-2 ml-4">
+                            <a href="{{ url_for('admin.admin_testimonials_bp.edit_testimonial', id=testimonial.id) }}" 
+                               class="bg-wood-brown text-white px-3 py-1 rounded-md hover:bg-wood-dark">Edit</a>
+                            <form method="POST" action="{{ url_for('admin.admin_testimonials_bp.delete_testimonial', id=testimonial.id) }}" class="inline">
+                                <button type="submit" 
+                                        class="bg-red-600 text-white px-3 py-1 rounded-md hover:bg-red-700" 
+                                        onclick="return confirm('Are you sure you want to delete this testimonial?')">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>
