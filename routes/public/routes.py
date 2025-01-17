@@ -14,7 +14,7 @@ def index():
     try:
         print("Attempting to render index page")
         featured_products = Product.query.filter_by(is_featured=True).all()
-        testimonials = Testimonial.query.filter_by(is_featured=True).limit(3).all()
+        testimonials = Testimonial.query.filter_by(is_featured=True).all()
         print("Attempting to fetch featured products and testimonials...")
         print(f"Found {len(featured_products)} products and {len(testimonials)} testimonials")
         
