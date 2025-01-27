@@ -2,14 +2,24 @@
 
 {% block content %}
 <div class="container mx-auto px-4 py-16">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-6xl mx-auto">
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-2xl font-bold">Edit Project</h1>
+            <h1 class="text-2xl font-bold">Edit Gallery Project</h1>
             <a href="{{ url_for('admin.admin_gallery_bp.index') }}" class="text-wood-brown hover:text-wood-dark">Back to Gallery</a>
         </div>
 
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if category == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form method="POST" action="{{ url_for('admin.admin_gallery_bp.edit', id=project.id) }}" class="space-y-4" enctype="multipart/form-data">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="title" class="block text-sm font-medium text-gray-600">Project Title</label>

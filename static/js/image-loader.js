@@ -7,16 +7,19 @@ document.addEventListener('DOMContentLoaded', function() {
             position: relative;
             overflow: hidden;
             background-color: #f0f0f0;
+            width: 100%;
         }
         .lazy-image {
             opacity: 0;
-            transition: opacity 0.3s ease-in-out, filter 0.3s ease-in-out;
-            filter: blur(20px);
-            will-change: opacity, filter;
+            transition: opacity 0.3s ease-in-out;
+            will-change: opacity;
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 100%;
         }
         .lazy-image.loaded {
             opacity: 1;
-            filter: blur(0);
         }
         .lazy-placeholder {
             position: absolute;
@@ -44,8 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const wrapper = document.createElement('div');
         wrapper.className = 'lazy-image-wrapper';
-        wrapper.style.paddingBottom = '100%'; // 1:1 aspect ratio container
-
+        
         // Create blur placeholder
         const placeholder = document.createElement('div');
         placeholder.className = 'lazy-placeholder';
@@ -55,11 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Setup image
         img.className = 'lazy-image ' + img.className;
-        img.style.position = 'absolute';
-        img.style.top = '0';
-        img.style.left = '0';
+        img.style.position = 'relative';
         img.style.width = '100%';
-        img.style.height = '100%';
+        img.style.height = 'auto';
         img.style.objectFit = 'contain';
         img.style.backgroundColor = 'white';
         img.style.padding = '0.5rem';
@@ -68,12 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         img.parentNode.insertBefore(wrapper, img);
         wrapper.appendChild(placeholder);
         wrapper.appendChild(img);
-
-        // Update aspect ratio if image is loaded
-        if (img.complete && img.naturalWidth) {
-            const ratio = (img.naturalHeight / img.naturalWidth) * 100;
-            wrapper.style.paddingBottom = ratio + '%';
-        }
     }
 
     function updateProgress(img) {

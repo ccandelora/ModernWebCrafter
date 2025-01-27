@@ -142,30 +142,30 @@
         {% if products %}
             {% for product in products %}
         <div class="product-card group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 ease-in-out">
-            <div class="relative">
-                <img
-                    src="{{ product.image_url }}"
-                    class="w-full h-64 object-cover"
-                    loading="lazy"
-                    alt="{{ product.name }}"
-                    decoding="async"
-                />
-                <div class="p-6">
-                    <h5 class="text-xl font-semibold mb-2">
-                        {{ product.name }}
-                    </h5>
-                    <p class="text-gray-600 mb-4">
-                        {{ product.description[:100] }}...
-                    </p>
-                    <p class="text-wood-brown font-bold text-lg mb-4">
-                        Contact for Quote
-                    </p>
-                    <a
-                        href="/quote?package_type={{ product.package_type|default('') }}&name={{ product.name|urlencode }}&description={{ product.description|urlencode }}"
-                        class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300"
-                        >Request Quote</a
-                    >
-                </div>
+            {% if product.image_url %}
+            <div class="lazy-image-wrapper" style="position: relative; width: 100%; height: 256px;">
+                <img src="{{ product.image_url }}"
+                     class="lazy-image w-full h-full object-contain"
+                     loading="lazy"
+                     alt="{{ product.name }}"
+                     decoding="async"
+                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: white;">
+            </div>
+            {% endif %}
+            <div class="p-6">
+                <h5 class="text-xl font-semibold mb-2">
+                    {{ product.name }}
+                </h5>
+                <p class="text-gray-600 mb-4">
+                    {{ product.description[:100] }}...
+                </p>
+                <p class="text-wood-brown font-bold text-lg mb-4">
+                    Contact for Quote
+                </p>
+                <a href="/quote?package_type={{ product.package_type|default('') }}&name={{ product.name|urlencode }}&description={{ product.description|urlencode }}"
+                   class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">
+                    Request Quote
+                </a>
             </div>
         </div>
         {% endfor %}
@@ -176,6 +176,23 @@
         {% endif %}
     </div>
 </div>
+
+<style>
+.lazy-image-wrapper {
+    padding-bottom: 0 !important;
+    display: block !important;
+}
+
+.lazy-image {
+    opacity: 1 !important;
+}
+
+/* Ensure images maintain aspect ratio */
+.product-card img {
+    object-fit: contain;
+    background-color: white;
+}
+</style>
 
 <div class="container mx-auto px-4 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">

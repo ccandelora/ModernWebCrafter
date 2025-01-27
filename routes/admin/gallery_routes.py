@@ -7,7 +7,7 @@ from routes.utils.error_handlers import handle_exceptions, log_route_access
 from datetime import date
 import json
 
-gallery_bp = Blueprint('gallery', __name__)
+gallery_bp = Blueprint('admin_gallery_bp', __name__)
 
 @gallery_bp.route('/')
 @login_required
@@ -18,6 +18,8 @@ def index():
         categories = [(cat[0],) for cat in db.session.query(GalleryProject.category).distinct().order_by(GalleryProject.category).all() if cat[0]]
         industries = [(ind[0],) for ind in db.session.query(GalleryProject.industry_served).distinct().order_by(GalleryProject.industry_served).all() if ind[0]]
         
+        current_app.logger.debug(f'Found {len(categories)} categories and {len(industries)} industries')
+        
         # For GET requests, fetch all gallery projects
         projects = GalleryProject.query.order_by(GalleryProject.completion_date.desc()).all()
         return render_template('admin/gallery.html', 
@@ -25,6 +27,7 @@ def index():
                              categories=categories,
                              industries=industries)
     except Exception as e:
+        current_app.logger.error(f'Error in gallery index: {str(e)}')
         flash(f'Error: {str(e)}', 'error')
         return redirect(url_for('admin.dashboard'))
 
@@ -54,7 +57,7 @@ def create():
         # Validate required fields
         if not all([title, description, category, industry_served, size_category]):
             flash('All required fields must be filled', 'error')
-            return redirect(url_for('admin.gallery.index'))
+            return redirect(url_for('admin.admin_gallery_bp.index'))
         
         # Handle image upload
         image = request.files.get('image')
@@ -63,18 +66,17 @@ def create():
         if image and image.filename:
             try:
                 upload_result = handle_file_upload(image)
-                # Extract the original image path from the result dictionary
+                # Handle both dictionary and string return values
                 if isinstance(upload_result, dict):
-                    # Store the original path
                     image_path = upload_result['original']
                 else:
                     image_path = upload_result
             except ValueError as e:
                 flash(str(e), 'error')
-                return redirect(url_for('admin.gallery.index'))
+                return redirect(url_for('admin.admin_gallery_bp.index'))
             except Exception as e:
                 flash(f'Error saving image: {str(e)}', 'error')
-                return redirect(url_for('admin.gallery.index'))
+                return redirect(url_for('admin.admin_gallery_bp.index'))
 
         # Create new gallery project
         project = GalleryProject()
@@ -111,14 +113,15 @@ def create():
             db.session.add(project)
             db.session.commit()
             flash('Gallery project added successfully', 'success')
+            return redirect(url_for('admin.admin_gallery_bp.index'))
         except Exception as e:
             db.session.rollback()
             flash(f'Error adding gallery project: {str(e)}', 'error')
         
-        return redirect(url_for('admin.gallery.index'))
+        return redirect(url_for('admin.admin_gallery_bp.index'))
     except Exception as e:
         flash(f'Error: {str(e)}', 'error')
-        return redirect(url_for('admin.gallery.index'))
+        return redirect(url_for('admin.admin_gallery_bp.index'))
 
 @gallery_bp.route('/<int:id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -176,7 +179,7 @@ def edit(id):
                     except Exception as e:
                         current_app.logger.error(f'Error uploading image: {str(e)}')
                         flash(f'Error saving image: {str(e)}', 'error')
-                        return redirect(url_for('admin.gallery.index'))
+                        return redirect(url_for('admin.admin_gallery_bp.index'))
 
                 # Handle special features
                 try:
@@ -205,7 +208,7 @@ def edit(id):
                     db.session.rollback()
                     current_app.logger.error(f'Database error updating project: {str(e)}')
                     flash(f'Error updating project: {str(e)}', 'error')
-                return redirect(url_for('admin.gallery.index'))
+                return redirect(url_for('admin.admin_gallery_bp.index'))
 
             except Exception as e:
                 current_app.logger.error(f'Error in POST processing: {str(e)}')
@@ -241,7 +244,7 @@ def edit(id):
     except Exception as e:
         current_app.logger.error(f'Unhandled error in edit route: {str(e)}')
         flash(f'Error: {str(e)}', 'error')
-        return redirect(url_for('admin.gallery.index'))
+        return redirect(url_for('admin.admin_gallery_bp.index'))
 
 @gallery_bp.route('/<int:id>/delete', methods=['POST'])
 @login_required
@@ -255,4 +258,4 @@ def delete(id):
     except Exception as e:
         db.session.rollback()
         flash(f'Error deleting project: {str(e)}', 'error')
-    return redirect(url_for('admin.gallery.index'))
+    return redirect(url_for('admin.admin_gallery_bp.index'))

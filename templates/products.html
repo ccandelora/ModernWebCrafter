@@ -11,19 +11,13 @@
                 <!-- Categories Section -->
                 <h2 class="text-2xl font-bold mb-4">Categories</h2>
                 <div class="flex flex-col space-y-2 mb-12">
-                    <button class="category-filter text-left px-4 py-3 rounded-md bg-wood-brown text-white hover:bg-wood-dark w-full transition-all" 
-                            data-category="all">
+                    <button data-category="all"
+                            class="category-filter text-left px-4 py-3 rounded-md {% if not request.args.get('category') %}bg-wood-brown text-white{% else %}bg-gray-200{% endif %} hover:bg-wood-brown hover:text-white w-full transition-all">
                         All Products
                     </button>
-                    {% set categories = [] %}
-                    {% for product in products %}
-                        {% if product.category not in categories %}
-                            {% set _ = categories.append(product.category) %}
-                        {% endif %}
-                    {% endfor %}
                     {% for category in categories|sort %}
-                    <button class="category-filter text-left px-4 py-3 rounded-md bg-gray-200 hover:bg-wood-brown hover:text-white w-full transition-all" 
-                            data-category="{{ category }}">
+                    <button data-category="{{ category }}"
+                            class="category-filter text-left px-4 py-3 rounded-md {% if request.args.get('category') == category %}bg-wood-brown text-white{% else %}bg-gray-200{% endif %} hover:bg-wood-brown hover:text-white w-full transition-all">
                         {{ category }}
                     </button>
                     {% endfor %}
@@ -50,24 +44,25 @@
 
         <!-- Products grid -->
         <div class="w-full md:w-3/4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
                 {% for product in products %}
-                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden" 
-                     data-category="{{ product.category }}">
+                <div class="product-card group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 ease-in-out" data-category="{{ product.category }}">
                     {% if product.image_url %}
-                    <img src="{{ product.image_url.variants.medium if product.image_url is mapping else product.image_url }}" 
-                         alt="{{ product.name }}"
-                         class="w-full h-64 object-cover"
-                         loading="lazy"
-                         decoding="async">
+                    <div class="relative bg-white">
+                        <img src="{{ product.image_url.variants.medium if product.image_url is mapping else product.image_url }}" 
+                             alt="{{ product.name }}"
+                             class="w-full h-64 object-contain"
+                             loading="lazy"
+                             style="background-color: white;">
+                    </div>
                     {% endif %}
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">{{ product.name }}</h3>
-                        <p class="text-gray-600 mb-4">{{ product.description }}</p>
-                        <div class="flex justify-between items-center">
-                            <div class="text-wood-brown font-medium">Custom Quote</div>
-                            <a href="{{ url_for('public.quote_calculator') }}" 
-                               class="bg-wood-brown text-white px-4 py-2 rounded-md hover:bg-wood-dark">
+                    <div class="bg-gray-100">
+                        <h3 class="text-2xl font-semibold p-4">{{ product.name }}</h3>
+                        <p class="text-gray-600 px-4 pb-4">{{ product.description }}</p>
+                        <div class="flex items-center justify-between p-4 bg-gray-100">
+                            <span class="text-wood-brown font-medium">Custom Quote</span>
+                            <a href="{{ url_for('public.quote_calculator', package_type=product.package_type) }}" 
+                               class="bg-wood-brown text-white px-6 py-2 rounded hover:bg-wood-dark transition-colors">
                                 Request Quote
                             </a>
                         </div>
@@ -96,6 +91,10 @@
     overflow-y: auto;
 }
 
+.lazy-image-wrapper {
+    padding-bottom: 0 !important;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .sticky::-webkit-scrollbar {
     display: none;
@@ -111,35 +110,28 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const filters = document.querySelectorAll('.category-filter');
-    const products = document.querySelectorAll('.product-card');
+    const productCards = document.querySelectorAll('.product-card');
     
     // Function to update products display
     function updateProductsDisplay(selectedCategory) {
-        // Update active filter button
+        // Update active filter button styles
         filters.forEach(f => {
-            const isSelected = f.dataset.category.trim().toLowerCase() === selectedCategory.toLowerCase();
-            f.classList.remove('bg-wood-brown', 'text-white', 'bg-gray-200', 'text-gray-700');
-            f.classList.add(isSelected ? 'bg-wood-brown' : 'bg-gray-200');
-            f.classList.add(isSelected ? 'text-white' : 'text-gray-700');
+            if (f.dataset.category.toLowerCase() === selectedCategory.toLowerCase()) {
+                f.classList.add('bg-wood-brown', 'text-white');
+                f.classList.remove('bg-gray-200');
+            } else {
+                f.classList.remove('bg-wood-brown', 'text-white');
+                f.classList.add('bg-gray-200');
+            }
         });
         
         // Filter products
-        products.forEach(product => {
-            const productCategory = product.dataset.category.trim();
-            console.log('Product:', {
-                name: product.querySelector('h3').textContent,
-                productCategory,
-                selectedCategory,
-                matches: selectedCategory.toLowerCase() === 'all' || 
-                        productCategory.toLowerCase() === selectedCategory.toLowerCase()
-            });
-            
+        productCards.forEach(card => {
             if (selectedCategory.toLowerCase() === 'all') {
-                product.style.display = 'block';
+                card.style.display = 'block';
             } else {
-                product.style.display = productCategory.toLowerCase() === selectedCategory.toLowerCase()
-                    ? 'block' 
-                    : 'none';
+                const productCategory = card.dataset.category;
+                card.style.display = productCategory && productCategory.toLowerCase() === selectedCategory.toLowerCase() ? 'block' : 'none';
             }
         });
     }
@@ -152,15 +144,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add click handlers
     filters.forEach(filter => {
         filter.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent any default button behavior
+            e.preventDefault();
             const category = this.dataset.category;
+            updateProductsDisplay(category);
             
             // Update URL without reloading
             const url = new URL(window.location);
-            url.searchParams.set('category', category);
+            if (category === 'all') {
+                url.searchParams.delete('category');
+            } else {
+                url.searchParams.set('category', category);
+            }
             window.history.pushState({}, '', url);
-            
-            updateProductsDisplay(category);
         });
     });
 

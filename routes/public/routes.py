@@ -56,6 +56,15 @@ def products():
         # Get all products, sorted alphabetically by name
         products = Product.query.order_by(Product.name.asc()).all()
         
+        # Debug log for products
+        for product in products:
+            print(f"Product: {product.name}")
+            print(f"  Description: {product.description}")
+            print(f"  Category: {product.category}")
+            print(f"  Package Type: {product.package_type}")
+            print(f"  Price: {product.price}")
+            print(f"  Image URL: {product.image_url}")
+        
         # Get unique categories while maintaining alphabetical order of products
         categories = sorted(set(p.category for p in products if p.category))
         
