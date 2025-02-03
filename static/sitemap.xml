@@ -24,8 +24,4 @@
         <loc>http://woodproductsunlimited.com/contact</loc>
         <priority>0.7</priority>
     </url>
-    <url>
-        <loc>http://woodproductsunlimited.com/styleguide</loc>
-        <priority>0.5</priority>
-    </url>
 </urlset> 

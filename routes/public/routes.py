@@ -2,7 +2,7 @@ import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, send_from_directory
 from models import Product, GalleryProject, Testimonial, TeamMember, Inquiry
 from app import db
 from routes.utils.email import send_contact_email, send_quote_email, send_test_email
@@ -247,3 +247,11 @@ def test_email():
             flash('An unexpected error occurred. Please check the server logs.', 'error')
     
     return redirect(url_for('public.contact'))
+
+@public.route('/robots.txt')
+def robots_txt():
+    return send_from_directory(current_app.static_folder, 'robots.txt')
+
+@public.route('/sitemap.xml')
+def sitemap_xml():
+    return send_from_directory(current_app.static_folder, 'sitemap.xml')
