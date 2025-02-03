@@ -44,7 +44,7 @@
 
         <!-- Products grid -->
         <div class="w-full md:w-3/4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
                 {% for product in products %}
                 <div class="product-card group bg-white rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 ease-in-out" data-category="{{ product.category }}">
                     {% if product.image_url %}
