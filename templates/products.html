@@ -61,7 +61,7 @@
                         <p class="text-gray-600 px-4 pb-4">{{ product.description }}</p>
                         <div class="flex items-center justify-between p-4 bg-gray-100">
                             <span class="text-wood-brown font-medium">Custom Quote</span>
-                            <a href="{{ url_for('public.quote_calculator', package_type=product.package_type) }}" 
+                            <a href="mailto:info@woodproductsunlimited.com?subject=Quote Request: {{ product.name|urlencode }}&body=Package Type: {{ product.package_type|default('') }}%0D%0AProduct: {{ product.name|urlencode }}%0D%0ADescription: {{ product.description|urlencode }}"
                                class="bg-wood-brown text-white px-6 py-2 rounded hover:bg-wood-dark transition-colors">
                                 Request Quote
                             </a>

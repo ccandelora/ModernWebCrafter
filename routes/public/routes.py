@@ -1,11 +1,6 @@
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app, send_from_directory
-from models import Product, GalleryProject, Testimonial, TeamMember, Inquiry
-from app import db
-from routes.utils.email import send_contact_email, send_quote_email, send_test_email
+from flask import Blueprint, render_template, request, send_from_directory, current_app
+from models import Product, GalleryProject, Testimonial, TeamMember
 
 public = Blueprint('public', __name__, template_folder='templates')
 
@@ -78,43 +73,6 @@ def products():
                              products=[],
                              categories=[])
 
-@public.route('/quote', methods=['GET', 'POST'])
-def quote_calculator():
-    # Pre-fill form data from URL parameters
-    product_data = {
-        'package_type': request.args.get('package_type', ''),
-        'name': request.args.get('name', ''),
-        'description': request.args.get('description', '')
-    }
-    
-    if request.method == 'POST':
-        try:
-            # Get form data
-            form_data = {
-                'package_type': request.form.get('package_type'),
-                'length': request.form.get('length', '0'),
-                'width': request.form.get('width', '0'),
-                'height': request.form.get('height', '0'),
-                'weight': request.form.get('weight', '0'),
-                'requirements': request.form.getlist('requirements[]'),
-                'shipping_type': request.form.get('shipping_type', 'domestic'),
-                'email': request.form.get('email', ''),
-                'name': request.form.get('name', ''),
-                'phone': request.form.get('phone', ''),
-                'special_instructions': request.form.get('special_instructions', '')
-            }
-
-            # Send email
-            send_quote_email(form_data)
-            flash('Thank you for your quote request! Our team will contact you within 1 business day.', 'success')
-        except Exception as e:
-            current_app.logger.error(f'Error sending email: {str(e)}')
-            flash('There was an error processing your request. Please try again or contact us directly.', 'error')
-
-        return redirect(url_for('public.quote_calculator'))
-
-    return render_template('quote.html')
-
 @public.route('/gallery')
 def gallery():
     category = request.args.get('category')
@@ -171,82 +129,14 @@ def gallery():
                          selected_industry=industry,
                          selected_size=size)
 
-@public.route('/contact', methods=['GET', 'POST'])
+@public.route('/contact')
 def contact():
-    if request.method == 'POST':
-        try:
-            # Log the form data (excluding sensitive info)
-            current_app.logger.info('Processing contact form submission')
-            current_app.logger.debug(f'Form data: name={request.form.get("name")}, '
-                                   f'company={request.form.get("company")}, '
-                                   f'industry={request.form.get("industry")}, '
-                                   f'package_type={request.form.get("package_type")}')
-
-            # Create new inquiry with additional fields
-            inquiry = Inquiry(name=request.form['name'],
-                            email=request.form['email'],
-                            company=request.form.get('company', ''),
-                            industry=request.form.get('industry', ''),
-                            package_type=request.form.get('package_type', ''),
-                            message=request.form['message'])
-            if 'product_id' in request.form:
-                inquiry.product_id = request.form['product_id']
-
-            current_app.logger.info('Saving inquiry to database')
-            db.session.add(inquiry)
-            db.session.commit()
-            current_app.logger.info('Inquiry saved successfully')
-
-            # Send email
-            current_app.logger.info('Attempting to send contact email')
-            send_contact_email(request.form)
-            flash('Thank you for your inquiry! Our team will contact you within 1 business day.', 'success')
-            
-        except Exception as e:
-            db.session.rollback()
-            error_msg = str(e)
-            current_app.logger.error(f'Error processing contact form: {error_msg}')
-            current_app.logger.exception('Full traceback:')
-            
-            # Show a more detailed error message in development
-            if current_app.debug:
-                flash(f'Error: {error_msg}', 'error')
-            else:
-                flash('There was an error processing your request. Please try again or contact us directly.', 'error')
-
-        return redirect(url_for('public.contact'))
     return render_template('contact.html')
 
 @public.route('/styleguide')
 def styleguide():
     """Style guide page showcasing design system components."""
     return render_template('styleguide.html')
-
-@public.route('/test-email')
-def test_email():
-    try:
-        current_app.logger.info('Starting test email process')
-        success, message = send_test_email()
-        
-        if success:
-            current_app.logger.info('Test email sent successfully')
-            flash('Test email sent successfully!', 'success')
-        else:
-            current_app.logger.error(f'Test email failed: {message}')
-            # In debug mode, show the actual error
-            if current_app.debug:
-                flash(f'Error sending test email: {message}', 'error')
-            else:
-                flash('Error sending test email. Please check the server logs.', 'error')
-    except Exception as e:
-        current_app.logger.error(f'Exception in test email route: {str(e)}')
-        current_app.logger.exception('Full traceback:')
-        if current_app.debug:
-            flash(f'Error: {str(e)}', 'error')
-        else:
-            flash('An unexpected error occurred. Please check the server logs.', 'error')
-    
-    return redirect(url_for('public.contact'))
 
 @public.route('/robots.txt')
 def robots_txt():

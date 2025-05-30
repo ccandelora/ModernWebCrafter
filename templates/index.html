@@ -54,7 +54,7 @@
                 <a href="/products"
                     class="bg-wood-brown hover:bg-wood-dark text-white font-bold py-4 px-10 rounded-lg transition duration-300">
                     Explore Products</a>
-                <a href="/quote"
+                <a href="mailto:info@woodproductsunlimited.com"
                     class="bg-transparent border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-4 px-10 rounded-lg transition duration-300">
                     Request A Quote</a>
             </div>
@@ -80,7 +80,7 @@
                     <a href="/products"
                         class="bg-wood-brown hover:bg-opacity-90 text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
                         Discover Solutions</a>
-                    <a href="/quote"
+                        <a href="mailto:info@woodproductsunlimited.com"
                         class="bg-transparent border-2 border-white hover:bg-white hover:text-wood-dark text-white font-bold py-3 px-8 rounded-lg transition duration-300 text-center">
                         Request Quote</a>
                 </div>
@@ -162,7 +162,7 @@
                 <p class="text-wood-brown font-bold text-lg mb-4">
                     Contact for Quote
                 </p>
-                <a href="/quote?package_type={{ product.package_type|default('') }}&name={{ product.name|urlencode }}&description={{ product.description|urlencode }}"
+                <a href="mailto:info@woodproductsunlimited.com?subject=Quote Request: {{ product.name|urlencode }}&body=Package Type: {{ product.package_type|default('') }}%0D%0AProduct: {{ product.name|urlencode }}%0D%0ADescription: {{ product.description|urlencode }}"
                    class="inline-block bg-wood-brown hover:bg-wood-dark text-white font-semibold py-2 px-4 rounded transition duration-300">
                     Request Quote
                 </a>

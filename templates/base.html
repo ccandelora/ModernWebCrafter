@@ -182,9 +182,8 @@
                            class="text-wood-light hover:text-wood-accent px-3"
                            role="menuitem"
                            aria-current="{% if request.path == '/products' %}page{% endif %}">Products</a>
-                        <a href="/quote"
-                           class="text-wood-light hover:text-wood-accent px-3"
-                           role="menuitem"
+                        <a href="mailto:info@woodproductsunlimited.com"
+                        class="text-wood-light hover:text-wood-accent px-3" {% if request.path == '/quote' %}text-wood-brown{% endif %}"
                            aria-current="{% if request.path == '/quote' %}page{% endif %}">Quote</a>
                         <a href="/gallery"
                            class="text-wood-light hover:text-wood-accent px-3"
@@ -221,8 +220,9 @@
                        class="block px-4 py-2 text-wood-light hover:text-wood-accent">About</a>
                     <a href="/products"
                        class="block px-4 py-2 text-wood-light hover:text-wood-accent">Products</a>
-                    <a href="/quote"
-                       class="block px-4 py-2 text-wood-light hover:text-wood-accent">Quote</a>
+                    <a href="mailto:info@woodproductsunlimited.com"
+                       class="block px-4 py-2 text-wood-light hover:text-wood-accent"
+                       aria-current="{% if request.path == '/quote' %}page{% endif %}">Quote</a>
                     <a href="/gallery"
                        class="block px-4 py-2 text-wood-light hover:text-wood-accent">Gallery</a>
                     <a href="/contact"
@@ -307,8 +307,9 @@
                                 >
                             </li>
                             <li>
-                                <a href="/quote" class="hover:text-wood-accent"
-                                    >Custom Quote Calculator</a
+                                <a href="mailto:info@woodproductsunlimited.com"
+                                class="hover:text-wood-accent" {% if request.path == '/quote' %}text-wood-brown{% endif %}"
+                                    aria-current="{% if request.path == '/quote' %}page{% endif %}">Custom Quote Calculator</a
                                 >
                             </li>
                             <li>
